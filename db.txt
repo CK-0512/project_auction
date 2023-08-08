@@ -1,0 +1,390 @@
+DROP DATABASE IF EXISTS PROJECT_AUCTION;
+CREATE DATABASE PROJECT_AUCTION;
+USE PROJECT_AUCTION;
+
+CREATE TABLE article(
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    updateDate DATETIME NOT NULL,
+    memberId INT UNSIGNED NOT NULL,
+    boardId INT UNSIGNED NOT NULL,
+    title VARCHAR(100) NOT NULL,
+    `body` TEXT NOT NULL,
+    hitCnt INT UNSIGNED NOT NULL DEFAULT 0
+);
+
+DROP TABLE article;
+
+SELECT * FROM article WHERE boardId = 1;
+
+CREATE TABLE `member`(
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    updateDate DATETIME NOT NULL,
+    loginId VARCHAR(20) NOT NULL UNIQUE,
+    loginPw VARCHAR(100) NOT NULL,
+    `authLevel` TINYINT UNSIGNED NOT NULL DEFAULT 1 COMMENT '권한 레벨 (일반 = 1, 관리자 = 3)',
+    `memberLevel` TINYINT UNSIGNED NOT NULL DEFAULT 1 COMMENT '유저 레벨 (일반 = 1, 우수 = 2, VIP = 3)',
+    `name` VARCHAR(20) NOT NULL,
+    nickname VARCHAR(20) NOT NULL,
+    cellphoneNum VARCHAR(20) NOT NULL,
+    email VARCHAR(50) NOT NULL,
+    money INT UNSIGNED NOT NULL DEFAULT 0,
+    `account` VARCHAR(20),
+    delStatus TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '탈퇴여부 (탈퇴 전 = 0, 탈퇴 후 = 1)',
+    delDate DATETIME COMMENT '탈퇴 날짜'
+);
+
+SELECT * FROM `member`;
+
+
+CREATE TABLE category(
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    updateDate DATETIME NOT NULL,
+    `name` VARCHAR(20) NOT NULL UNIQUE COMMENT '품목 이름',
+    delStatus TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '삭제여부 (삭제 전 = 0, 삭제 후 = 1)',
+    delDate DATETIME COMMENT '삭제 날짜'
+);
+
+SELECT * FROM category;
+
+ALTER TABLE category CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+CREATE TABLE interestCategory(
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    updateDate DATETIME NOT NULL,
+    memberId INT UNSIGNED NOT NULL,
+    categoryId INT UNSIGNED NOT NULL
+);
+
+SELECT * FROM interestCategory;
+
+CREATE TABLE board(
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    updateDate DATETIME NOT NULL,
+    `code` VARCHAR(20) NOT NULL UNIQUE COMMENT 'notice(공지사항), normal(일반), ...',
+    `name` VARCHAR(20) NOT NULL UNIQUE COMMENT '게시판 이름',
+    delStatus TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '삭제여부 (삭제 전 = 0, 삭제 후 = 1)',
+    delDate DATETIME COMMENT '삭제 날짜'
+);
+
+SELECT * FROM board;
+
+INSERT INTO board
+SET regDate = NOW(),
+updateDate = NOW(),
+`code` = 'notice',
+`name` = '공지사항';
+
+INSERT INTO board
+SET regDate = NOW(),
+updateDate = NOW(),
+`code` = 'normal',
+`name` = '일반';
+
+INSERT INTO board
+SET regDate = NOW(),
+updateDate = NOW(),
+`code` = 'transaction',
+`name` = '거래';
+
+
+CREATE TABLE reply (
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    updateDate DATETIME NOT NULL,
+    memberId INT UNSIGNED NOT NULL,
+    relTypeCode VARCHAR(20) NOT NULL COMMENT '관련 데이터 타입 코드',
+    relId INT UNSIGNED NOT NULL COMMENT '관련 데이터 번호',
+    `body` TEXT NOT NULL
+);
+
+CREATE TABLE reactionPoint (
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    updateDate DATETIME NOT NULL,
+    memberId INT UNSIGNED NOT NULL,
+    relTypeCode VARCHAR(20) NOT NULL COMMENT '관련 데이터 타입 코드',
+    relId INT UNSIGNED NOT NULL COMMENT '관련 데이터 번호',
+    `point` INT NOT NULL DEFAULT 0
+);
+
+CREATE TABLE product(
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    updateDate DATETIME NOT NULL,
+    memberId INT UNSIGNED NOT NULL,
+    categoryId INT UNSIGNED NOT NULL,
+    `name` VARCHAR(100) NOT NULL,
+    `description` TEXT NOT NULL
+);
+
+
+CREATE TABLE product_images (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    regDate DATETIME NOT NULL,
+    product_id INT UNSIGNED NOT NULL,
+    originName VARCHAR(50) NOT NULL,
+    savedName VARCHAR(100) NOT NULL,
+    savedPath VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE auction (
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    updateDate DATETIME NOT NULL,
+    endDate DATETIME NOT NULL,  
+    productId INT UNSIGNED NOT NULL,
+    startBid INT UNSIGNED NOT NULL,
+    endBid INT UNSIGNED NOT NULL,
+    bidCount INT UNSIGNED NOT NULL DEFAULT 0,
+    buyNow INT UNSIGNED
+);
+
+CREATE TABLE realTimeAuction (
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    updateDate DATETIME NOT NULL,
+    startDate DATETIME NOT NULL,
+    endDate DATETIME NOT NULL,
+    productId INT UNSIGNED NOT NULL,
+    startBid INT UNSIGNED NOT NULL,
+    bidPrice INT UNSIGNED NOT NULL,
+    endBid INT UNSIGNED NOT NULL,
+    bidCount INT UNSIGNED NOT NULL DEFAULT 0
+);
+
+DROP TABLE product;
+
+SELECT * FROM category;
+
+INSERT INTO category
+SET regDate = NOW(),
+updateDate = NOW(),
+`name` = '의류';
+
+INSERT INTO category
+SET regDate = NOW(),
+updateDate = NOW(),
+`name` = '뷰티';
+
+INSERT INTO category
+SET regDate = NOW(),
+updateDate = NOW(),
+`name` = '장신구';
+
+INSERT INTO category
+SET regDate = NOW(),
+updateDate = NOW(),
+`name` = '식품';
+
+INSERT INTO category
+SET regDate = NOW(),
+updateDate = NOW(),
+`name` = '아동용품';
+
+INSERT INTO category
+SET regDate = NOW(),
+updateDate = NOW(),
+`name` = '가구';
+
+INSERT INTO category
+SET regDate = NOW(),
+updateDate = NOW(),
+`name` = '스포츠';
+
+INSERT INTO category
+SET regDate = NOW(),
+updateDate = NOW(),
+`name` = '의료';
+
+INSERT INTO category
+SET regDate = NOW(),
+updateDate = NOW(),
+`name` = '반려동물';
+
+INSERT INTO category
+SET regDate = NOW(),
+updateDate = NOW(),
+`name` = '가전제품';
+
+INSERT INTO category
+SET regDate = NOW(),
+updateDate = NOW(),
+`name` = '디지털';
+
+INSERT INTO category
+SET regDate = NOW(),
+updateDate = NOW(),
+`name` = '차량';
+
+INSERT INTO category
+SET regDate = NOW(),
+updateDate = NOW(),
+`name` = '여행';
+
+INSERT INTO category
+SET regDate = NOW(),
+updateDate = NOW(),
+`name` = '도서';
+
+INSERT INTO category
+SET regDate = NOW(),
+updateDate = NOW(),
+`name` = '소장품';
+
+
+INSERT INTO article
+SET regDate = NOW(),
+updateDate = NOW(),
+memberId = 2,
+boardId = 2,
+title = '제목1',
+`body` = '내용1';
+
+INSERT INTO article
+SET regDate = NOW(),
+updateDate = NOW(),
+memberId = 2,
+boardId = 2,
+title = '제목2',
+`body` = '내용2';
+
+INSERT INTO article
+SET regDate = NOW(),
+updateDate = NOW(),
+memberId = 1,
+boardId = 1,
+title = '제목4',
+`body` = '내용4';
+
+INSERT INTO `member`
+SET regDate = NOW(),
+updateDate = NOW(),
+loginId = 'admin',
+loginPw = SHA2('admin', 256),
+authLevel = 3,
+`name` = 'admin',
+nickname = 'admin',
+cellphoneNum = '01055161459',
+email = 'dhcdkrl6166@gmail.com';
+
+INSERT INTO `member`
+SET regDate = NOW(),
+updateDate = NOW(),
+loginId = 'test',
+loginPw = 'test',
+`name` = 'test',
+nickname = 'test',
+cellphoneNum = '01011112222',
+email = 'test@gmail.com';
+
+INSERT INTO `member`
+SET regDate = NOW(),
+updateDate = NOW(),
+loginId = 'test1',
+loginPw = 'test1',
+`name` = 'test1',
+nickname = 'test1',
+cellphoneNum = '01033332222',
+email = 'test1@gmail.com';
+
+INSERT INTO board
+SET regDate = NOW(),
+updateDate = NOW(),
+`code` = 'notice',
+`name` = '공지사항';
+
+INSERT INTO board
+SET regDate = NOW(),
+updateDate = NOW(),
+`code` = 'free',
+`name` = '자유';
+
+# 2번 회원이 1번 글에 좋아요
+INSERT INTO reactionPoint
+SET regDate = NOW(),
+updateDate = NOW(),
+memberId = 2,
+relTypeCode = 'article',
+relId = 1,
+`point` = 1;
+
+# 2번 회원이 2번 글에 싫어요
+INSERT INTO reactionPoint
+SET regDate = NOW(),
+updateDate = NOW(),
+memberId = 2,
+relTypeCode = 'article',
+relId = 2,
+`point` = -1;
+
+# 2번 회원이 3번 글에 싫어요
+INSERT INTO reactionPoint
+SET regDate = NOW(),
+updateDate = NOW(),
+memberId = 2,
+relTypeCode = 'article',
+relId = 3,
+`point` = -1;
+
+# 3번 회원이 2번 글에 좋아요
+INSERT INTO reactionPoint
+SET regDate = NOW(),
+updateDate = NOW(),
+memberId = 3,
+relTypeCode = 'article',
+relId = 2,
+`point` = 1;
+
+# 3번 회원이 3번 글에 좋아요
+INSERT INTO reactionPoint
+SET regDate = NOW(),
+updateDate = NOW(),
+memberId = 3,
+relTypeCode = 'article',
+relId = 3,
+`point` = 1;
+
+INSERT INTO reply
+SET regDate = NOW(),
+updateDate = NOW(),
+memberId = 2,
+relTypeCode = 'article',
+relId = 2,
+`body` = '댓글1';
+
+INSERT INTO reply
+SET regDate = NOW(),
+updateDate = NOW(),
+memberId = 2,
+relTypeCode = 'article',
+relId = 2,
+`body` = '댓글2';
+
+INSERT INTO reply
+SET regDate = NOW(),
+updateDate = NOW(),
+memberId = 3,
+relTypeCode = 'article',
+relId = 2,
+`body` = '댓글3';
+
+INSERT INTO reply
+SET regDate = NOW(),
+updateDate = NOW(),
+memberId = 3,
+relTypeCode = 'article',
+relId = 3,
+`body` = '댓글4';
+
+SELECT * FROM article ORDER BY id DESC;
+SELECT * FROM `member`;
+SELECT * FROM board;
+SELECT * FROM reactionPoint;
+SELECT * FROM reply;
+
+SELECT LAST_INSERT_ID();

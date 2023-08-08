@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.auction.dao.AuctionDao">
+
+	<select id="getAuctionCnt" resultType="int">
+		SELECT COUNT(*)
+			FROM auction
+			WHERE endStatus = #{endStatus}
+			<if test="categoryId != 0">
+				AND categoryId = #{categoryId}
+			</if>
+			<if test="searchKeyword != ''">
+				AND (
+						`name` LIKE CONCAT('%', #{searchKeyword}, '%')
+						OR `description` LIKE CONCAT('%', #{searchKeyword}, '%')
+					)
+			</if>
+	</select>
+
+	<select id="getAuctionContents" resultType="Auction">
+		WITH PI AS (
+			SELECT A.*
+            		, I.id AS fileId
+		        FROM product AS P
+		        INNER JOIN productImages AS I
+		        ON P.id = I.productId
+		        WHERE 1 = 1
+					<if test="searchKeyword != ''">
+						AND (
+							`name` LIKE CONCAT('%', #{searchKeyword}, '%')
+							OR `description` LIKE CONCAT('%', #{searchKeyword}, '%')
+							)
+					</if>
+					<if test="categoryId != 0">
+						AND categoryId = #{categoryId}
+					</if>
+        )
+		SELECT PI.*
+		        , A.regDate AS startDate
+		        , A.endDate
+		        , A.startBid
+		        , A.endBid
+		        , A.bidCount
+		        , A.buyNow
+			FROM PI
+			INNER JOIN auction
+		    ON PI.id = A.productId
+		    WHERE A.endStatus = #{endStauts}
+			LIMIT #{limitStart}, #{itemsInAPage}
+	</select>
+	
+</mapper>

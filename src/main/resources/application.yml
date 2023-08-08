@@ -1,0 +1,30 @@
+server:
+  port: 8081
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: mailtestcjh@gmail.com
+    password: xohvhfpztqxdzaqo
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/PROJECT_AUCTION?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull
+    username: root
+    password: 
+mybatis:
+  type-aliases-package: com.project.auction.vo
+custom:
+  siteName: CK옥션
+  siteMainUri: http://localhost:8081
+  emailFrom: CK옥션@localhost
+  emailFromName: C K A

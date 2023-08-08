@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.auction.dao.MemberDao">
+	
+	<insert id="doJoin">
+		INSERT INTO `member`
+			SET regDate = NOW()
+				, updateDate = NOW()
+				, loginId = #{loginId}
+				, loginPw = #{loginPw}
+				, `name` = #{name}
+				, nickname = #{nickname}
+				, cellphoneNum = #{cellphoneNum}
+				, email = #{email}
+				, account = #{account}
+	</insert>
+	
+	<select id="getMemberById">
+		SELECT *
+			FROM `member`
+			WHERE id = #{id}
+	</select>
+	
+	<select id="getLastInsertId">
+		SELECT LAST_INSERT_ID()
+	</select>
+	
+	<select id="getMemberByLoginId">
+		SELECT *
+			FROM `member`
+			WHERE loginId = #{loginId}
+	</select>
+	
+	<select id="getMemberByNameAndEmail">
+		SELECT *
+			FROM `member`
+			WHERE `name` = #{name}
+			AND email = #{email}
+	</select>
+	
+	<select id="getMemberByNickname">
+		SELECT *
+			FROM `member`
+			WHERE nickname = #{nickname}
+	</select>
+	
+	<update id="doChargeMoney">
+		UPDATE `member`
+			SET money = money + #{money}
+			WHERE id = #{loginedMemberId}
+	</update>
+	
+	<update id="doModify">
+		UPDATE `member`
+			SET updateDate = NOW()
+				, nickname = #{nickname}
+				, cellphoneNum = #{cellphoneNum}
+				, email = #{email}
+				, account = #{account}
+			WHERE id = #{loginedMemberId}
+	</update>
+	
+	<update id="doPasswordModify">
+		UPDATE `member`
+			SET updateDate = NOW()
+				, loginPw = #{loginPw}
+			WHERE id = #{loginedMemberId}
+	</update>
+	
+	<select id="getMembersCnt">
+		SELECT COUNT(*)
+			FROM `member`
+			WHERE 1 = 1
+			<if test="authLevel != 0">
+				AND authLevel = #{authLevel}
+			</if>
+			<if test="searchKeyword != ''">
+				<choose>
+					<when test="searchKeywordType == 'loginId'">
+						AND loginId LIKE CONCAT('%', #{searchKeyword}, '%')
+					</when>
+					<when test="searchKeywordType == 'name'">
+						AND name LIKE CONCAT('%', #{searchKeyword}, '%')
+					</when>
+					<when test="searchKeywordType == 'nickname'">
+						AND nickname LIKE CONCAT('%', #{searchKeyword}, '%')
+					</when>
+					<otherwise>
+						AND (
+							loginId LIKE CONCAT('%', #{searchKeyword}, '%')
+							OR name LIKE CONCAT('%', #{searchKeyword}, '%')
+							OR nickname LIKE CONCAT('%', #{searchKeyword}, '%')
+						)
+					</otherwise>
+				</choose>
+			</if>
+	</select>
+	
+	<select id="getMembers">
+		SELECT *
+			FROM `member`
+			WHERE 1 = 1
+			<if test="authLevel != 0">
+				AND authLevel = #{authLevel}
+			</if>
+			<if test="searchKeyword != ''">
+				<choose>
+					<when test="searchKeywordType == 'loginId'">
+						AND loginId LIKE CONCAT('%', #{searchKeyword}, '%')
+					</when>
+					<when test="searchKeywordType == 'name'">
+						AND name LIKE CONCAT('%', #{searchKeyword}, '%')
+					</when>
+					<when test="searchKeywordType == 'nickname'">
+						AND nickname LIKE CONCAT('%', #{searchKeyword}, '%')
+					</when>
+					<otherwise>
+						AND (
+							loginId LIKE CONCAT('%', #{searchKeyword}, '%')
+							OR name LIKE CONCAT('%', #{searchKeyword}, '%')
+							OR nickname LIKE CONCAT('%', #{searchKeyword}, '%')
+						)
+					</otherwise>
+				</choose>
+			</if>
+			ORDER BY id DESC
+			LIMIT #{limitStart}, #{itemsInAPage}
+	</select>
+	
+	<update id="deleteMember">
+		UPDATE `member`
+				SET updateDate = NOW()
+					, delStatus = 1
+					, delDate = NOW()
+				WHERE id = #{id}
+	</update>
+	
+</mapper>

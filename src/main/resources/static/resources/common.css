@@ -1,0 +1,96 @@
+/* @charset "UTF-8"; */
+
+@font-face {
+    font-family: 'GmarketSansMedium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html > body, html > body .ProseMirror, html > body .toastui-editor-contents {
+	font-family: 'GmarketSansMedium', sans-serif;
+	text-underline-position:under;
+}
+
+html[data-theme="dark"] :is(.table-box-type-1 > table th, .table-box-type-1 > table td) {
+	border-color: white;
+}
+
+.theme-toggle .fa-solid {
+	display: none;
+}
+
+html[data-theme="dark"] .theme-toggle .fa-solid {
+	display: inline;
+}
+
+html[data-theme="dark"] .theme-toggle .fa-regular {
+	display: none;
+}
+
+.table-box-type-1 > table {
+	width: 100%;
+}
+
+.table-box-type-1 > table th, .table-box-type-1 > table td {
+	border:1px solid black;
+	padding: 10px;
+	text-align: center;
+}
+
+html > body .ProseMirror, html > body .toastui-editor-contents {
+	text-align: left;
+	font-size: 1.25rem;
+}
+
+html > body .toast-ui-viewer .toastui-editor-contents {
+	text-align: center;
+}
+
+.btn-text-link {
+	color:black;
+}
+
+.btn-text-link:hover {
+	color:red;
+	text-decoration: underline;
+}
+
+.border-bottom-line {
+	border-bottom : 1px solid #d1c7c7;
+}
+
+.item-tr > td > div {
+	width : 17%;
+	display : inline-flex;
+	box-sizing: border-box;
+	padding: 5px;
+}
+
+.item-tr > td > div > label {
+	justify-content: flex-start;
+	cursor: pointer;
+}
+
+.item-tr > td > div > label > input {
+	margin-right:10px;
+}
+
+.radio-label input[type="radio"] {
+  opacity: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+/* 클릭 가능한 라벨 스타일링 */
+.radio-label {
+  display: block;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.radio-label input[type="radio"]:checked + span::before {
+  content: "\2713";
+  margin-right: 5px;
+}
+

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.auction.dao.CategoryDao">
+	
+	<insert id="doRegistInterest">
+		INSERT INTO interestCategory
+			SET regDate = NOW()
+			, updateDate = NOW()
+			, memberId = #{memberId}
+			, categoryId = #{categoryId}
+	</insert>
+	
+	<select id="getCategoryId" resultType="int">
+		SELECT id 
+			FROM category
+			WHERE `name` = #{category} 
+	</select>
+	
+	<select id="getInterestCategories" resultType="Category">
+		SELECT c.*
+			FROM category AS c
+			INNER JOIN interestCategory AS i
+			ON c.id = i.categoryId
+			WHERE i.memberId = #{memberId}
+	</select>
+	
+	<select id="getCategories" resultType="Category">
+		SELECT *
+			FROM category
+			ORDER BY id;
+	</select>
+	
+	<select id="getCategoryById" resultType="categoryId">
+		SELECT *
+			FROM category
+			WHERE categoryId = #{categoryId}
+	</select>
+
+	<delete id="doDeleteInterest">
+		SELECT *
+			FROM category
+			WHERE delStatus = 0
+			<if test="categoryId != 0">
+				AND id = #{categoryId}
+			</if>
+	</delete>
+	
+</mapper>
