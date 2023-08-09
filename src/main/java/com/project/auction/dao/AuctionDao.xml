@@ -19,34 +19,26 @@
 	</select>
 
 	<select id="getAuctionContents" resultType="Auction">
-		WITH PI AS (
-			SELECT A.*
-            		, I.id AS fileId
-		        FROM product AS P
-		        INNER JOIN productImages AS I
-		        ON P.id = I.productId
-		        WHERE 1 = 1
-					<if test="searchKeyword != ''">
-						AND (
-							`name` LIKE CONCAT('%', #{searchKeyword}, '%')
-							OR `description` LIKE CONCAT('%', #{searchKeyword}, '%')
-							)
-					</if>
-					<if test="categoryId != 0">
-						AND categoryId = #{categoryId}
-					</if>
-        )
-		SELECT PI.*
+		SELECT P.*
 		        , A.regDate AS startDate
 		        , A.endDate
 		        , A.startBid
 		        , A.endBid
 		        , A.bidCount
 		        , A.buyNow
-			FROM PI
-			INNER JOIN auction
-		    ON PI.id = A.productId
+			FROM product AS P
+			INNER JOIN auction AS A
+		    ON P.id = A.productId
 		    WHERE A.endStatus = #{endStauts}
+		    	<if test="searchKeyword != ''">
+					AND (
+						P.`name` LIKE CONCAT('%', #{searchKeyword}, '%')
+						OR P.`description` LIKE CONCAT('%', #{searchKeyword}, '%')
+						)
+				</if>
+				<if test="categoryId != 0">
+					AND P.categoryId = #{categoryId}
+				</if>
 			LIMIT #{limitStart}, #{itemsInAPage}
 	</select>
 	

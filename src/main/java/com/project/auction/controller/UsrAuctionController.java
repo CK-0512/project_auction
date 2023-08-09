@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.project.auction.service.AuctionService;
 import com.project.auction.service.CategoryService;
+import com.project.auction.service.FileService;
 import com.project.auction.vo.Auction;
 import com.project.auction.vo.Category;
+import com.project.auction.vo.FileVO;
 import com.project.auction.vo.Rq;
 
 @Controller
@@ -19,12 +21,14 @@ public class UsrAuctionController {
 	
 	private AuctionService auctionService;
 	private CategoryService categoryService;
+	private FileService fileService;
 	private Rq rq;
 	
 	@Autowired
-	public UsrAuctionController(AuctionService auctionService, CategoryService categoryService, Rq rq) {
+	public UsrAuctionController(AuctionService auctionService, CategoryService categoryService, FileService fileService, Rq rq) {
 		this.auctionService = auctionService;
 		this.categoryService = categoryService;
+		this.fileService = fileService;
 		this.rq = rq;
 	}
 	
@@ -53,10 +57,13 @@ public class UsrAuctionController {
 
 		List<Auction> auctionContents = auctionService.getAuctionContents(categoryId, searchKeyword, endStatus, itemsInAPage, page);
 
+		List<FileVO> files = fileService.getAuctionContentsFirstFiles(auctionContents);
+
+		model.addAttribute("files", files);
 		model.addAttribute("auctionContents", auctionContents);
+		model.addAttribute("pagesCnt", pagesCnt);
 		model.addAttribute("auctionCnt", auctionCnt);
 		model.addAttribute("category", category);
-		model.addAttribute("pagesCnt", pagesCnt);
 		model.addAttribute("page", page);
 		model.addAttribute("searchKeyword", searchKeyword);
 

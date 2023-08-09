@@ -41,6 +41,20 @@
 							<div>
 								<img src="/usr/home/file/${file.id }">
 							</div>
+							<div>
+								<span>${auction.name }</span>
+							</div>
+							<div>
+								<span>현재가 : ${auction.nowBid }</span>
+							</div>
+							<c:if test="${auction.buyNo } != null">
+								<div>
+									<span>즉시구매가 : ${auction.buyNow }</span>
+								</div>
+							</c:if>
+							<div>
+								<span>경매종료 일자 : ${auction.endDate.subString(2, 16) }</span>
+							</div>
 						</div>
 					</c:forEach>
 				</div>
@@ -48,7 +62,7 @@
 			
 			<c:if test="${rq.getLoginedMemberId() != 0 }">
 				<div class="mt-2 flex justify-end">
-					<a class="btn btn-accent btn-sm" href="write">게시글 작성</a>
+					<a class="btn btn-accent btn-sm" href="regist">경매 등록</a>
 				</div>
 			</c:if>
 			
@@ -58,7 +72,7 @@
 					<c:set var="startPage" value="${page - pageMenuLen >= 1 ? page - pageMenuLen : 1 }" />
 					<c:set var="endPage" value="${page + pageMenuLen <= pagesCnt ? page + pageMenuLen : pagesCnt }" />
 					
-					<c:set var="pageBaseUri" value="?boardId=${board.size() == 1 ? board[0].id : 0}&searchKeywordType=${searchKeywordType }&searchKeyword=${searchKeyword }" />
+					<c:set var="pageBaseUri" value="?categoryId=${category.size() == 1 ? category[0].id : 0}&endStatus=${endStatus }&searchKeyword=${searchKeyword }" />
 					
 					<c:if test="${page == 1 }">
 						<a class="join-item btn btn-disabled">«</a>

@@ -1,6 +1,10 @@
 server:
   port: 8081
 spring:
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
   mail:
     host: smtp.gmail.com
     port: 587
@@ -28,3 +32,5 @@ custom:
   siteMainUri: http://localhost:8081
   emailFrom: CK옥션@localhost
   emailFromName: C K A
+file:
+  dir: C:/Users/오창기/programing/sts_work/Project_Auction/upload

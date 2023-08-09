@@ -119,14 +119,15 @@ CREATE TABLE product(
     memberId INT UNSIGNED NOT NULL,
     categoryId INT UNSIGNED NOT NULL,
     `name` VARCHAR(100) NOT NULL,
-    `description` TEXT NOT NULL
+    `description` TEXT NOT NULL,
+    buyerId INT UNSIGNED NOT NULL
 );
 
 
-CREATE TABLE product_images (
+CREATE TABLE productFiles (
     id INT AUTO_INCREMENT PRIMARY KEY,
     regDate DATETIME NOT NULL,
-    product_id INT UNSIGNED NOT NULL,
+    productId INT UNSIGNED NOT NULL,
     originName VARCHAR(50) NOT NULL,
     savedName VARCHAR(100) NOT NULL,
     savedPath VARCHAR(100) NOT NULL
@@ -139,6 +140,8 @@ CREATE TABLE auction (
     endDate DATETIME NOT NULL,  
     productId INT UNSIGNED NOT NULL,
     startBid INT UNSIGNED NOT NULL,
+    minimumBid INT UNSIGNED NOT NULL,
+    nowBid INT UNSIGNED NOT NULL,
     endBid INT UNSIGNED NOT NULL,
     bidCount INT UNSIGNED NOT NULL DEFAULT 0,
     buyNow INT UNSIGNED
