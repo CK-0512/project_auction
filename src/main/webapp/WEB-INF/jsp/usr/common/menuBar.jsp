@@ -41,9 +41,9 @@
 				</label>
 				<ul tabindex="0"
 					class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-28">
-					<li><a href="/usr/auction/longtime">온라인 경매</a></li>
-					<li><a href="/usr/auction/realtime">실시간 경매</a></li>
-					<li><a href="/usr/article/list?boardId=">자유 게시판</a></li>
+					<li><a href="/usr/auction/list">온라인 경매</a></li>
+					<li><a href="/usr/realtime/list">실시간 경매</a></li>
+					<li><a href="/usr/article/list">자유 게시판</a></li>
 				</ul>
 			</div>
 		</div>

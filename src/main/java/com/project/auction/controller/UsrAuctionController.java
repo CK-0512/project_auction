@@ -43,11 +43,13 @@ public class UsrAuctionController {
 			return rq.jsReturnOnView("페이지번호가 올바르지 않습니다");
 		}
 		
-		List<Category> category = categoryService.getCategoryById(categoryId);
+		List<Category> selectedCategory = categoryService.getCategoryById(categoryId);
 
-		if (category.isEmpty()) {
+		if (selectedCategory.isEmpty()) {
 			return rq.jsReturnOnView("존재하지 않는 카테고리입니다");
 		}
+		
+		List<Category> categories = categoryService.getCategories(); 
 
 		int auctionCnt = auctionService.getAuctionCnt(categoryId, searchKeyword, endStatus);
 		
@@ -63,9 +65,11 @@ public class UsrAuctionController {
 		model.addAttribute("auctionContents", auctionContents);
 		model.addAttribute("pagesCnt", pagesCnt);
 		model.addAttribute("auctionCnt", auctionCnt);
-		model.addAttribute("category", category);
+		model.addAttribute("categories", categories);
+		model.addAttribute("selectedCategory", selectedCategory);
 		model.addAttribute("page", page);
 		model.addAttribute("searchKeyword", searchKeyword);
+		model.addAttribute("endStatus", endStatus);
 
 		return "usr/auction/list";
 	}

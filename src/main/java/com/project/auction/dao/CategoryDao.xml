@@ -31,19 +31,20 @@
 			ORDER BY id;
 	</select>
 	
-	<select id="getCategoryById" resultType="categoryId">
+	<select id="getCategoryById" resultType="Category">
 		SELECT *
 			FROM category
-			WHERE categoryId = #{categoryId}
+			WHERE 1 = 1
+			<if test="categoryId != 0">
+				categoryId = #{categoryId}
+			</if>
 	</select>
 
 	<delete id="doDeleteInterest">
-		SELECT *
-			FROM category
-			WHERE delStatus = 0
-			<if test="categoryId != 0">
-				AND id = #{categoryId}
-			</if>
+		DELETE
+			FROM interestCategory
+			WHERE categoryId = #{categoryId}
+			AND memberId = #{loginedMemberId}
 	</delete>
 	
 </mapper>

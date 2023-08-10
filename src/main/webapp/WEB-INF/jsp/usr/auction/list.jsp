@@ -8,7 +8,7 @@
 	<section class="mt-8">
 		<div class="container mx-auto">
 			<form>
-				<input type="hidden" name="categoryId" value="${category.size() == 1 ? category[0].id : 0 }"/>
+				<input type="hidden" name="categoryId" value="${selectedCategory.size() == 1 ? selectedCategory[0].id : 0 }"/>
 				<label class="radio-label">
 					<input type="radio" name="endStatus" value="0"/>
 					진행중인 경매
@@ -26,7 +26,7 @@
 								<a href="list">모든품목</a>
 							</td>
 						</tr>
-						<c:forEach var="category" items="${category }">
+						<c:forEach var="category" items="${categories }">
 							<tr>
 								<td>
 									<a href="list?categoryId=${category.id } }">${category.name }</a>
@@ -72,7 +72,7 @@
 					<c:set var="startPage" value="${page - pageMenuLen >= 1 ? page - pageMenuLen : 1 }" />
 					<c:set var="endPage" value="${page + pageMenuLen <= pagesCnt ? page + pageMenuLen : pagesCnt }" />
 					
-					<c:set var="pageBaseUri" value="?categoryId=${category.size() == 1 ? category[0].id : 0}&endStatus=${endStatus }&searchKeyword=${searchKeyword }" />
+					<c:set var="pageBaseUri" value="?categoryId=${selectedCategory.size() == 1 ? selectedCategory[0].id : 0}&endStatus=${endStatus }&searchKeyword=${searchKeyword }" />
 					
 					<c:if test="${page == 1 }">
 						<a class="join-item btn btn-disabled">«</a>
