@@ -97,8 +97,8 @@ function regist_submitForm(form) {
 
 	<section class="mt-8">
 		<div class="container mx-auto">
-			<form action="doWrite" method="POST" onsubmit="regist_submitForm(this); return false;">
-				<input type="hidden" name="body" />
+			<form action="doRegist" method="POST" onsubmit="regist_submitForm(this); return false;">
+				<input type="hidden" name="description" />
 				<div class="table-box-type-1">
 					<table class="table">
 						<colgroup>

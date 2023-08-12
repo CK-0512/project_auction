@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.project.auction.service.AuctionService;
 import com.project.auction.service.CategoryService;
@@ -72,5 +73,16 @@ public class UsrAuctionController {
 		model.addAttribute("endStatus", endStatus);
 
 		return "usr/auction/list";
+	}
+	
+	@RequestMapping("/usr/auction/regist")
+	public String regist() {
+		return "usr/auction/regist";
+	}
+	
+	@RequestMapping("/usr/auction/doRegist")
+	@ResponseBody
+	public String doRegist() {
+		return "usr/auction/regist";
 	}
 }
