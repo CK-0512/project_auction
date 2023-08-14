@@ -42,4 +42,22 @@
 			LIMIT #{limitStart}, #{itemsInAPage}
 	</select>
 	
+	<insert id="registAuction">
+		INSERT INTO auction
+			SET regDate = NOW()
+				, updateDate = NOW()
+				, memberId = #{memberId}
+				, categoryId = #{categoryId}
+				, startBid = #{startBid}
+				, buyNow = #{buyNow}
+				, bidDate = #{bidDate}
+				, charge = #{charge}
+				, title = #{title}
+				, `description` = #{description}
+	</insert>
+	
+	<select id="getLastInsertId" resultType="int">
+		SELECT LAST_INSERT_ID()
+	</select>
+	
 </mapper>

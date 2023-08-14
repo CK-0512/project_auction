@@ -87,7 +87,7 @@ function regist_submitForm(form) {
   	 		return;
   	 	}
   	 	
-  	 	if (!confirm("제품 등록후에는 제품 설명만 수정 가능합니다. 정말 등록하시겠습니까?")){
+  	 	if (!confirm("제품 등록후에는 취소가 불가능하며, 제품 설명만 수정이 가능합니다. 정말 등록하시겠습니까?")){
   	 		return;	
   	 	}
   	 	
@@ -97,8 +97,8 @@ function regist_submitForm(form) {
 
 	<section class="mt-8">
 		<div class="container mx-auto">
-			<form action="doRegist" method="POST" onsubmit="regist_submitForm(this); return false;">
-				<input type="hidden" name="description" />
+			<form action="doRegist" method="POST" onsubmit="regist_submitForm(this); return false;" enctype="multipart/form-data">
+				<input type="hidden" name="body" />
 				<div class="table-box-type-1">
 					<table class="table">
 						<colgroup>

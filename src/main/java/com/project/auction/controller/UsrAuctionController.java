@@ -1,5 +1,6 @@
 package com.project.auction.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,10 +9,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.project.auction.service.AuctionService;
 import com.project.auction.service.CategoryService;
 import com.project.auction.service.FileService;
+import com.project.auction.util.Util;
 import com.project.auction.vo.Auction;
 import com.project.auction.vo.Category;
 import com.project.auction.vo.FileVO;
@@ -82,7 +85,44 @@ public class UsrAuctionController {
 	
 	@RequestMapping("/usr/auction/doRegist")
 	@ResponseBody
-	public String doRegist() {
-		return "usr/auction/regist";
+	public String doRegist(String title, int categoryId, MultipartFile file, int startBid, @RequestParam(defaultValue="0")int buyNow, int bidDate, @RequestParam(defaultValue="0")int charge, String body) {
+		
+		if (Util.empty(title)) {
+			return Util.jsHistoryBack("제품명을 입력해주세요");
+		}
+		
+		if (Util.empty(categoryId)) {
+			return Util.jsHistoryBack("카테고리를 선택해주세요");
+		}
+	
+		if (Util.empty(file)) {
+			return Util.jsHistoryBack("제품사진을 등록해주세요");
+		}
+		
+		if (Util.empty(startBid)) {
+			return Util.jsHistoryBack("경매 시작가를 입력해주세요");
+		}
+	
+		if (Util.empty(bidDate)) {
+			return Util.jsHistoryBack("경매 기간을 선택해주세요");
+		}
+		
+		if (Util.empty(body)) {
+			return Util.jsHistoryBack("제품 설명을 입력해주세요");
+		}
+
+		
+		try {
+			auctionService.registAuction(rq.getLoginedMemberId(), title, categoryId, startBid, buyNow, bidDate, charge, body);
+			int auctionId = auctionService.getLastInsertId();
+			fileService.saveFile(file, auctionId);
+			
+			return Util.jsReplace(Util.f("'%f' 제품의 경매가 등록되었습니다.", title), Util.f("detail?id=%d", auctionId));
+		} catch (IOException e) {
+			e.printStackTrace();
+			
+			return "오류 발생";
+		}
+		
 	}
 }

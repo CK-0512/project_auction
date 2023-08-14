@@ -28,4 +28,13 @@ public class AuctionService {
 		
 		return auctionDao.getAuctionContents(categoryId, searchKeyword, endStatus, limitStart, itemsInAPage);
 	}
+
+	public void registAuction(int memberId, String title, int categoryId, int startBid, int buyNow, int bidDate,
+			int charge, String description) {
+		auctionDao.registAuction(memberId, title, categoryId, startBid, buyNow, bidDate, charge, description);
+	}
+
+	public int getLastInsertId() {
+		return auctionDao.getLastInsertId();
+	}
 }
