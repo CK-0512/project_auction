@@ -18,18 +18,6 @@
 	</select>
 	
 	<select id="getArticleById" resultType="Article">
-		SELECT *
-			FROM article
-			WHERE id = #{id}
-	</select>
-	
-	<update id="increaseHitCnt">
-		UPDATE article
-			SET hitCnt = hitCnt + 1
-			WHERE id = #{id}
-	</update>
-	
-	<select id="getForPrintArticle" resultType="Article">
 		SELECT A.*
 				, M.nickname AS `writerName`
 				, IFNULL(SUM(RP.point), 0) AS sumReactionPoint
@@ -44,6 +32,12 @@
 			WHERE A.id = #{id}
 			GROUP BY A.id
 	</select>
+	
+	<update id="increaseHitCnt">
+		UPDATE article
+			SET hitCnt = hitCnt + 1
+			WHERE id = #{id}
+	</update>
 	
 	<select id="getArticles" resultType="Article">
 		WITH AM AS (

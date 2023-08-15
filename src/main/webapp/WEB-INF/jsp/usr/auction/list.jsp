@@ -47,15 +47,33 @@
 							<div>
 								<span>현재가 : ${auction.nowBid }</span>
 							</div>
-							<c:if test="${auction.buyNo } != null">
+							<c:if test="${auction.buyNow } != 0">
 								<div>
 									<span>즉시구매가 : ${auction.buyNow }</span>
 								</div>
 							</c:if>
 							<div>
-								<span>경매종료 일자 : ${auction.endDate.subString(2, 16) }</span>
-							</div>
-						</div>
+								<span id="remainTime-${auction.id }">Loading...</span>
+						    </div>
+						 </div>
+						
+						    <script>
+						        var socket = new WebSocket("ws://localhost:8081/ws");
+						        var stompClient = Stomp.over(socket);
+						
+						        stompClient.connect({}, function (frame) {
+						            stompClient.subscribe('/topic/auction/remainTime', function (message) {
+						                var remainTimeMessage = JSON.parse(message.body);
+						                if (remainTimeMessage.auctionId === ${auction.id }) {
+						                    var remainTimeElement = document.getElementById('remainTime-${auction.id}');
+						                    remainTimeElement.innerText =
+						                        remainTimeMessage.hours + "h " +
+						                        remainTimeMessage.minutes + "m " +
+						                        remainTimeMessage.seconds + "s";
+						                }
+						            });
+						        });
+						    </script>
 					</c:forEach>
 				</div>
 			</div>

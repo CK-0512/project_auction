@@ -128,7 +128,7 @@ public class UsrArticleController {
 			resp.addCookie(newCookie);
 		}
 		
-		Article article = articleService.getForPrintArticle(id);
+		Article article = articleService.getArticleById(id);
 
 		List<Reply> replies = replyService.getReplies("article", id);
 		
@@ -141,7 +141,7 @@ public class UsrArticleController {
 	@RequestMapping("/usr/article/modify")
 	public String showModify(Model model, int id) {
 
-		Article article = articleService.getForPrintArticle(id);
+		Article article = articleService.getArticleById(id);
 
 		if (article == null) {
 			return rq.jsReturnOnView(Util.f("%d번 게시글은 존재하지 않습니다", id));

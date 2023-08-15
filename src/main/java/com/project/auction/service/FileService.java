@@ -54,7 +54,7 @@ public class FileService {
 		List<FileVO> files = new ArrayList<>();
 		
 		for (Auction auctionContent : auctionContents) {
-			files.add(fileDao.getAuctionContentsFirstFile(auctionContent.getProductId()));
+			files.add(fileDao.getAuctionContentsFirstFile(auctionContent.getId()));
 		}
 		
 		return files;
@@ -62,5 +62,9 @@ public class FileService {
 
 	public FileVO getFileById(int id) {
 		return fileDao.getFileById(id);
+	}
+
+	public List<FileVO> getAuctionContentFiles(int auctionId) {
+		return fileDao.getAuctionContentFiles(auctionId);
 	}
 }

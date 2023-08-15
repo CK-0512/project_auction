@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.project.auction.handler.WebSocketHandler;
 import com.project.auction.service.AuctionService;
 import com.project.auction.service.CategoryService;
 import com.project.auction.service.FileService;
 import com.project.auction.util.Util;
+import com.project.auction.vo.Article;
 import com.project.auction.vo.Auction;
 import com.project.auction.vo.Category;
 import com.project.auction.vo.FileVO;
@@ -27,13 +29,15 @@ public class UsrAuctionController {
 	private CategoryService categoryService;
 	private FileService fileService;
 	private Rq rq;
+    private final WebSocketHandler webSocketHandler;
 	
 	@Autowired
-	public UsrAuctionController(AuctionService auctionService, CategoryService categoryService, FileService fileService, Rq rq) {
+	public UsrAuctionController(AuctionService auctionService, CategoryService categoryService, FileService fileService, Rq rq, WebSocketHandler webSocketHandler) {
 		this.auctionService = auctionService;
 		this.categoryService = categoryService;
 		this.fileService = fileService;
 		this.rq = rq;
+        this.webSocketHandler = webSocketHandler;
 	}
 	
 	@RequestMapping("/usr/auction/list")
@@ -65,6 +69,10 @@ public class UsrAuctionController {
 
 		List<FileVO> files = fileService.getAuctionContentsFirstFiles(auctionContents);
 
+		for (Auction auction : auctionContents) {
+            webSocketHandler.updateAuctionEndTime(auction.getId(), auction.getEndDate());
+        }
+		
 		model.addAttribute("files", files);
 		model.addAttribute("auctionContents", auctionContents);
 		model.addAttribute("pagesCnt", pagesCnt);
@@ -85,9 +93,9 @@ public class UsrAuctionController {
 	
 	@RequestMapping("/usr/auction/doRegist")
 	@ResponseBody
-	public String doRegist(String title, int categoryId, MultipartFile file, int startBid, @RequestParam(defaultValue="0")int buyNow, int bidDate, @RequestParam(defaultValue="0")int charge, String body) {
+	public String doRegist(String name, int categoryId, MultipartFile file, int startBid, @RequestParam(defaultValue="0")int buyNow, int bidDate, @RequestParam(defaultValue="0")int charge, String body) {
 		
-		if (Util.empty(title)) {
+		if (Util.empty(name)) {
 			return Util.jsHistoryBack("제품명을 입력해주세요");
 		}
 		
@@ -113,16 +121,67 @@ public class UsrAuctionController {
 
 		
 		try {
-			auctionService.registAuction(rq.getLoginedMemberId(), title, categoryId, startBid, buyNow, bidDate, charge, body);
+			auctionService.registAuction(rq.getLoginedMemberId(), name, categoryId, startBid, buyNow, bidDate, charge, body);
 			int auctionId = auctionService.getLastInsertId();
 			fileService.saveFile(file, auctionId);
 			
-			return Util.jsReplace(Util.f("'%f' 제품의 경매가 등록되었습니다.", title), Util.f("detail?id=%d", auctionId));
+			return Util.jsReplace(Util.f("'%s' 제품의 경매가 등록되었습니다.", name), Util.f("detail?id=%d", auctionId));
 		} catch (IOException e) {
 			e.printStackTrace();
 			
 			return "오류 발생";
 		}
 		
+	}
+	
+	@RequestMapping("/usr/auction/detail")
+	public String showDetail(Model model, int id) {
+		Auction auction = auctionService.getAuctionById(id);
+		
+		List<FileVO> files = fileService.getAuctionContentFiles(id);
+		
+		webSocketHandler.updateAuctionEndTime(auction.getId(), auction.getEndDate());
+		
+		model.addAttribute("auction", auction);
+		model.addAttribute("files", files);
+		
+		return "usr/auction/detail";
+	}
+	
+	@RequestMapping("/usr/auction/modify")
+	public String modify(Model model, int id) {
+		
+		Auction auction = auctionService.getAuctionById(id);
+		
+		if (auction == null) {
+			return rq.jsReturnOnView(Util.f("%d번 품목은 존재하지 않습니다", id));
+		}
+		
+		if (rq.getLoginedMemberId() != auction.getMemberId()) {
+			return rq.jsReturnOnView("해당 품목에 대한 권한이 없습니다");
+		}
+
+		model.addAttribute("auction", auction);
+		
+		return "usr/auction/modify";
+	}
+	
+	@RequestMapping("/usr/auction/doModify")
+	@ResponseBody
+	public String doModify(int id, String body) {
+
+		Auction auction = auctionService.getAuctionById(id);
+
+		if (auction == null) {
+			return Util.jsHistoryBack(Util.f("%d번 품목은 존재하지 않습니다", id));
+		}
+
+		if (rq.getLoginedMemberId() != auction.getMemberId()) {
+			return Util.jsHistoryBack("해당 품목에 대한 권한이 없습니다");
+		}
+
+		auctionService.modifyAuction(id, body);
+
+		return Util.jsReplace(Util.f("'%s' 품목을 수정했습니다", auction.getName()), Util.f("detail?id=%d", id));
 	}
 }

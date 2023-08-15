@@ -20,8 +20,6 @@ public interface ArticleDao {
 	public List<Article> getArticles(int boardId, String searchKeyword, String searchKeywordType, int limitStart, int itemsInAPage);
 
 	public int getLastInsertId();
-	
-	public Article getForPrintArticle(int id);
 
 	public int getArticlesCnt(int boardId, String searchKeyword, String searchKeywordType);
 

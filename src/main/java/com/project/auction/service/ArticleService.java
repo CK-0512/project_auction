@@ -45,10 +45,6 @@ public class ArticleService {
 	public int getLastInsertId() {
 		return articleDao.getLastInsertId();
 	}
-	
-	public Article getForPrintArticle(int id) {
-		return articleDao.getForPrintArticle(id);
-	}
 
 	public int getArticlesCnt(int boardId, String searchKeyword, String searchKeywordType) {
 		return articleDao.getArticlesCnt(boardId, searchKeyword, searchKeywordType);

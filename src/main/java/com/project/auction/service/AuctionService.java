@@ -1,5 +1,7 @@
 package com.project.auction.service;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,15 +28,34 @@ public class AuctionService {
 		
 		int limitStart = (page - 1) * itemsInAPage;
 		
-		return auctionDao.getAuctionContents(categoryId, searchKeyword, endStatus, limitStart, itemsInAPage);
+		List<Auction> list = auctionDao.getAuctionContents(categoryId, searchKeyword, endStatus, limitStart, itemsInAPage);
+		
+		for (Auction auction : list) {
+			auction.setRemainTime(calculateTimeRemaining(auction.getEndDate()));
+		}
+		
+		return list;
 	}
 
-	public void registAuction(int memberId, String title, int categoryId, int startBid, int buyNow, int bidDate,
+	public void registAuction(int memberId, String name, int categoryId, int startBid, int buyNow, int bidDate,
 			int charge, String description) {
-		auctionDao.registAuction(memberId, title, categoryId, startBid, buyNow, bidDate, charge, description);
+		auctionDao.registAuction(memberId, name, categoryId, startBid, buyNow, bidDate, charge, description);
 	}
 
 	public int getLastInsertId() {
 		return auctionDao.getLastInsertId();
+	}
+	
+	public Duration calculateTimeRemaining(LocalDateTime endDate) {
+        LocalDateTime now = LocalDateTime.now();
+        return Duration.between(now, endDate);
+    }
+
+	public Auction getAuctionById(int id) {
+		return auctionDao.getAuctionById(id);
+	}
+
+	public void modifyAuction(int id, String description) {
+		auctionDao.modifyAuction(id, description);
 	}
 }

@@ -15,12 +15,12 @@ public interface FileDao {
 	@Insert("""
 			INSERT INTO productFile
 				SET regDate = NOW()
-					, productId = #{productId}
+					, auctionId = #{auctionId}
 					, originName = #{orgName}
 					, savedName = #{savedName}
 					, savedPath = #{savedPath}
 			""")
-	void insertFileInfo(int productId, String orgName, String savedName, String savedPath);
+	void insertFileInfo(int auctionId, String orgName, String savedName, String savedPath);
 
 	@Select("""
 			SELECT *
@@ -32,9 +32,16 @@ public interface FileDao {
 	@Select("""
 			SELECT *
 				FROM productFile
-				WHERE productId = #{productId}
+				WHERE auctionId = #{auctionId}
 				LIMIT 1
 			""")
-	FileVO getAuctionContentsFirstFile(int productId);
+	FileVO getAuctionContentsFirstFile(int auctionId);
+
+	@Select("""
+			SELECT *
+				FROM productFile
+				WHERE auctionId = #{auctionId}
+			""")
+	List<FileVO> getAuctionContentFiles(int auctionId);
 	
 }

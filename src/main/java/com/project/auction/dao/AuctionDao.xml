@@ -51,13 +51,26 @@
 				, startBid = #{startBid}
 				, buyNow = #{buyNow}
 				, bidDate = #{bidDate}
+				, endDate = DATE_ADD(NOW(), INTERVAL #{bidDate} DAY)
 				, charge = #{charge}
-				, title = #{title}
+				, `name` = #{name}
 				, `description` = #{description}
 	</insert>
 	
 	<select id="getLastInsertId" resultType="int">
 		SELECT LAST_INSERT_ID()
 	</select>
+	
+	<select id="getAuctionById" resultType="auction">
+		SELECT * 
+			FROM auction
+			WHERE id = #{id}
+	</select>
+	
+	<update id="modifyAuction">
+		UPDATE auction
+			SET description = #{description}
+			WHERE id = #{id}
+	</update>
 	
 </mapper>

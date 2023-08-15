@@ -1,5 +1,8 @@
 package com.project.auction.vo;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,20 +14,20 @@ public class Auction {
 	private int id;
 	private String regDate;
 	private String updateDate;
-	private int productId;
 	private int memberId;
 	private int categoryId;
 	private String name;
 	private String description;
 	private int buyerId;
 	
-	private String startDate;
-	private String endDate;
+	private Duration remainTime;
+	private LocalDateTime endDate;
 	private int startBid;
 	private int minimumBid;
 	private int nowBid;
 	private int endBid;
 	private int bidCount;
 	private int buyNow;
+	private int charge;
 	
 }
