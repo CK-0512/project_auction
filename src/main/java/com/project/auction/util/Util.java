@@ -9,7 +9,7 @@ public class Util {
 			return true;
 		}
 		
-		String str = (String) obj;
+		String str = String.valueOf(obj);
 		
 		return str.trim().length() == 0;
 	}

@@ -16,7 +16,6 @@ import com.project.auction.service.AuctionService;
 import com.project.auction.service.CategoryService;
 import com.project.auction.service.FileService;
 import com.project.auction.util.Util;
-import com.project.auction.vo.Article;
 import com.project.auction.vo.Auction;
 import com.project.auction.vo.Category;
 import com.project.auction.vo.FileVO;
@@ -87,13 +86,17 @@ public class UsrAuctionController {
 	}
 	
 	@RequestMapping("/usr/auction/regist")
-	public String regist() {
+	public String regist(Model model) {
+		List<Category> categories = categoryService.getCategories(); 
+		
+		model.addAttribute("categories", categories);
+		
 		return "usr/auction/regist";
 	}
 	
 	@RequestMapping("/usr/auction/doRegist")
 	@ResponseBody
-	public String doRegist(String name, int categoryId, MultipartFile file, int startBid, @RequestParam(defaultValue="0")int buyNow, int bidDate, @RequestParam(defaultValue="0")int charge, String body) {
+	public String doRegist(String name, int categoryId, @RequestParam(defaultValue = "1")int auctionType, MultipartFile file, int startBid, @RequestParam(defaultValue="0")int buyNow, int bidDate, @RequestParam(defaultValue="0")int charge, String body) {
 		
 		if (Util.empty(name)) {
 			return Util.jsHistoryBack("제품명을 입력해주세요");
@@ -115,17 +118,19 @@ public class UsrAuctionController {
 			return Util.jsHistoryBack("경매 기간을 선택해주세요");
 		}
 		
-		if (Util.empty(body)) {
-			return Util.jsHistoryBack("제품 설명을 입력해주세요");
+		int isExist = auctionService.getAuctionByName(name);
+		
+		if (isExist != 0) {
+			return Util.jsHistoryBack("동일 제품을 등록할 수 없습니다.");
 		}
 
 		
 		try {
 			auctionService.registAuction(rq.getLoginedMemberId(), name, categoryId, startBid, buyNow, bidDate, charge, body);
 			int auctionId = auctionService.getLastInsertId();
-			fileService.saveFile(file, auctionId);
+			fileService.saveFile(auctionType, file, auctionId);
 			
-			return Util.jsReplace(Util.f("'%s' 제품의 경매가 등록되었습니다.", name), Util.f("detail?id=%d", auctionId));
+			return Util.jsReplace(Util.f("%s 품목이 등록되었습니다.", name), Util.f("detail?id=%d", auctionId));
 		} catch (IOException e) {
 			e.printStackTrace();
 			

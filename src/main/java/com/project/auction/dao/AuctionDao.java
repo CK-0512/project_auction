@@ -22,4 +22,6 @@ public interface AuctionDao {
 
 	public void modifyAuction(int id, String description);
 
+	public int getAuctionByName(String name);
+
 }

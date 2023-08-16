@@ -28,7 +28,7 @@ public class FileService {
 		this.fileDao = fileDao;
 	}
 
-	public void saveFile(MultipartFile file, int auctionId) throws IOException {
+	public void saveFile(int auctionType, MultipartFile file, int auctionId) throws IOException {
 
 		if (file.isEmpty()) {
 			return;
@@ -44,7 +44,7 @@ public class FileService {
 
 		String savedPath = fileDir + "/" + savedName;
 
-		fileDao.insertFileInfo(auctionId, orgName, savedName, savedPath);
+		fileDao.insertFileInfo(auctionType, auctionId, orgName, savedName, savedPath);
 
 		file.transferTo(new File(savedPath));
 	}

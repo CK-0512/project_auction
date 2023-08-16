@@ -58,4 +58,9 @@ public class AuctionService {
 	public void modifyAuction(int id, String description) {
 		auctionDao.modifyAuction(id, description);
 	}
+
+
+	public int getAuctionByName(String name) {
+		return auctionDao.getAuctionByName(name);
+	}
 }

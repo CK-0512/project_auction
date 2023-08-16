@@ -6,13 +6,20 @@
 <%@ include file="../common/headWithToastUIEditorLib.jsp" %>
 
 <script>
+	document.addEventListener("DOMContentLoaded", function() {
+	    let bidDate = document.getElementsByName("bidDate");
+	    for (let i = 0; i < bidDate.length; i++) {
+	        bidDate[i].addEventListener("click", setCharge);
+	    }
+	});
+
 	function setCharge() {
 		let buyNow = document.getElementsByName("buyNow")[0];
 		let bidDate = document.getElementsByName("bidDate");
 		let charge = document.getElementsByName("charge")[0];
-		let message = document.getElemetesById("charge-message");
+		let message = document.getElementById("charge-message");
         
-		let buyNowVal = parseFloat(buyNowInput.value) || 0;
+		let buyNowVal = parseFloat(buyNow.value) || 0;
         let bidDateVal = 0;
         for (var i = 0; i < bidDate.length; i++) {
             if (bidDate[i].checked) {
@@ -21,8 +28,10 @@
             }
         }
         
-        let chargeRate = 0.05; 
-        if (bidDateVal == 3) {
+        let chargeRate = 0; 
+        if (bidDateVal == 1) {
+        	chargeRate = 0.05;
+        } else if (bidDateVal == 3) {
         	chargeRate = 0.07;
         } else if (bidDateVal == 7) {
         	chargeRate = 0.1;
@@ -34,34 +43,33 @@
         	message.style.color = "red";
         } else {
         	charge.value = (buyNowVal * chargeRate).toFixed(0);
-        	message.textContent = "원";
+        	message.textContent = charge.value + " 원";
         	message.style.color = "green";
         }
 	}
 	
-function regist_submitForm(form) {
+	function regist_submitForm(form) {
 		
-		form.title.value = form.title.value.trim();
-		if (form.title.value.length == 0) {
+		form.name.value = form.name.value.trim();
+		if (!form.name.value) {
 			alert('제품명을 입력해주세요');
-			form.title.focus();
+			form.name.focus();
 			return;
 		}
 		
 		selectedCategory = document.querySelector("select[name='categoryId']").value;
-        if (selectedCategory == "") {
-            alert("제품 카테고리를 선택해주세요.");
-            return;
-        	}
-  	  	}
-		
-		if (form.file.files.length == 0) {
-  		  alert("제품 사진을 등록해주세요.");
-  		  return;
+		if (!selectedCategory) {
+		    alert("제품 카테고리를 선택해주세요.");
+		    return;
+		}
+
+		if (!form.file.files) {
+		    alert("제품 사진을 등록해주세요.");
+		    return;
 		}
 		
 		form.startBid.value = form.startBid.value.trim();
-		if (form.startBid.value.length == 0) {
+		if (!form.startBid.value) {
 			alert('경매 시작가를 설정해주세요.');
 			form.startBid.focus();
 			return;
@@ -71,14 +79,13 @@ function regist_submitForm(form) {
         if (!selectedDate) {
             alert("경매 기간을 선택해주세요.");
             return;
-        	}
   	  	}
 		
-  	  	productDescription = document.querySelector(".toast-ui-editor textarea").value.trim();
-  	 	if (productDescription == "") {
-        	 alert("제품 설명을 입력해주세요.");
-        	 return;
-      	}
+        productDescription = document.querySelector(".toast-ui-editor script").value.trim();
+        if (!productDescription) {
+            alert("제품 설명을 입력해주세요.");
+            return;
+        }
   	 	
   	 	let confirmMessage = "제품의 경매 시작가는 " + form.startBid.value +
         					"원, 경매 기간은 " + selectedDate.value + "일, 즉시 구매가는 " +
@@ -91,6 +98,7 @@ function regist_submitForm(form) {
   	 		return;	
   	 	}
   	 	
+  	 	setCharge();
 		form.submit();
 	}
 </script>
@@ -105,32 +113,32 @@ function regist_submitForm(form) {
 							<col width="200" />
 						</colgroup>
 						<tbody>
-							<tr>
+							<tr >
 								<th>제 품 명</th>
-								<td><input class="input input-bordered input-accent w-full" type="text" name="title" placeholder="제품명을 입력해주세요" /></td>
+								<td colspan="3"><input class="input input-bordered input-accent w-full" type="text" name="name" placeholder="제품명을 입력해주세요" /></td>
 							</tr>
 							<tr>
 								<th>제품 카테고리</th>
 								<td>
-									<select data-value="${categoryId }" name="categoryId" class="select select-accent select-bordered">
+									<select name="categoryId" class="select select-accent select-bordered">
 										<c:forEach var="category" items="${categories}">
 											<option value="${category.id }">${category.name }</option>
 										</c:forEach>
 									</select>
 								</td>
 								<th>제품 사진</th>
-								<td>
-									<input type="file" name="file" />
+								<td class="align-center">
+									<input type="file" name="file" multiple/>
 								</td>
 							</tr>
 							<tr>
 								<th>경매 시작가</th>
 								<td>
-									<input class="input input-bordered input-accent w-full" type="text" name="startBid"/>원
+									<input class="input input-bordered input-accent text-right" type="text" name="startBid" value="0"/> 원
 								</td>
 								<th>즉시 구매가</th>
 								<td>
-									<input class="input input-bordered input-accent w-full" type="text" name="buyNow" onblur="setCharge()"/>원
+									<input class="input input-bordered input-accent text-right" type="text" name="buyNow" onblur="setCharge();" value="0"/> 원
 								</td>
 							</tr>
 							<tr>
@@ -138,34 +146,34 @@ function regist_submitForm(form) {
 								<td>
 									<label class="radio-label">
 										<input type="radio" name="bidDate" value="1"/>
-										1일
+										<span>1일</span>
 									</label>
 									<label class="radio-label">
 										<input type="radio" name="bidDate" value="3"/>
-										3일
+										<span>3일</span>
 									</label>
 									<label class="radio-label">
 										<input type="radio" name="bidDate" value="7"/>
-										7일
+										<span>7일</span>
 									</label>
 								</td>
 								<th>수 수 료</th>
 								<td>
 									<input type="hidden" name="charge"/>
-									<div id="charge-message"></div>
-									<div class="text-sm text-red-500">수수료는 경매 기간에 따라 변동됩니다.(1일 5%, 3일 7%, 7일 10%)</div>
+									<div id="charge-message" class="text-lg"></div>
+									<div class="text-xs text-red-500">수수료는 경매 기간에 따라 변동됩니다.(1일 5%, 3일 7%, 7일 10%)</div>
 								</td>
 							</tr>
 							<tr>
 								<th>제품 설명</th>
-								<td>
+								<td colspan="3">
 									<div class="toast-ui-editor">
 								    	<script type="text/x-template"></script>
 								    </div>
 								</td>
 							</tr>
 							<tr>
-								<td colspan="2"><button class="btn btn-accent btn-sm">등록</button></td>
+								<td colspan="4"><button class="btn btn-accent btn-sm">등록</button></td>
 							</tr>
 						</tbody>
 					</table>

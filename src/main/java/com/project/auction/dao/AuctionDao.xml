@@ -44,6 +44,7 @@
 				, memberId = #{memberId}
 				, categoryId = #{categoryId}
 				, startBid = #{startBid}
+				, nowBid = #{startBid}
 				, minimumBid = #{startBid} * 0.05
 				, buyNow = #{buyNow}
 				, bidDate = #{bidDate}
@@ -65,5 +66,12 @@
 			SET description = #{description}
 			WHERE id = #{id}
 	</update>
+	
+	<select id="getAuctionByName" resultType="int">
+		SELECT COUNT(*)
+			FROM auction
+			WHERE endStatus = 0
+			AND `name` = #{name}
+	</select>
 	
 </mapper>
