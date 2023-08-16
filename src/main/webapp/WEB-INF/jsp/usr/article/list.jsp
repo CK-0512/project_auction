@@ -11,13 +11,15 @@
 				<div>
 					<span>글 개수 : ${articlesCnt }</span>
 					<div class="py-1">
-						<a href="list">전체글</a>
+						<c:set var="boardId" value="${board.size() == 1 ? board[0].id : 0}" />
+						<a href="list" class="${boardId == '0' ? 'selected' : ''}">전체글</a>
 						<span>|</span>
-						<a href="list?boardId=1">공지사항</a>
+						<c:if test="boardId"></c:if>
+						<a href="list?boardId=1" class="${boardId == '1' ? 'selected' : ''}">공지사항</a>
 						<span>|</span>
-						<a href="list?boardId=2">일반</a>
+						<a href="list?boardId=2" class="${boardId == '2' ? 'selected' : ''}">일반</a>
 						<span>|</span>
-						<a href="list?boardId=3">거래</a>
+						<a href="list?boardId=3" class="${boardId == '3' ? 'selected' : ''}">거래</a>
 					</div>
 				</div>
 				<div>

@@ -7,29 +7,23 @@
 
 	<section class="mt-8">
 		<div class="container mx-auto">
-			<form>
-				<input type="hidden" name="categoryId" value="${selectedCategory.size() == 1 ? selectedCategory[0].id : 0 }"/>
-				<label class="radio-label">
-					<input type="radio" name="endStatus" value="0"/>
-					진행중인 경매
-				</label>
-				<label class="radio-label">
-					<input type="radio" name="endStatus" value="1"/>
-					종료된 경매
-				</label>
-			</form>
+			<div>
+				<a href="list?endStatus=0" class="${endStatus == '0' ? 'selected' : ''}">진행중인 경매</a>
+				<span>|</span>
+				<a href="list?endStatus=1" class="${endStatus == '1' ? 'selected' : ''}">종료된 경매</a>
+			</div>
 			<div class="mb-2 flex">
 				<div class="table-box-type-2">
 					<table class="table">
 						<tr>
 							<td>
-								<a href="list">모든품목</a>
+								<a href="list?endStatus=${endStatus }">모든품목</a>
 							</td>
 						</tr>
 						<c:forEach var="category" items="${categories }">
 							<tr>
 								<td>
-									<a href="list?categoryId=${category.id } }">${category.name }</a>
+									<a href="list?endStatus=${endStatus }&categoryId=${category.id }">${category.name }</a>
 								</td>
 							</tr>
 						</c:forEach>

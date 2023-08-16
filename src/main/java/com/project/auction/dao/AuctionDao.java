@@ -11,7 +11,7 @@ public interface AuctionDao {
 
 	public int getAuctionCnt(int categoryId, String searchKeyword, int endStatus);
 
-	public List<Auction> getAuctionContents(int categoryId, String searchKeyword, int itemsInAPage, int page, int endStatus);
+	public List<Auction> getAuctionContents(int categoryId, String searchKeyword, int endStatus, int limitStart, int itemsInAPage);
 
 	public void registAuction(int memberId, String name, int categoryId, int startBid, int buyNow, int bidDate,
 			int charge, String description);

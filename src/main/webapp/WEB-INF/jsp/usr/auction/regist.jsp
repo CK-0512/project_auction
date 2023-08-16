@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<c:set var="pageTitle" value="Regist" />
+<c:set var="pageTitle" value="경매 등록" />
 <%@ include file="../common/headWithToastUIEditorLib.jsp" %>
 
 <script>
@@ -43,7 +43,7 @@ function regist_submitForm(form) {
 		
 		form.title.value = form.title.value.trim();
 		if (form.title.value.length == 0) {
-			alert('상품명을 입력해주세요');
+			alert('제품명을 입력해주세요');
 			form.title.focus();
 			return;
 		}
@@ -107,7 +107,7 @@ function regist_submitForm(form) {
 						<tbody>
 							<tr>
 								<th>제 품 명</th>
-								<td><input class="input input-bordered input-accent w-full" type="text" name="title" placeholder="제목을 입력해주세요" /></td>
+								<td><input class="input input-bordered input-accent w-full" type="text" name="title" placeholder="제품명을 입력해주세요" /></td>
 							</tr>
 							<tr>
 								<th>제품 카테고리</th>
@@ -121,7 +121,6 @@ function regist_submitForm(form) {
 								<th>제품 사진</th>
 								<td>
 									<input type="file" name="file" />
-									<button>업로드</button>
 								</td>
 							</tr>
 							<tr>

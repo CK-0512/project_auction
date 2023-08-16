@@ -19,25 +19,17 @@
 	</select>
 
 	<select id="getAuctionContents" resultType="Auction">
-		SELECT P.*
-		        , A.regDate AS startDate
-		        , A.endDate
-		        , A.startBid
-		        , A.endBid
-		        , A.bidCount
-		        , A.buyNow
-			FROM product AS P
-			INNER JOIN auction AS A
-		    ON P.id = A.productId
-		    WHERE A.endStatus = #{endStauts}
+		SELECT *
+			FROM auction
+		    WHERE endStatus = #{endStatus}
 		    	<if test="searchKeyword != ''">
 					AND (
-						P.`name` LIKE CONCAT('%', #{searchKeyword}, '%')
-						OR P.`description` LIKE CONCAT('%', #{searchKeyword}, '%')
+						`name` LIKE CONCAT('%', #{searchKeyword}, '%')
+						OR `description` LIKE CONCAT('%', #{searchKeyword}, '%')
 						)
 				</if>
 				<if test="categoryId != 0">
-					AND P.categoryId = #{categoryId}
+					AND categoryId = #{categoryId}
 				</if>
 			LIMIT #{limitStart}, #{itemsInAPage}
 	</select>
@@ -46,15 +38,16 @@
 		INSERT INTO auction
 			SET regDate = NOW()
 				, updateDate = NOW()
+				, endDate = DATE_ADD(NOW(), INTERVAL #{bidDate} DAY)
+				, `name` = #{name}
+				, `description` = #{description}
 				, memberId = #{memberId}
 				, categoryId = #{categoryId}
 				, startBid = #{startBid}
+				, minimumBid = #{startBid} * 0.05
 				, buyNow = #{buyNow}
 				, bidDate = #{bidDate}
-				, endDate = DATE_ADD(NOW(), INTERVAL #{bidDate} DAY)
 				, charge = #{charge}
-				, `name` = #{name}
-				, `description` = #{description}
 	</insert>
 	
 	<select id="getLastInsertId" resultType="int">

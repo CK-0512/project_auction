@@ -36,7 +36,7 @@
 			FROM category
 			WHERE 1 = 1
 			<if test="categoryId != 0">
-				categoryId = #{categoryId}
+				AND id = #{categoryId}
 			</if>
 	</select>
 

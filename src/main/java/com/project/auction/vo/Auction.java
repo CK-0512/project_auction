@@ -14,14 +14,11 @@ public class Auction {
 	private int id;
 	private String regDate;
 	private String updateDate;
+	private LocalDateTime endDate;
 	private int memberId;
 	private int categoryId;
 	private String name;
 	private String description;
-	private int buyerId;
-	
-	private Duration remainTime;
-	private LocalDateTime endDate;
 	private int startBid;
 	private int minimumBid;
 	private int nowBid;
@@ -29,5 +26,8 @@ public class Auction {
 	private int bidCount;
 	private int buyNow;
 	private int charge;
-	
+	private int endStatus;
+	private int buyerId;
+
+	private Duration remainTime;
 }
