@@ -1,47 +1,44 @@
 package com.project.auction.handler;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.HashMap;
+import java.io.IOException;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
+import org.springframework.web.socket.handler.AbstractWebSocketHandler;
 
-import com.project.auction.vo.RemainTimeMessage;
+@Component
+public class WebSocketHandler extends AbstractWebSocketHandler {
 
-@Controller
-public class WebSocketHandler {
+    private Map<Integer, WebSocketSession> auctionSessions = new ConcurrentHashMap<>();
 
-    private final Map<Integer, LocalDateTime> auctionEndTimes = new HashMap<>();
+    @Override
+    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+        int auctionId = extractAuctionIdFromSession(session);
+        auctionSessions.put(auctionId, session);
+    }
 
-    @MessageMapping("/auction/remainTime")
-    @SendTo("/topic/auction/remainTime")
-    public RemainTimeMessage getAuctionRemainTime(int id) {
-        LocalDateTime currentDateTime = LocalDateTime.now();
-        LocalDateTime endTime = auctionEndTimes.get(id);
+    @Override
+    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
+        
+    }
 
-        if (endTime == null) {
-            // Handle auction not found
-            return null;
+    public void broadcastRemainingTime(int auctionId, long remainingTimeInSeconds) throws IOException {
+        TextMessage message = new TextMessage(
+                "{\"remainingTime\": " + remainingTimeInSeconds + "}"
+        );
+
+        WebSocketSession session = auctionSessions.get(auctionId);
+        if (session != null && session.isOpen()) {
+            session.sendMessage(message);
         }
-
-        Duration duration = Duration.between(currentDateTime, endTime);
-        long remainingSeconds = Math.max(duration.getSeconds(), 0);
-
-        int hours = (int) (remainingSeconds / 3600);
-        int minutes = (int) ((remainingSeconds % 3600) / 60);
-        int seconds = (int) (remainingSeconds % 60);
-
-        return new RemainTimeMessage(id, hours, minutes, seconds);
     }
 
-    public void updateAuctionEndTime(int id, LocalDateTime endTime) {
-        auctionEndTimes.put(id, endTime);
-    }
-
-    public void removeAuctionEndTime(int id) {
-        auctionEndTimes.remove(id);
+    private int extractAuctionIdFromSession(WebSocketSession session) {
+        // Implement this method to extract auction ID from the session or the URL
+        // Return the appropriate auction ID
+        return 0; // Placeholder, replace with actual auction ID extraction logic
     }
 }

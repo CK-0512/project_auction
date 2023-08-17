@@ -30,10 +30,6 @@ public class AuctionService {
 		
 		List<Auction> list = auctionDao.getAuctionContents(categoryId, searchKeyword, endStatus, limitStart, itemsInAPage);
 		
-		for (Auction auction : list) {
-			auction.setRemainTime(calculateTimeRemaining(auction.getEndDate()));
-		}
-		
 		return list;
 	}
 

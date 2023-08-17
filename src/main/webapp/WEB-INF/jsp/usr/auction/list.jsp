@@ -47,27 +47,44 @@
 								</div>
 							</c:if>
 							<div>
-								<span id="remainTime-${auction.id }">Loading...</span>
+								<span id="remainTime-${auction.id }">
+								
+								</span>
 						    </div>
 						 </div>
 						
-						    <script>
-						        var socket = new WebSocket("ws://localhost:8081/ws");
-						        var stompClient = Stomp.over(socket);
-						
-						        stompClient.connect({}, function (frame) {
-						            stompClient.subscribe('/topic/auction/remainTime', function (message) {
-						                var remainTimeMessage = JSON.parse(message.body);
-						                if (remainTimeMessage.auctionId === ${auction.id }) {
-						                    var remainTimeElement = document.getElementById('remainTime-${auction.id}');
-						                    remainTimeElement.innerText =
-						                        remainTimeMessage.hours + "h " +
-						                        remainTimeMessage.minutes + "m " +
-						                        remainTimeMessage.seconds + "s";
-						                }
-						            });
-						        });
-						    </script>
+						   <script>
+							   const socket = new WebSocket("ws://localhost:your-port/auctionSocket");
+	
+							    socket.onmessage = (event) => {
+							        const data = JSON.parse(event.data);
+							        const auctionId = data.auctionId;
+							        const remainingTime = data.remainingTime;
+	
+							        const timerSpan = document.getElementById(`remainTime-${auctionId}`);
+							        if (timerSpan) {
+							            updateCountdownTimer(timerSpan, remainingTime);
+							        }
+							    };
+							    
+							    function updateCountdownTimer(element, remainingTime) {
+							        const days = Math.floor(remainingTime / (60 * 60 * 24));
+							        const hours = Math.floor((remainingTime % (60 * 60 * 24)) / (60 * 60));
+							        const minutes = Math.floor((remainingTime % (60 * 60)) / 60);
+							        const seconds = remainingTime % 60;
+
+							        element.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+							        // Decrease remainingTime by 1 second
+							        remainingTime--;
+							        
+							        if (remainingTime >= 0) {
+							            setTimeout(() => {
+							                updateCountdownTimer(element, remainingTime);
+							            }, 1000);
+							        }
+							    }
+							</script>
 					</c:forEach>
 				</div>
 			</div>

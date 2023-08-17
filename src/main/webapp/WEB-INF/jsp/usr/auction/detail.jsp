@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<c:set var="pageTitle" value="${article.title }" />
+<c:set var="pageTitle" value="${auction.name }" />
 <%@ include file="../common/headWithToastUIEditorLib.jsp" %>
 
 <script>
@@ -39,51 +39,48 @@
 					<tbody>
 						<tr>
 							<th>번호</th>
-							<td><span class="badge badge-neutral">${article.id }</span></td>
+							<td><span class="badge badge-neutral">${auction.id }</span></td>
+							<th>판매자</th>
+							<td>${auction.memberName }</td>
 						</tr>
 						<tr>
-							<th>작성일</th>
+							<th>경매 시작일</th>
 							<td>${article.regDate }</td>
-						</tr>
-						<tr>
-							<th>수정일</th>
+							<th>종료까지</th>
 							<td>${article.updateDate }</td>
 						</tr>
 						<tr>
-							<th>조회수</th>
-							<td><span id="articleDetail_increaseHitCnt">${article.hitCnt }</span></td>
+							<th>제품명</th>
+							<td>${auction.name }</td>
 						</tr>
 						<tr>
-							<th>작성자</th>
-							<td>${article.writerName }</td>
-						</tr>
-						<tr>
-							<th>제목</th>
-							<td>${article.title }</td>
-						</tr>
-						<tr>
-							<th>내용</th>
+							<th>설명</th>
 							<td>
 								<div class="toast-ui-viewer">
-  									<script type="text/x-template">${article.body }</script>
+  									<script type="text/x-template">${auction.description }</script>
   								</div>
 							</td>
 						</tr>
 						<tr>
-							<th>추천</th>
+							<th>현재가</th>
+							<td>${auction.nowBid }</td>
+							<th>입찰된 횟수</th>
+							<td><span id="articleDetail_increaseHitCnt">${auction.bidCount }</span></td>
+						</tr>
+						<tr>
+							<th>입찰하기</th>
 							<td>
-								<c:if test="${rq.getLoginedMemberId() == 0}">
-									<span>${article.sumReactionPoint }</span>
+								<input class="ml-2 input input-bordered input-accent input-sm w-32 align-right" type="text" value="${auction.nowBid }"/>
+								<button class="ml-2 btn btn-accent btn-sm">입찰</button>
+							</td>
+							<th>즉시구매</th>
+							<td>
+								<c:if test="${auction.buyNow != 0 }">
+									<span>${auction.buyNow }원</span>
+									<button class="ml-2 btn btn-accent btn-sm">구매하기</button>
 								</c:if>
-								<c:if test="${rq.getLoginedMemberId() != 0}">
-									<div>
-										<a id="goodBtn" class="btn btn-accent btn-outline btn-xs" href="../reactionPoint/doInsertReactionPoint?relTypeCode=article&relId=${article.id }&point=1">좋아요👍</a>
-										<span class="ml-2">좋아요 : ${article.goodReactionPoint }개</span>
-									</div>
-									<div class="mt-2">
-										<a id="badBtn" class="btn btn-accent btn-outline btn-xs" href="../reactionPoint/doInsertReactionPoint?relTypeCode=article&relId=${article.id }&point=-1">싫어요👎</a>
-										<span class="ml-2">싫어요 : ${article.badReactionPoint }개</span>
-									</div>
+								<c:if test="${auction.buyNow == 0 }">
+									<span class="text-red-500 font-sm font-bold">즉시 구매가 불가능한 제품입니다.</span>
 								</c:if>
 							</td>
 						</tr>

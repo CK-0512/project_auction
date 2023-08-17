@@ -28,7 +28,7 @@ public class UsrAuctionController {
 	private CategoryService categoryService;
 	private FileService fileService;
 	private Rq rq;
-    private final WebSocketHandler webSocketHandler;
+    private WebSocketHandler webSocketHandler;
 	
 	@Autowired
 	public UsrAuctionController(AuctionService auctionService, CategoryService categoryService, FileService fileService, Rq rq, WebSocketHandler webSocketHandler) {
@@ -67,10 +67,18 @@ public class UsrAuctionController {
 		List<Auction> auctionContents = auctionService.getAuctionContents(categoryId, searchKeyword, endStatus, itemsInAPage, page);
 
 		List<FileVO> files = fileService.getAuctionContentsFirstFiles(auctionContents);
-
+		
 		for (Auction auction : auctionContents) {
-            webSocketHandler.updateAuctionEndTime(auction.getId(), auction.getEndDate());
-        }
+	        long currentTimeMillis = System.currentTimeMillis();
+	        long endTimeMillis = auction.getEndDate().getTime();
+	        long remainingTimeSeconds = (endTimeMillis - currentTimeMillis) / 1000;
+
+	        try {
+				webSocketHandler.broadcastRemainingTime(auction.getId(), remainingTimeSeconds);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+	    }
 		
 		model.addAttribute("files", files);
 		model.addAttribute("auctionContents", auctionContents);
@@ -130,7 +138,7 @@ public class UsrAuctionController {
 			int auctionId = auctionService.getLastInsertId();
 			fileService.saveFile(auctionType, file, auctionId);
 			
-			return Util.jsReplace(Util.f("%s 품목이 등록되었습니다.", name), Util.f("detail?id=%d", auctionId));
+			return Util.jsReplace(Util.f("%s 제품이 등록되었습니다.", name), Util.f("detail?id=%d", auctionId));
 		} catch (IOException e) {
 			e.printStackTrace();
 			
@@ -144,8 +152,6 @@ public class UsrAuctionController {
 		Auction auction = auctionService.getAuctionById(id);
 		
 		List<FileVO> files = fileService.getAuctionContentFiles(id);
-		
-		webSocketHandler.updateAuctionEndTime(auction.getId(), auction.getEndDate());
 		
 		model.addAttribute("auction", auction);
 		model.addAttribute("files", files);

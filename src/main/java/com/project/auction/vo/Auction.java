@@ -1,7 +1,6 @@
 package com.project.auction.vo;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
+import java.sql.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,7 +13,7 @@ public class Auction {
 	private int id;
 	private String regDate;
 	private String updateDate;
-	private LocalDateTime endDate;
+	private Date endDate;
 	private int memberId;
 	private int categoryId;
 	private String name;
@@ -28,6 +27,4 @@ public class Auction {
 	private int charge;
 	private int endStatus;
 	private int buyerId;
-
-	private Duration remainTime;
 }
