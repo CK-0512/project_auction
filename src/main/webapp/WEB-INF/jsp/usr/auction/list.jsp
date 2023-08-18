@@ -47,16 +47,17 @@
 								</div>
 							</c:if>
 							<div>
-								<span id="remainTime-${auction.id }">
-								
-								</span>
+								<span id="auctionId" data-id="${auction.id}"></span>
+								<span id="remainTime-${auction.id }"></span>
 						    </div>
 						 </div>
 						
 						   <script>
-							   const socket = new WebSocket("ws://localhost:your-port/auctionSocket");
-	
-							    socket.onmessage = (event) => {
+						   		const auctionId = document.getElementById('auctionId').getAttribute('data-id');
+
+						   		const socket = new WebSocket("ws://localhost:8081/auctionSocket?auctionId=" + auctionId);						   		
+							    
+						   		socket.onmessage = (event) => {
 							        const data = JSON.parse(event.data);
 							        const auctionId = data.auctionId;
 							        const remainingTime = data.remainingTime;
@@ -75,7 +76,6 @@
 
 							        element.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
 
-							        // Decrease remainingTime by 1 second
 							        remainingTime--;
 							        
 							        if (remainingTime >= 0) {

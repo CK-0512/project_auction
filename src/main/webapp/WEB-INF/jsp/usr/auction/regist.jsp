@@ -134,11 +134,11 @@
 							<tr>
 								<th>경매 시작가</th>
 								<td>
-									<input class="input input-bordered input-accent text-right" type="text" name="startBid" value="0"/> 원
+									<input class="input input-bordered input-accent text-right" type="text" name="startBid" placeholder="0"/> 원
 								</td>
 								<th>즉시 구매가</th>
 								<td>
-									<input class="input input-bordered input-accent text-right" type="text" name="buyNow" onblur="setCharge();" value="0"/> 원
+									<input class="input input-bordered input-accent text-right" type="text" name="buyNow" onblur="setCharge();" placeholder="0"/> 원
 								</td>
 							</tr>
 							<tr>

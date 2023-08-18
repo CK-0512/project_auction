@@ -15,6 +15,7 @@ public class Auction {
 	private String updateDate;
 	private Date endDate;
 	private int memberId;
+	private String memberName;
 	private int categoryId;
 	private String name;
 	private String description;

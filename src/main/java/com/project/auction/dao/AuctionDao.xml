@@ -56,9 +56,11 @@
 	</select>
 	
 	<select id="getAuctionById" resultType="auction">
-		SELECT * 
-			FROM auction
-			WHERE id = #{id}
+		SELECT A.*, M.name
+			FROM auction as A
+			INNER JOIN member as M
+			ON A.memberId = M.id
+			WHERE A.id = #{id}
 	</select>
 	
 	<update id="modifyAuction">
