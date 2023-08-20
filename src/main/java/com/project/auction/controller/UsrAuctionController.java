@@ -16,6 +16,7 @@ import com.project.auction.service.AuctionService;
 import com.project.auction.service.CategoryService;
 import com.project.auction.service.FileService;
 import com.project.auction.service.MemberService;
+import com.project.auction.service.ShoppingCartService;
 import com.project.auction.util.Util;
 import com.project.auction.vo.Auction;
 import com.project.auction.vo.Category;
@@ -29,15 +30,17 @@ public class UsrAuctionController {
 	private CategoryService categoryService;
 	private FileService fileService;
 	private MemberService memberService;
+	private ShoppingCartService shoppingCartService;
 	private Rq rq;
     private WebSocketHandler webSocketHandler;
 	
 	@Autowired
-	public UsrAuctionController(AuctionService auctionService, CategoryService categoryService, FileService fileService, MemberService memberService, Rq rq, WebSocketHandler webSocketHandler) {
+	public UsrAuctionController(AuctionService auctionService, CategoryService categoryService, FileService fileService, MemberService memberService, ShoppingCartService shoppingCartService, Rq rq, WebSocketHandler webSocketHandler) {
 		this.auctionService = auctionService;
 		this.categoryService = categoryService;
 		this.fileService = fileService;
 		this.memberService = memberService;
+		this.shoppingCartService = shoppingCartService;
 		this.rq = rq;
         this.webSocketHandler = webSocketHandler;
 	}
