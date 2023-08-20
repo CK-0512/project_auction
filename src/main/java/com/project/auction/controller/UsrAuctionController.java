@@ -15,6 +15,7 @@ import com.project.auction.handler.WebSocketHandler;
 import com.project.auction.service.AuctionService;
 import com.project.auction.service.CategoryService;
 import com.project.auction.service.FileService;
+import com.project.auction.service.MemberService;
 import com.project.auction.util.Util;
 import com.project.auction.vo.Auction;
 import com.project.auction.vo.Category;
@@ -27,14 +28,16 @@ public class UsrAuctionController {
 	private AuctionService auctionService;
 	private CategoryService categoryService;
 	private FileService fileService;
+	private MemberService memberService;
 	private Rq rq;
     private WebSocketHandler webSocketHandler;
 	
 	@Autowired
-	public UsrAuctionController(AuctionService auctionService, CategoryService categoryService, FileService fileService, Rq rq, WebSocketHandler webSocketHandler) {
+	public UsrAuctionController(AuctionService auctionService, CategoryService categoryService, FileService fileService, MemberService memberService, Rq rq, WebSocketHandler webSocketHandler) {
 		this.auctionService = auctionService;
 		this.categoryService = categoryService;
 		this.fileService = fileService;
+		this.memberService = memberService;
 		this.rq = rq;
         this.webSocketHandler = webSocketHandler;
 	}
@@ -107,7 +110,7 @@ public class UsrAuctionController {
 	public String doRegist(String name, int categoryId, @RequestParam(defaultValue = "1")int auctionType, MultipartFile file, int startBid, @RequestParam(defaultValue="0")int buyNow, int bidDate, @RequestParam(defaultValue="0")int charge, String body) {
 		
 		if (Util.empty(name)) {
-			return Util.jsHistoryBack("제품명을 입력해주세요");
+			return Util.jsHistoryBack("상품명을 입력해주세요");
 		}
 		
 		if (Util.empty(categoryId)) {
@@ -115,7 +118,7 @@ public class UsrAuctionController {
 		}
 	
 		if (Util.empty(file)) {
-			return Util.jsHistoryBack("제품사진을 등록해주세요");
+			return Util.jsHistoryBack("상품사진을 등록해주세요");
 		}
 		
 		if (Util.empty(startBid)) {
@@ -129,7 +132,7 @@ public class UsrAuctionController {
 		int isExist = auctionService.getAuctionByName(name);
 		
 		if (isExist != 0) {
-			return Util.jsHistoryBack("동일 제품을 등록할 수 없습니다.");
+			return Util.jsHistoryBack("동일 상품을 등록할 수 없습니다.");
 		}
 
 		
@@ -138,7 +141,7 @@ public class UsrAuctionController {
 			int auctionId = auctionService.getLastInsertId();
 			fileService.saveFile(auctionType, file, auctionId);
 			
-			return Util.jsReplace(Util.f("%s 제품이 등록되었습니다.", name), Util.f("detail?id=%d", auctionId));
+			return Util.jsReplace(Util.f("%s 상품이 등록되었습니다.", name), Util.f("detail?id=%d", auctionId));
 		} catch (IOException e) {
 			e.printStackTrace();
 			
@@ -159,17 +162,55 @@ public class UsrAuctionController {
 		return "usr/auction/detail";
 	}
 	
+	@RequestMapping("/usr/auction/doBid")
+	@ResponseBody
+	public String doBid(int auctionId, int bid, @RequestParam(defaultValue = "0") int buyNow) {
+		
+		if (Util.empty(bid)) {
+			return Util.jsHistoryBack("입찰금액을 입력해주세요");
+		}
+		
+		auctionService.bidAuction(auctionId, bid);
+		
+		memberService.spendMoney(rq.getLoginedMemberId(), bid);
+		
+		Auction auction = auctionService.getAuctionById(auctionId);
+		
+		shoppingCartService.addCart(rq.getLoginedMemberId(), auction);
+		
+		return Util.jsReplace("상품을 입찰하였습니다.", Util.f("detail?id=%d", auctionId));
+	}
+	
+	@RequestMapping("/usr/auction/doBuy")
+	@ResponseBody
+	public String doBuy(int auctionId, int buyNow, @RequestParam(defaultValue = "0") int bid) {
+		
+		if (Util.empty(buyNow)) {
+			return Util.jsHistoryBack("즉시구매 오류");
+		}
+		
+		auctionService.buyAuction(rq.getLoginedMemberId(), auctionId, buyNow);
+		
+		memberService.spendMoney(rq.getLoginedMemberId(), buyNow);
+		
+		Auction auction = auctionService.getAuctionById(auctionId);
+		
+		shoppingCartService.addCart(rq.getLoginedMemberId(), auction);
+		
+		return Util.jsReplace("상품을 구매하였습니다.", "shoppingCart/list");
+	}
+	
 	@RequestMapping("/usr/auction/modify")
 	public String modify(Model model, int id) {
 		
 		Auction auction = auctionService.getAuctionById(id);
 		
 		if (auction == null) {
-			return rq.jsReturnOnView(Util.f("%d번 품목은 존재하지 않습니다", id));
+			return rq.jsReturnOnView(Util.f("%d번 상품은 존재하지 않습니다", id));
 		}
 		
 		if (rq.getLoginedMemberId() != auction.getMemberId()) {
-			return rq.jsReturnOnView("해당 품목에 대한 권한이 없습니다");
+			return rq.jsReturnOnView("해당 상품에 대한 권한이 없습니다");
 		}
 
 		model.addAttribute("auction", auction);
@@ -184,15 +225,15 @@ public class UsrAuctionController {
 		Auction auction = auctionService.getAuctionById(id);
 
 		if (auction == null) {
-			return Util.jsHistoryBack(Util.f("%d번 품목은 존재하지 않습니다", id));
+			return Util.jsHistoryBack(Util.f("%d번 상품은 존재하지 않습니다", id));
 		}
 
 		if (rq.getLoginedMemberId() != auction.getMemberId()) {
-			return Util.jsHistoryBack("해당 품목에 대한 권한이 없습니다");
+			return Util.jsHistoryBack("해당 상품에 대한 권한이 없습니다");
 		}
 
 		auctionService.modifyAuction(id, body);
 
-		return Util.jsReplace(Util.f("'%s' 품목을 수정했습니다", auction.getName()), Util.f("detail?id=%d", id));
+		return Util.jsReplace(Util.f("'%s' 상품을 수정했습니다", auction.getName()), Util.f("detail?id=%d", id));
 	}
 }

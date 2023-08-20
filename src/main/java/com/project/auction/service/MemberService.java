@@ -132,4 +132,8 @@ public class MemberService {
 		memberDao.deleteMember(member.getId());
 	}
 
+	public void spendMoney(int loginedMemberId, int bid) {
+		memberDao.spendMoney(loginedMemberId, bid);
+	}
+
 }

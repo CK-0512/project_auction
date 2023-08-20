@@ -136,4 +136,11 @@
 				WHERE id = #{id}
 	</update>
 	
+	<update id="spendMoney">
+		UPDATE `member`
+			SET updateDate = NOW()
+				, money = money - #{bid}
+			WHERE id = #{id}
+	</update>
+	
 </mapper>

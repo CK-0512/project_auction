@@ -24,4 +24,8 @@ public interface AuctionDao {
 
 	public int getAuctionByName(String name);
 
+	public void bidAuction(int id, int bid);
+
+	public void buyAuction(int buyerId, int id, int buyNow);
+	
 }

@@ -32,4 +32,6 @@ public interface MemberDao {
 	public List<Member> getMembers(String authLevel, String searchKeywordType, String searchKeyword, int itemsInAPage, int limitStart);
 
 	public void deleteMember(int id);
+
+	public void spendMoney(int id, int bid);
 }

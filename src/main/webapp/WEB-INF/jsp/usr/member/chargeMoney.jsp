@@ -21,7 +21,7 @@
 	document.addEventListener('DOMContentLoaded', function () {
         const closeButton = document.querySelector('.btn-close');
         closeButton.addEventListener('click', function () {
-            window.close();
+            self.close();
         });
     });
 </script>
@@ -40,7 +40,7 @@
 							<td>${rq.loginedMember.account }</td>
 						</tr>
 						<tr>
-							<th>충전된 금액</th>
+							<th>잔액</th>
 							<td>${rq.loginedMember.money }원</td>
 						</tr>
 						<tr>

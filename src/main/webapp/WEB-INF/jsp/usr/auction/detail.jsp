@@ -6,19 +6,44 @@
 <%@ include file="../common/headWithToastUIEditorLib.jsp" %>
 
 <script>
-	function bid(auctionId, money) {
-		const bid = bidForm.bid.value.trim();
+	function bid(name, money) {
+		const bid = auctionForm.bid.value.trim();
 		
-		if (bid) {
+		if (!bid) {
 			alert("입찰금액을 입력해주세요.");
 			return;
 		}
 		
 		if (money < bid) {
-			let isConfirmed = confirm("현재 충전된 금액이 부족합니다. 충전하시겠습니까?");
+			let isConfirmed = confirm("잔액이 부족합니다. 충전하시겠습니까?");
 			if (isConfirmed) {
-				window.open
+				window.open('chargeMoney', 'chargeMoney', 'top=200, left=300, width=600, height=300');
+				return;
 			}
+		}
+		
+		let isBidConfirmed = confirm(name + " 제품을 " + bid + "원에 입찰합니다.");
+		if (isBidConfirmed) {
+			auctionForm.action = "/auction/doBid";
+			auctionForm.submit();
+		}
+		
+	}
+	
+	function buy(name, buyNow, money) {
+		
+		if (money < buyNow) {
+			let isConfirmed = confirm("잔액이 부족합니다. 충전하시겠습니까?");
+			if (isConfirmed) {
+				window.open('chargeMoney', 'chargeMoney', 'top=200, left=300, width=600, height=300');
+				return;
+			}
+		}
+		
+		let isBuyConfirmed = confirm(name + " 제품을 구매합니다");
+		if (isBuyConfirmed) {
+			auctionForm.action = "/auction/doBuy";
+			auctionForm.submit();
 		}
 	}
 </script>
@@ -26,7 +51,9 @@
 	<section class="mt-8">
 		<div class="container mx-auto pb-5 border-bottom-line">
 			<div class="table-box-type-1">
-				<form method="post" name="bidForm">
+				<form method="post" name="auctionForm">
+					<input type="hidden" name="id" value="${auction.id }"/>
+					<input type="hidden" name="buyNow" value="${auction.buyNow }"/>
 					<table class="table">
 						<colgroup>
 							<col width="200" />
@@ -41,35 +68,51 @@
 							<tr>
 								<th>경매 시작일</th>
 								<td>${article.regDate }</td>
-								<th>종료까지</th>
-								<td>
-									<span id="auctionId" data-id="${auction.id}"></span>
-									<span id="remainTime-${auction.id }"></span>
-								</td>
+								<c:if test="${auction.endStatus == 0 }">
+									<th>종료까지</th>
+									<td>
+										<span id="auctionId" data-id="${auction.id}"></span>
+										<span id="remainTime-${auction.id }"></span>
+									</td>
+								</c:if>
+								<c:if test="${auction.endStatus == 1 }">
+									<th>종료일자</th>
+									<td>${auction.endDate }</td>
+								</c:if>
 							</tr>
 							<tr>
-								<th>현재가</th>
-								<td>${auction.nowBid }</td>
-								<th>입찰 횟수</th>
-								<td><span id="articleDetail_increaseHitCnt">${auction.bidCount }</span></td>
+								<c:if test="${auction.endStatus == 0 }">
+									<th>현재가</th>
+									<td>${auction.nowBid }</td>
+									<th>입찰 횟수</th>
+									<td><span id="articleDetail_increaseHitCnt">${auction.bidCount }</span></td>
+								</c:if>
+								<c:if test="${auction.endStatus == 1 }">
+									<th>낙찰가</th>
+									<td>${auction.endBid }</td>
+									<th>최종 입찰 횟수</th>
+									<td><span id="articleDetail_increaseHitCnt">${auction.bidCount }</span></td>
+								</c:if>
 							</tr>
-							<tr>
-								<th>입찰</th>
-								<td>
-									<input class="ml-2 input input-bordered input-accent input-sm w-32 align-right" name="bid" type="text" placeholder="${auction.nowBid + auction.minimumBid}원 이상부터 입찰이 가능합니다."/>
-									<button class="ml-2 btn btn-accent btn-sm" onClick="bid(${auction.id }, ${rq.loginedMember.money })">입찰하기</button>
-								</td>
-								<th>즉시구매</th>
-								<td>
-									<c:if test="${auction.buyNow != 0 }">
-										<span>${auction.buyNow }원</span>
-										<button class="ml-2 btn btn-accent btn-sm">구매하기</button>
-									</c:if>
-									<c:if test="${auction.buyNow == 0 }">
-										<span class="text-red-500 font-sm font-bold">즉시 구매가 불가능한 제품입니다.</span>
-									</c:if>
-								</td>
-							</tr>
+							<c:if test="${auction.endStatus == 0 }">
+								<tr>
+									<th>입찰</th>
+									<td>
+										<input class="ml-2 input input-bordered input-accent input-sm w-32 align-right" name="bid" type="text" placeholder="${auction.nowBid + auction.minimumBid}원 이상부터 입찰이 가능합니다."/>
+										<button class="ml-2 btn btn-accent btn-sm" onClick="bid(${auction.name }, ${rq.loginedMember.money })">입찰하기</button>
+									</td>
+									<th>즉시구매</th>
+									<td>
+										<c:if test="${auction.buyNow != 0 }">
+											<span>${auction.buyNow }원</span>
+											<button class="ml-2 btn btn-accent btn-sm" onClick="buy(${auction.name }, ${auction.buyNow }, ${rq.loginedMember.money })">구매하기</button>
+										</c:if>
+										<c:if test="${auction.buyNow == 0 }">
+											<span class="text-red-500 font-sm font-bold">즉시 구매가 불가능한 제품입니다.</span>
+										</c:if>
+									</td>
+								</tr>
+							</c:if>
 							<tr>
 								<th>설명</th>
 								<td>

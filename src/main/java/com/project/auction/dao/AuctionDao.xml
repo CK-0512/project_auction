@@ -65,7 +65,8 @@
 	
 	<update id="modifyAuction">
 		UPDATE auction
-			SET description = #{description}
+			SET updateDate = NOW() 
+				, description = #{description}
 			WHERE id = #{id}
 	</update>
 	
@@ -75,5 +76,24 @@
 			WHERE endStatus = 0
 			AND `name` = #{name}
 	</select>
+	
+	<update id="bidAuction">
+		UPDATE auction
+			SET updateDate = NOW()
+				, minimumBid = #{bid} * 0.05
+				, nowBid = #{bid}
+				, bidCount = bidCount + 1
+			WHERE id = #{id}
+	</update>
+	
+	<update id="buyAuction">
+		UPDATE auction
+			SET updateDate = NOW()
+				, endDate = NOW()
+				, endBid = #{buyNow}
+				, endStatus = 1
+				, buyerId = #{buyerId}
+			WHERE id = #{id}
+	</update>
 	
 </mapper>

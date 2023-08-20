@@ -59,4 +59,12 @@ public class AuctionService {
 	public int getAuctionByName(String name) {
 		return auctionDao.getAuctionByName(name);
 	}
+
+	public void bidAuction(int auctionId, int bid) {
+		auctionDao.bidAuction(auctionId, bid);
+	}
+
+	public void buyAuction(int loginedMemberId, int auctionId, int buyNow) {
+		auctionDao.buyAuction(loginedMemberId, auctionId, buyNow);
+	}
 }
