@@ -21,5 +21,6 @@ public interface CategoryDao {
 	
 	public List<Category> getCategoryById(int categoryId);
 
+	public String getCategoryNameById(int categoryId);
 	
 }

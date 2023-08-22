@@ -221,13 +221,13 @@
 	    const theme = localStorage.getItem('theme') ?? "light";
 	    
 	    const editor = new toastui.Editor({
-	      el: node,
-	      initialEditType: 'WYSIWYG',
-	      previewStyle: 'vertical',
-	      initialValue: initialValue,
-	      height:'600px',
-	      hideModeSwitch: true,
-	      theme: theme,
+	   	  el: node ,
+		  initialEditType: 'WYSIWYG',
+		  previewStyle: 'vertical',
+		  initialValue: initialValue,
+		  height:'600px',
+		  hideModeSwitch: true,
+		  theme: theme,
 	      plugins: [
 	        [toastui.Editor.plugin.chart, ToastEditor__chartOptions],
 	        [toastui.Editor.plugin.codeSyntaxHighlight, {highlighter:Prism}],

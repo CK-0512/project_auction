@@ -28,12 +28,11 @@ public class WebSocketHandler extends AbstractWebSocketHandler {
                 String[] pair = param.split("=");
                 if (pair.length == 2 && pair[0].equals("auctionId")) {
                     auctionId = Integer.parseInt(pair[1]);
-                    break; // auctionId를 찾았으므로 반복문 중단
+                    break;
                 }
             }
         }
 
-        // Auction ID를 세션의 속성으로 저장
         session.getAttributes().put("auctionId", auctionId);
     }
 

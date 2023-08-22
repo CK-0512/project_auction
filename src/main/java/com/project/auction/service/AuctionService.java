@@ -34,8 +34,8 @@ public class AuctionService {
 	}
 
 	public void registAuction(int memberId, String name, int categoryId, int startBid, int buyNow, int bidDate,
-			int charge, String description) {
-		auctionDao.registAuction(memberId, name, categoryId, startBid, buyNow, bidDate, charge, description);
+			int charge, String body) {
+		auctionDao.registAuction(memberId, name, categoryId, startBid, buyNow, bidDate, charge, body);
 	}
 
 	public int getLastInsertId() {
@@ -60,8 +60,8 @@ public class AuctionService {
 		return auctionDao.getAuctionByName(name);
 	}
 
-	public void bidAuction(int auctionId, int bid) {
-		auctionDao.bidAuction(auctionId, bid);
+	public void bidAuction(int auctionId, int bid, int buyNow) {
+		auctionDao.bidAuction(auctionId, bid, buyNow);
 	}
 
 	public void buyAuction(int loginedMemberId, int auctionId, int buyNow) {

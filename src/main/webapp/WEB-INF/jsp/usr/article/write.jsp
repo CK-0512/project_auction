@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<c:set var="pageTitle" value="Write" />
+<c:set var="pageTitle" value="글작성" />
 <%@ include file="../common/headWithToastUIEditorLib.jsp" %>
 
 	<section class="mt-8">

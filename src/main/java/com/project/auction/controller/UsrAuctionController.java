@@ -16,7 +16,7 @@ import com.project.auction.service.AuctionService;
 import com.project.auction.service.CategoryService;
 import com.project.auction.service.FileService;
 import com.project.auction.service.MemberService;
-import com.project.auction.service.ShoppingCartService;
+import com.project.auction.service.CartService;
 import com.project.auction.util.Util;
 import com.project.auction.vo.Auction;
 import com.project.auction.vo.Category;
@@ -30,17 +30,17 @@ public class UsrAuctionController {
 	private CategoryService categoryService;
 	private FileService fileService;
 	private MemberService memberService;
-	private ShoppingCartService shoppingCartService;
+	private CartService cartService;
 	private Rq rq;
     private WebSocketHandler webSocketHandler;
 	
 	@Autowired
-	public UsrAuctionController(AuctionService auctionService, CategoryService categoryService, FileService fileService, MemberService memberService, ShoppingCartService shoppingCartService, Rq rq, WebSocketHandler webSocketHandler) {
+	public UsrAuctionController(AuctionService auctionService, CategoryService categoryService, FileService fileService, MemberService memberService, CartService cartService, Rq rq, WebSocketHandler webSocketHandler) {
 		this.auctionService = auctionService;
 		this.categoryService = categoryService;
 		this.fileService = fileService;
 		this.memberService = memberService;
-		this.shoppingCartService = shoppingCartService;
+		this.cartService = cartService;
 		this.rq = rq;
         this.webSocketHandler = webSocketHandler;
 	}
@@ -173,13 +173,13 @@ public class UsrAuctionController {
 			return Util.jsHistoryBack("입찰금액을 입력해주세요");
 		}
 		
-		auctionService.bidAuction(auctionId, bid);
+		auctionService.bidAuction(auctionId, bid, buyNow);
 		
 		memberService.spendMoney(rq.getLoginedMemberId(), bid);
 		
 		Auction auction = auctionService.getAuctionById(auctionId);
 		
-		shoppingCartService.addCart(rq.getLoginedMemberId(), auction);
+		cartService.addCart(rq.getLoginedMemberId(), auction);
 		
 		return Util.jsReplace("상품을 입찰하였습니다.", Util.f("detail?id=%d", auctionId));
 	}
@@ -198,9 +198,9 @@ public class UsrAuctionController {
 		
 		Auction auction = auctionService.getAuctionById(auctionId);
 		
-		shoppingCartService.addCart(rq.getLoginedMemberId(), auction);
+		cartService.addCart(rq.getLoginedMemberId(), auction);
 		
-		return Util.jsReplace("상품을 구매하였습니다.", "shoppingCart/list");
+		return Util.jsReplace("상품을 구매하였습니다.", "cart");
 	}
 	
 	@RequestMapping("/usr/auction/modify")
@@ -215,8 +215,11 @@ public class UsrAuctionController {
 		if (rq.getLoginedMemberId() != auction.getMemberId()) {
 			return rq.jsReturnOnView("해당 상품에 대한 권한이 없습니다");
 		}
+		
+		String categoryName = categoryService.getCategoryNameById(auction.getCategoryId());
 
 		model.addAttribute("auction", auction);
+		model.addAttribute("categoryName", categoryName);
 		
 		return "usr/auction/modify";
 	}
@@ -237,6 +240,6 @@ public class UsrAuctionController {
 
 		auctionService.modifyAuction(id, body);
 
-		return Util.jsReplace(Util.f("'%s' 상품을 수정했습니다", auction.getName()), Util.f("detail?id=%d", id));
+		return Util.jsReplace(Util.f("%s 상품이 수정되었습니다", auction.getName()), Util.f("detail?id=%d", id));
 	}
 }

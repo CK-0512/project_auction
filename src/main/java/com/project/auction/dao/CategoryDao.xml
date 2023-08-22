@@ -47,4 +47,10 @@
 			AND memberId = #{loginedMemberId}
 	</delete>
 	
+	<select id="getCategoryNameById" resultType="String">
+		SELECT `name`
+			FROM category
+			WHERE id = #{categoryId}
+	</select>
+	
 </mapper>

@@ -13,6 +13,7 @@ public class Auction {
 	private int id;
 	private String regDate;
 	private String updateDate;
+	private int bidDate;
 	private Date endDate;
 	private int memberId;
 	private String memberName;

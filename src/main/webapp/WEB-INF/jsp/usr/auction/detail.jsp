@@ -24,7 +24,7 @@
 		
 		let isBidConfirmed = confirm(name + " 제품을 " + bid + "원에 입찰합니다.");
 		if (isBidConfirmed) {
-			auctionForm.action = "/auction/doBid";
+			auctionForm.action = "doBid";
 			auctionForm.submit();
 		}
 		
@@ -42,7 +42,7 @@
 		
 		let isBuyConfirmed = confirm(name + " 제품을 구매합니다");
 		if (isBuyConfirmed) {
-			auctionForm.action = "/auction/doBuy";
+			auctionForm.action = "doBuy";
 			auctionForm.submit();
 		}
 	}
@@ -67,7 +67,7 @@
 							</tr>
 							<tr>
 								<th>경매 시작일</th>
-								<td>${article.regDate }</td>
+								<td>${auction.regDate }</td>
 								<c:if test="${auction.endStatus == 0 }">
 									<th>종료까지</th>
 									<td>
@@ -98,10 +98,10 @@
 								<tr>
 									<th>입찰</th>
 									<td>
-										<input class="ml-2 input input-bordered input-accent input-sm w-32 align-right" name="bid" type="text" placeholder="${auction.nowBid + auction.minimumBid}원 이상부터 입찰이 가능합니다."/>
+										<input class="ml-2 input input-bordered input-accent input-sm w-56 text-right" name="bid" type="text" placeholder="${auction.nowBid + auction.minimumBid}원 이상부터 입찰가능"/>
 										<button class="ml-2 btn btn-accent btn-sm" onClick="bid(${auction.name }, ${rq.loginedMember.money })">입찰하기</button>
 									</td>
-									<th>즉시구매</th>
+									<th>즉시구매가</th>
 									<td>
 										<c:if test="${auction.buyNow != 0 }">
 											<span>${auction.buyNow }원</span>
@@ -115,7 +115,7 @@
 							</c:if>
 							<tr>
 								<th>설명</th>
-								<td>
+								<td colspan="3">
 									<div class="toast-ui-viewer">
 	  									<script type="text/x-template">${auction.description }</script>
 	  								</div>
@@ -125,11 +125,11 @@
 					</table>
 				</form>
 			</div>
-			<div class="mt-2">
+			<div class="mt-2 flex justify-end">
 				<button class="btn btn-accent btn-sm" onclick="history.back();">뒤로가기</button>
 				
 				<c:if test="${auction.memberId == rq.getLoginedMemberId() }">
-					<a class="btn btn-accent btn-sm" href="modify?id=${auction.id}">수정</a>
+					<a class="btn btn-accent btn-sm ml-1" href="modify?id=${auction.id}">수정</a>
 				</c:if>
 			</div>
 		</div>

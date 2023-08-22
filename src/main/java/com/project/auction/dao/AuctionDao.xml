@@ -40,7 +40,7 @@
 				, updateDate = NOW()
 				, endDate = DATE_ADD(NOW(), INTERVAL #{bidDate} DAY)
 				, `name` = #{name}
-				, `description` = #{description}
+				, `description` = #{body}
 				, memberId = #{memberId}
 				, categoryId = #{categoryId}
 				, startBid = #{startBid}
@@ -56,7 +56,7 @@
 	</select>
 	
 	<select id="getAuctionById" resultType="auction">
-		SELECT A.*, M.name
+		SELECT A.*, M.name AS memberName
 			FROM auction as A
 			INNER JOIN member as M
 			ON A.memberId = M.id
@@ -83,6 +83,9 @@
 				, minimumBid = #{bid} * 0.05
 				, nowBid = #{bid}
 				, bidCount = bidCount + 1
+				<if test="bid >= buyNow">
+					, buyNow = 0
+				</if>
 			WHERE id = #{id}
 	</update>
 	

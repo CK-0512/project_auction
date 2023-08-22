@@ -68,4 +68,8 @@ public class CategoryService {
 	public List<Category> getCategoryById(int categoryId) {
 		return categoryDao.getCategoryById(categoryId);
 	}
+
+	public String getCategoryNameById(int categoryId) {
+		return categoryDao.getCategoryNameById(categoryId);
+	}
 }

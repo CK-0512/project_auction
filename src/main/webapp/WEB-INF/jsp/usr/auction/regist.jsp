@@ -80,12 +80,17 @@
             alert("경매 기간을 선택해주세요.");
             return;
   	  	}
-		
-        productDescription = document.querySelector(".toast-ui-editor script").value.trim();
-        if (!productDescription) {
-            alert("제품 설명을 입력해주세요.");
-            return;
-        }
+  	  
+  	  	const editor = $(form).find('.toast-ui-editor').data('data-toast-editor');
+  	  	const markdown = editor.getMarkdown().trim();
+  	  
+  	  	if (markdown.length == 0){
+  	   	  	alert('내용을 입력해주세요');
+  	  	  	editor.focus();
+  	    	return;
+  	  	}
+  	  
+  	  	form.body.value = markdown;
   	 	
   	 	let confirmMessage = "제품의 경매 시작가는 " + form.startBid.value +
         					"원, 경매 기간은 " + selectedDate.value + "일, 즉시 구매가는 " +

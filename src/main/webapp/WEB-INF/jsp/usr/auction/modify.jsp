@@ -6,13 +6,17 @@
 <%@ include file="../common/headWithToastUIEditorLib.jsp" %>
 
 <script>
-function modify_submitForm(form) {
-		
-  	  	productDescription = document.querySelector(".toast-ui-editor textarea").value.trim();
-  	 	if (productDescription == "") {
-        	 alert("제품 설명을 입력해주세요.");
-        	 return;
-      	}
+	function modify_submitForm(form) {
+		const editor = $(form).find('.toast-ui-editor').data('data-toast-editor');
+	  	const markdown = editor.getMarkdown().trim();
+	  
+	  	if (markdown.length == 0){
+	   	  	alert('내용을 입력해주세요');
+	  	  	editor.focus();
+	    	return;
+	  	}
+	  
+	  	form.body.value = markdown;
   	 	
   	 	if (!confirm("이대로 수정하시겠습니까?")){
   	 		return;	
@@ -37,43 +41,48 @@ function modify_submitForm(form) {
 								<th>제 품 명</th>
 								<td>${auction.name }</td>
 								<th>제품 카테고리</th>
-								<td></td>
+								<td>${categoryName }</td>
 							</tr>
 							<tr>
 								<th>제품 사진</th>
-								<td></td>
+								<td colspan="3"></td>
 							</tr>
 							<tr>
 								<th>경매 시작가</th>
 								<td>${auction.startBid }원</td>
-								<c:if test="${auction.buyNow } != 0">
-									<th>즉시 구매가</th>
-									<td>${acution.buyNow }</td>
-								</c:if>
+								<th>즉시 구매가</th>
+								<td>
+									<c:if test="${auction.buyNow != 0}">
+										${auction.buyNow }원
+									</c:if>
+									<c:if test="${auction.buyNow == 0}">
+										<span>즉시구매가 미설정</span>
+									</c:if>
+								</td>
 							</tr>
 							<tr>
 								<th>경매 기간</th>
-								<td>${auction.bidDate }</td>
+								<td>${auction.bidDate }일</td>
 								<th>수 수 료</th>
 								<td>
-									<c:if test="${auction.buyNow } != 0">
-										${auction.charge }
+									<c:if test="${auction.buyNow != 0 }">
+										${auction.charge }원
 									</c:if>
-									<c:if test="${auction.buyNow } == 0">
+									<c:if test="${auction.buyNow == 0 }">
 										<span>즉시 구매가를 설정하지 않아 수수료는 낙찰가에서 공제됩니다.</span>
 									</c:if>
 								</td>
 							</tr>
 							<tr>
 								<th>제품 설명</th>
-								<td>
+								<td colspan="3">
 									<div class="toast-ui-editor">
 								    	<script type="text/x-template">${auction.description }</script>
 								    </div>
 								</td>
 							</tr>
 							<tr>
-								<td colspan="2"><button class="btn btn-accent btn-sm">수정</button></td>
+								<td colspan="4"><button class="btn btn-accent btn-sm">수정</button></td>
 							</tr>
 						</tbody>
 					</table>

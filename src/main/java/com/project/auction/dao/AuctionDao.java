@@ -14,7 +14,7 @@ public interface AuctionDao {
 	public List<Auction> getAuctionContents(int categoryId, String searchKeyword, int endStatus, int limitStart, int itemsInAPage);
 
 	public void registAuction(int memberId, String name, int categoryId, int startBid, int buyNow, int bidDate,
-			int charge, String description);
+			int charge, String body);
 
 	public int getLastInsertId();
 
@@ -24,7 +24,7 @@ public interface AuctionDao {
 
 	public int getAuctionByName(String name);
 
-	public void bidAuction(int id, int bid);
+	public void bidAuction(int id, int bid, int buyNow);
 
 	public void buyAuction(int buyerId, int id, int buyNow);
 	
