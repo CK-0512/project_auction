@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.project.auction.dao.FileDao;
 import com.project.auction.vo.Auction;
+import com.project.auction.vo.Cart;
 import com.project.auction.vo.FileVO;
 
 @Service
@@ -66,5 +67,10 @@ public class FileService {
 
 	public List<FileVO> getAuctionContentFiles(int auctionId) {
 		return fileDao.getAuctionContentFiles(auctionId);
+	}
+
+	public List<FileVO> getCartsFirstFiles(List<Cart> carts) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

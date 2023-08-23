@@ -159,9 +159,6 @@ CREATE TABLE cart (
     `name` VARCHAR(100) NOT NULL,
     `description` TEXT NOT NULL,
     memberBid INT UNSIGNED NOT NULL,
-    nowBid INT UNSIGNED NOT NULL,
-    buyNow INT UNSIGNED NOT NULL DEFAULT 0,
-    endStatus TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '종료여부 (진행중 = 0, 종료 = 1)'
 );
 
 CREATE TABLE realTimeAuction (

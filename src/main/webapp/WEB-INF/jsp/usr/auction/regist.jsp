@@ -63,7 +63,7 @@
 		    return;
 		}
 
-		if (!form.file.files) {
+		if (!form.file.files.length) {
 		    alert("제품 사진을 등록해주세요.");
 		    return;
 		}
