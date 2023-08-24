@@ -58,10 +58,10 @@ public class UsrCartController {
 		for (Cart cart: carts) {
 	        long currentTimeMillis = System.currentTimeMillis();
 	        long endTimeMillis = cart.getEndDate().getTime();
-	        long remainingTimeSeconds = (endTimeMillis - currentTimeMillis) / 1000;
+	        long remainingTime = (endTimeMillis - currentTimeMillis) / 1000;
 
 	        try {
-				webSocketHandler.broadcastRemainingTime(cart.getId(), remainingTimeSeconds);
+				webSocketHandler.broadcastRemainingTime(cart.getId(), remainingTime);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

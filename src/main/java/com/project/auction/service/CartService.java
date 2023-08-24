@@ -22,6 +22,10 @@ public class CartService {
 	public void addCart(int loginedMemberId, Auction auction) {
 		cartDao.addCart(loginedMemberId, auction.getId(), auction.getName(), auction.getDescription(), auction.getNowBid());
 	}
+	
+	public int getCartCntWithOutEither(int loginedMemberId) {
+		return cartDao.getCartCntWithOutEither(loginedMemberId);
+	}
 
 	public int getCartCnt(int memberId, String searchKeyword, int endStatus) {
 		return cartDao.getCartCnt(memberId, searchKeyword, endStatus);
@@ -35,4 +39,5 @@ public class CartService {
 		
 		return list;
 	}
+
 }

@@ -70,7 +70,13 @@ public class FileService {
 	}
 
 	public List<FileVO> getCartsFirstFiles(List<Cart> carts) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		List<FileVO> files = new ArrayList<>();
+		
+		for (Cart cart : carts) {
+			files.add(fileDao.getAuctionContentsFirstFile(cart.getAuctionId()));
+		}
+		
+		return files;
 	}
 }

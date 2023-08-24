@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
+import com.project.auction.service.CartService;
 import com.project.auction.service.CategoryService;
 import com.project.auction.service.MemberService;
 import com.project.auction.util.Util;
@@ -27,12 +28,14 @@ public class Rq {
 	private Member loginedMember;
 	@Getter
 	private List<Category> interestCategories;
+	@Getter
+	private int cartSize;
 	
 	private HttpServletRequest req;
 	private HttpServletResponse resp;
 	private HttpSession session;
 	
-	public Rq(HttpServletRequest req, HttpServletResponse resp, MemberService memberService, CategoryService categoryService) {
+	public Rq(HttpServletRequest req, HttpServletResponse resp, MemberService memberService, CategoryService categoryService, CartService cartService) {
 		
 		this.req = req;
 		this.resp = resp;
@@ -42,16 +45,19 @@ public class Rq {
 		int loginedMemberId = 0;
 		Member loginedMember = null;
 		List<Category> interestCategories = null;
+		int cartSize = 0;
 		
 		if(session.getAttribute("loginedMemberId") != null) {
 			loginedMemberId = (int) session.getAttribute("loginedMemberId");
 			loginedMember = memberService.getMemberById(loginedMemberId);
 			interestCategories = categoryService.getInterestCategories(loginedMemberId);
+			cartSize = cartService.getCartCntWithOutEither(loginedMemberId);
 		}
 		
 		this.loginedMemberId = loginedMemberId;
 		this.loginedMember = loginedMember;
 		this.interestCategories = interestCategories;
+		this.cartSize = cartSize;
 		
 		this.req.setAttribute("rq", this);
 		

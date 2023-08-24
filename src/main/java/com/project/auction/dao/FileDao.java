@@ -44,5 +44,5 @@ public interface FileDao {
 				WHERE auctionId = #{auctionId}
 			""")
 	List<FileVO> getAuctionContentFiles(int auctionId);
-	
+
 }

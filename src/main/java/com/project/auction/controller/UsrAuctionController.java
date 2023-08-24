@@ -77,10 +77,10 @@ public class UsrAuctionController {
 		for (Auction auction : auctionContents) {
 	        long currentTimeMillis = System.currentTimeMillis();
 	        long endTimeMillis = auction.getEndDate().getTime();
-	        long remainingTimeSeconds = (endTimeMillis - currentTimeMillis) / 1000;
+	        long remainingTime = (endTimeMillis - currentTimeMillis) / 1000;
 
 	        try {
-				webSocketHandler.broadcastRemainingTime(auction.getId(), remainingTimeSeconds);
+				webSocketHandler.broadcastRemainingTime(auction.getId(), remainingTime);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

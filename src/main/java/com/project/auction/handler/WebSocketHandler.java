@@ -41,9 +41,9 @@ public class WebSocketHandler extends AbstractWebSocketHandler {
         
     }
 
-    public void broadcastRemainingTime(int auctionId, long remainingTimeInSeconds) throws IOException {
+    public void broadcastRemainingTime(int auctionId, long remainingTime) throws IOException {
         TextMessage message = new TextMessage(
-                "{\"remainingTime\": " + remainingTimeInSeconds + "}"
+                "{\"remainingTime\": " + remainingTime + "}"
         );
 
         WebSocketSession session = auctionSessions.get(auctionId);

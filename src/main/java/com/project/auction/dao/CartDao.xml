@@ -14,7 +14,14 @@
 				, memberBid = #{nowBid}
 	</insert>
 	
-	<select id="getCartCnt">
+	<select id="getCartCntWithOutEither" resultType="int">
+		SELECT COUNT(*)
+			FROM cart
+			WHERE memberId = #{memberId}
+			AND endStatus = 0
+	</select>
+	
+	<select id="getCartCnt" resultType="int">
 		SELECT COUNT(*)
 			FROM cart
 			WHERE memberId = #{memberId}
@@ -27,7 +34,7 @@
 			</if>
 	</select>
 	
-	<select id="getCarts">
+	<select id="getCarts" resultType="cart">
 		SELECT C.*
 				, A.endDate
 				, A.nowBid
