@@ -33,6 +33,7 @@ public class UsrAuctionController {
 	private CartService cartService;
 	private Rq rq;
     private WebSocketHandler webSocketHandler;
+    private int auctionType;
 	
 	@Autowired
 	public UsrAuctionController(AuctionService auctionService, CategoryService categoryService, FileService fileService, MemberService memberService, CartService cartService, Rq rq, WebSocketHandler webSocketHandler) {
@@ -43,6 +44,7 @@ public class UsrAuctionController {
 		this.cartService = cartService;
 		this.rq = rq;
         this.webSocketHandler = webSocketHandler;
+        this.auctionType = 1;
 	}
 	
 	@RequestMapping("/usr/auction/list")
@@ -71,8 +73,8 @@ public class UsrAuctionController {
 		int pagesCnt = (int) Math.ceil((double) auctionCnt / itemsInAPage);
 
 		List<Auction> auctionContents = auctionService.getAuctionContents(categoryId, searchKeyword, endStatus, itemsInAPage, page);
-
-		List<FileVO> files = fileService.getAuctionContentsFirstFiles(auctionContents);
+		
+		List<FileVO> files = fileService.getContentsFirstFile(auctionType, auctionContents);
 		
 		for (Auction auction : auctionContents) {
 	        long currentTimeMillis = System.currentTimeMillis();
@@ -157,7 +159,7 @@ public class UsrAuctionController {
 	public String showDetail(Model model, int id) {
 		Auction auction = auctionService.getAuctionById(id);
 		
-		List<FileVO> files = fileService.getAuctionContentFiles(id);
+		List<FileVO> files = fileService.getContentsFiles(auctionType, id);
 		
 		model.addAttribute("auction", auction);
 		model.addAttribute("files", files);

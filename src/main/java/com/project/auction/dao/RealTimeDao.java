@@ -1,31 +1,20 @@
 package com.project.auction.dao;
 
-import java.util.List;
-
 import org.apache.ibatis.annotations.Mapper;
 
-import com.project.auction.vo.Auction;
+import com.project.auction.vo.RealTime;
 
 @Mapper
 public interface RealTimeDao {
 
-	public int getAuctionCnt(int categoryId, String searchKeyword, int endStatus);
+	public int getLastDateByMemberId(int memberId);
 
-	public List<Auction> getAuctionContents(int categoryId, String searchKeyword, int endStatus, int limitStart, int itemsInAPage);
-
-	public void registAuction(int memberId, String name, int categoryId, int startBid, int buyNow, int bidDate,
-			int charge, String body);
+	public void registRealTime(int memberId, String name, int categoryId, int startBid, String description);
 
 	public int getLastInsertId();
 
-	public Auction getAuctionById(int id);
+	public RealTime getRealTimeById(int id);
 
-	public void modifyAuction(int id, String description);
-
-	public int getAuctionByName(String name);
-
-	public void bidAuction(int id, int bid, int buyNow);
-
-	public void buyAuction(int buyerId, int id, int buyNow);
+	public void modifyRealTime(int id, int categoryId, int startBid, String name, String description);
 	
 }

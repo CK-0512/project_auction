@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.auction.dao.FileDao">
+
+	<insert id="insertFileInfo">
+		INSERT INTO auctionFile
+			SET regDate = NOW()
+				, auctionType = #{auctionType}
+				, auctionId = #{auctionId}
+				, originName = #{orgName}
+				, savedName = #{savedName}
+				, savedPath = #{savedPath}
+	</insert>
+	
+	<select id="getFileById" resultType="FileVO">
+		SELECT *
+			FROM auctionFile
+			WHERE id = #{fileId}
+	</select>
+	
+	<select id="getContentsFiles" resultType="FileVO">
+		SELECT *
+			FROM auctionFile
+			WHERE auctionId = #{auctionId}
+			<if test="auctionType != 0">
+				AND auctionType = #[auctionType}
+			</if>
+	</select>
+	
+	<select id="getContentsFirstFile" resultType="FIleVO">
+		SELECT *
+			FROM auctionFile
+			WHERE auctionId = #{auctionId}
+			<if test="auctionType != 0">
+				AND auctionType = #[auctionType}
+			</if>
+			LIMIT 1
+	</select>
+	
+</mapper>

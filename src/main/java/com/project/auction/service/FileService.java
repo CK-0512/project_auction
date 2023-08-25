@@ -50,12 +50,12 @@ public class FileService {
 		file.transferTo(new File(savedPath));
 	}
 
-	public List<FileVO> getAuctionContentsFirstFiles(List<Auction> auctionContents) {
+	public List<FileVO> getContentsFirstFile(int auctionType, List<Auction> auctionContents) {
 		
 		List<FileVO> files = new ArrayList<>();
 		
 		for (Auction auctionContent : auctionContents) {
-			files.add(fileDao.getAuctionContentsFirstFile(auctionContent.getId()));
+			files.add(fileDao.getContentsFirstFile(auctionType, auctionContent.getId()));
 		}
 		
 		return files;
@@ -65,16 +65,16 @@ public class FileService {
 		return fileDao.getFileById(id);
 	}
 
-	public List<FileVO> getAuctionContentFiles(int auctionId) {
-		return fileDao.getAuctionContentFiles(auctionId);
+	public List<FileVO> getContentsFiles(int auctionType, int auctionId) {
+		return fileDao.getContentsFiles(auctionType, auctionId);
 	}
 
-	public List<FileVO> getCartsFirstFiles(List<Cart> carts) {
+	public List<FileVO> getCartsFirstFile(int auctionType, List<Cart> carts) {
 		
 		List<FileVO> files = new ArrayList<>();
 		
 		for (Cart cart : carts) {
-			files.add(fileDao.getAuctionContentsFirstFile(cart.getAuctionId()));
+			files.add(fileDao.getContentsFirstFile(auctionType, cart.getAuctionId()));
 		}
 		
 		return files;

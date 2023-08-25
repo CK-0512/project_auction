@@ -55,8 +55,8 @@
 		SELECT LAST_INSERT_ID()
 	</select>
 	
-	<select id="getAuctionById" resultType="auction">
-		SELECT A.*, M.name AS memberName
+	<select id="getAuctionById" resultType="Auction">
+		SELECT A.*, M.nickName AS memberName
 			FROM auction as A
 			INNER JOIN member as M
 			ON A.memberId = M.id

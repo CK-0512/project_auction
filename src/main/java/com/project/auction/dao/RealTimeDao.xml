@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.auction.dao.RealTimeDao">
+
+	<select id="getLastDateByMemberId" resultType="int">
+		SELECT FLOOR(TIMESTAMPDIFF(DAY, regDate, NOW())) 
+			FROM realTimeAuction
+			WHRER memberId = #{memberId}
+	</select>
+	
+	<insert id="registRealTime">
+		INSERT INTO realTimeAuction
+			SET regDate = NOW()
+				, updateDate = NOW()
+				, memberId = #{memberId}
+				, categoryId = #{categoryId}
+				, `name` = #{name}
+				, `description` = #{description}
+				, startBid = #{startBid}
+				, bidIncrease = #{startBid} * 0.05
+	</insert>
+	
+	<select id="getLastInsertId" resultType="int">
+		SELECT LAST_INSERT_ID()
+	</select>
+	
+	<select id="getRealTimeById" resultType="RealTime">
+		SELECT R.*, M.nickname
+			FROM realTimeAuction AS R
+			INNER JOIN member AS M
+			ON R.memberId = M.id
+			WHERE R.id = #{id}
+	</select>
+	
+	<update id="modifyRealTime">
+		UPDATE realTimeAuction
+			SET updateDate = NOW()
+				, categoryId = #{categoryId}
+				, `name` = #{name}
+				, `description` = #{description}
+				, startBid = #{startBid}
+				, bidIncrease = #{startBid} * 0.05
+	</update>
+	
+</mapper>

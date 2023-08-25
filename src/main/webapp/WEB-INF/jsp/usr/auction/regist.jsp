@@ -52,19 +52,19 @@
 		
 		form.name.value = form.name.value.trim();
 		if (!form.name.value) {
-			alert('제품명을 입력해주세요');
+			alert('상품명을 입력해주세요');
 			form.name.focus();
 			return;
 		}
 		
 		selectedCategory = document.querySelector("select[name='categoryId']").value;
 		if (!selectedCategory) {
-		    alert("제품 카테고리를 선택해주세요.");
+		    alert("상품 카테고리를 선택해주세요.");
 		    return;
 		}
 
 		if (!form.file.files.length) {
-		    alert("제품 사진을 등록해주세요.");
+		    alert("상품 사진을 등록해주세요.");
 		    return;
 		}
 		
@@ -92,14 +92,14 @@
   	  
   	  	form.body.value = markdown;
   	 	
-  	 	let confirmMessage = "제품의 경매 시작가는 " + form.startBid.value +
-        					"원, 경매 기간은 " + selectedDate.value + "일, 즉시 구매가는 " +
-        					form.buyNow.value + "원입니다. 이대로 등록하시겠습니까?";
+  	 	let confirmMessage = "상품의 경매 시작가는 " + form.startBid.value +
+        					"원, 경매 기간은 " + selectedDate.value + "일" + if(form.buyNow.value.trim()) {return ", 즉시 구매가는 " +
+            					form.buyNow.value + "원"} +"입니다. 이대로 등록하시겠습니까?";
   	 	if (!confirm(confirmMessage)) {
   	 		return;
   	 	}
   	 	
-  	 	if (!confirm("제품 등록후에는 취소가 불가능하며, 제품 설명만 수정이 가능합니다. 정말 등록하시겠습니까?")){
+  	 	if (!confirm("상품 등록후에는 취소가 불가능하며, 상품 설명만 수정이 가능합니다. 정말 등록하시겠습니까?")){
   	 		return;	
   	 	}
   	 	
@@ -119,11 +119,11 @@
 						</colgroup>
 						<tbody>
 							<tr >
-								<th>제 품 명</th>
-								<td colspan="3"><input class="input input-bordered input-accent w-full" type="text" name="name" placeholder="제품명을 입력해주세요" /></td>
+								<th>상 품 명</th>
+								<td colspan="3"><input class="input input-bordered input-accent w-full" type="text" name="name" placeholder="상품명을 입력해주세요" /></td>
 							</tr>
 							<tr>
-								<th>제품 카테고리</th>
+								<th>상품 카테고리</th>
 								<td>
 									<select name="categoryId" class="select select-accent select-bordered">
 										<c:forEach var="category" items="${categories}">
@@ -131,7 +131,7 @@
 										</c:forEach>
 									</select>
 								</td>
-								<th>제품 사진</th>
+								<th>상품 사진</th>
 								<td class="align-center">
 									<input type="file" name="file" multiple/>
 								</td>
@@ -170,7 +170,7 @@
 								</td>
 							</tr>
 							<tr>
-								<th>제품 설명</th>
+								<th>상품 설명</th>
 								<td colspan="3">
 									<div class="toast-ui-editor">
 								    	<script type="text/x-template"></script>

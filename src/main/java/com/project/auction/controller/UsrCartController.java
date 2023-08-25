@@ -23,6 +23,7 @@ public class UsrCartController {
 	private FileService fileService;
 	private Rq rq;
 	private WebSocketHandler webSocketHandler;
+	private int auctionType;
 	
 	@Autowired
 	public UsrCartController(CartService cartService, FileService fileService, Rq rq, WebSocketHandler webSocketHandler) {
@@ -30,6 +31,7 @@ public class UsrCartController {
 		this.fileService = fileService;
 		this.rq = rq;
 		this.webSocketHandler = webSocketHandler;
+		this.auctionType = 0;
 	}
 	
 	@RequestMapping("/usr/cart/list")
@@ -53,7 +55,7 @@ public class UsrCartController {
 
 		List<Cart> carts = cartService.getCarts(memberId, searchKeyword, endStatus, itemsInAPage, page);
 
-		List<FileVO> files = fileService.getCartsFirstFiles(carts);
+		List<FileVO> files = fileService.getCartsFirstFile(auctionType, carts);
 		
 		for (Cart cart: carts) {
 	        long currentTimeMillis = System.currentTimeMillis();
