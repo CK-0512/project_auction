@@ -26,7 +26,7 @@
 	</select>
 	
 	<select id="getRealTimeById" resultType="RealTime">
-		SELECT R.*, M.nickname
+		SELECT R.*, M.nickname AS memberName
 			FROM realTimeAuction AS R
 			INNER JOIN member AS M
 			ON R.memberId = M.id

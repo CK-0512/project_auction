@@ -83,15 +83,15 @@
 							<tr>
 								<c:if test="${auction.endStatus == 0 }">
 									<th>현재가</th>
-									<td>${auction.nowBid }</td>
-									<th>입찰 횟수</th>
+									<td>${auction.nowBid }원</td>
+									<th>입찰건수</th>
 									<td><span id="articleDetail_increaseHitCnt">${auction.bidCount }</span></td>
 								</c:if>
 								<c:if test="${auction.endStatus == 1 }">
 									<th>낙찰가</th>
-									<td>${auction.endBid }</td>
-									<th>최종 입찰 횟수</th>
-									<td><span id="articleDetail_increaseHitCnt">${auction.bidCount }</span></td>
+									<td>${auction.endBid }원</td>
+									<th>입찰건수</th>
+									<td><span id="articleDetail_increaseHitCnt">${auction.bidCount }회</span></td>
 								</c:if>
 							</tr>
 							<c:if test="${auction.endStatus == 0 }">
