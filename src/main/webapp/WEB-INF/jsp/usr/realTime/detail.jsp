@@ -8,7 +8,7 @@
 <script type="text/javascript">
 	function confirmApproval(id) {
 		let confirmed = confirm("이 경매를 승인하시겠습니까?");
-		if(confirmed) {
+		if (confirmed) {
 			location.replace("usr/realTime/doConfirm?id=" + id);
 		}
 	}
@@ -23,10 +23,20 @@
 				</colgroup>
 				<tbody>
 					<tr>
-						<th>제품명</th>
+						<th>상품명</th>
 						<td>${realTime.name }</td>
 						<th>판매자</th>
 						<td>${realTime.memberName }</td>
+					</tr>
+					<tr>
+						<th>상품사진</th>
+						<td class="flex" colspan="3">
+							<c:forEach var="file" items="${files }">
+								<div>
+									<img src="/usr/home/file/${file.id }">
+								</div>
+							</c:forEach>
+						</td>
 					</tr>
 					<c:if test="${realTime.confirmStatus != 1 }">
 						<tr>
@@ -67,10 +77,12 @@
 			<button class="btn btn-accent btn-sm" onclick="history.back();">뒤로가기</button>
 
 			<c:if test="${realTime.memberId == rq.getLoginedMemberId() }">
-				<a class="btn btn-accent btn-sm ml-1" href="modify?id=${realTime.id}">수정</a>
+				<a class="btn btn-accent btn-sm ml-1"
+					href="modify?id=${realTime.id}">수정</a>
 			</c:if>
 			<c:if test="${rq.loginedMember.authLebel == 3 }">
-				<a class="btn btn-accent btn-sm ml-1" href="javascript:confirmApproval(${realTime.id })">승인</a>
+				<a class="btn btn-accent btn-sm ml-1"
+					href="javascript:confirmApproval(${realTime.id })">승인</a>
 			</c:if>
 		</div>
 	</div>

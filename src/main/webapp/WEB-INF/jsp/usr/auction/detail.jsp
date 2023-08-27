@@ -22,7 +22,7 @@
 			}
 		}
 		
-		let isBidConfirmed = confirm(name + " 제품을 " + bid + "원에 입찰합니다.");
+		let isBidConfirmed = confirm(name + " 상품을 " + bid + "원에 입찰합니다.");
 		if (isBidConfirmed) {
 			auctionForm.action = "doBid";
 			auctionForm.submit();
@@ -40,7 +40,7 @@
 			}
 		}
 		
-		let isBuyConfirmed = confirm(name + " 제품을 구매합니다");
+		let isBuyConfirmed = confirm(name + " 상품을 구매합니다");
 		if (isBuyConfirmed) {
 			auctionForm.action = "doBuy";
 			auctionForm.submit();
@@ -60,10 +60,20 @@
 						</colgroup>
 						<tbody>
 							<tr>
-								<th>제품명</th>
+								<th>상품명</th>
 								<td>${auction.name }</td>
 								<th>판매자</th>
 								<td>${auction.memberName }</td>
+							</tr>
+							<tr>
+								<th>상품사진</th>
+								<td class="flex" colspan="3">
+									<c:forEach var="file" items="${files }">
+										<div>
+											<img src="/usr/home/file/${file.id }">
+										</div>
+									</c:forEach>
+								</td>
 							</tr>
 							<tr>
 								<th>경매 시작일</th>
@@ -108,7 +118,7 @@
 											<button class="ml-2 btn btn-accent btn-sm" onClick="buy(${auction.name }, ${auction.buyNow }, ${rq.loginedMember.money })">구매하기</button>
 										</c:if>
 										<c:if test="${auction.buyNow == 0 }">
-											<span class="text-red-500 font-sm font-bold">즉시 구매가 불가능한 제품입니다.</span>
+											<span class="text-red-500 font-sm font-bold">즉시 구매가 불가능한 상품입니다.</span>
 										</c:if>
 									</td>
 								</tr>

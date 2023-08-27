@@ -20,11 +20,6 @@
 		    alert("상품 카테고리를 선택해주세요.");
 		    return;
 		}
-
-		if (!form.file.files.length) {
-		    alert("상품 사진을 등록해주세요.");
-		    return;
-		}
 		
 		form.startBid.value = form.startBid.value.trim();
 		if (!form.startBid.value) {
@@ -44,12 +39,12 @@
   	  
   	  	form.body.value = markdown;
   	 	
-  	 	let confirmMessage = "상품의 경매 시작가는 " + form.startBid.value + "원이며, 상품 사진은 수정이 불가능합니다. 이대로 등록하시겠습니까?";
+  	 	let confirmMessage = "상품의 경매 시작가는 " + form.startBid.value + "원입니다. 이대로 수정하시겠습니까?";
   	 	if (!confirm(confirmMessage)) {
   	 		return;
   	 	}
   	 	
-  	 	if (!confirm("추첨 등록은 1주일에 1번만 가능하며, 추첨된 후에는 더 이상 수정과 취소가 불가능합니다. 정말 등록하시겠습니까?")){
+  	 	if (!confirm("추첨된 후에는 더 이상 수정과 취소가 불가능합니다. 정말 수정하시겠습니까?")){
   	 		return;	
   	 	}
   	 	
@@ -69,26 +64,20 @@
 						<tbody>
 							<tr >
 								<th>상 품 명</th>
-								<td colspan="3"><input class="input input-bordered input-accent w-full" type="text" name="name" placeholder="상품명을 입력해주세요" /></td>
-							</tr>
-							<tr>
+								<td><input class="input input-bordered input-accent w-full" type="text" name="name" placeholder="상품명을 입력해주세요" value="${realTime.name }"/></td>
 								<th>상품 카테고리</th>
 								<td>
 									<select name="categoryId" class="select select-accent select-bordered">
 										<c:forEach var="category" items="${categories}">
-											<option value="${category.id }">${category.name }</option>
+											<option value="${category.id }" selected="${category.id == realTime.categoryId ? 'selected' : '' }">${category.name }</option>
 										</c:forEach>
 									</select>
-								</td>
-								<th>상품 사진</th>
-								<td class="align-center">
-									<input type="file" name="file" multiple/>
 								</td>
 							</tr>
 							<tr>
 								<th>경매 시작가</th>
 								<td>
-									<input class="input input-bordered input-accent text-right" type="text" name="startBid" placeholder="0"/> 원
+									<input class="input input-bordered input-accent text-right" type="text" name="startBid" placeholder="0" value="${realTime.startBid }"/> 원
 								</td>
 								<th>수 수 료</th>
 								<td>
@@ -99,12 +88,12 @@
 								<th>상품 설명</th>
 								<td colspan="3">
 									<div class="toast-ui-editor">
-								    	<script type="text/x-template"></script>
+								    	<script type="text/x-template">${realTime.description }</script>
 								    </div>
 								</td>
 							</tr>
 							<tr>
-								<td colspan="4"><button class="btn btn-accent btn-sm">등록</button></td>
+								<td colspan="4"><button class="btn btn-accent btn-sm">수정</button></td>
 							</tr>
 						</tbody>
 					</table>
