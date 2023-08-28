@@ -86,7 +86,7 @@
 									</td>
 								</c:if>
 								<c:if test="${auction.endStatus == 1 }">
-									<th>종료일자</th>
+									<th>종료일시</th>
 									<td>${auction.endDate }</td>
 								</c:if>
 							</tr>

@@ -8,9 +8,15 @@
 	<section class="mt-8">
 		<div class="container mx-auto">
 			<div>
-				<a href="list?endStatus=0" class="${endStatus == '0' ? 'selected' : ''}">진행중인 경매</a>
+				<c:if test="${rq.loginedMember.authLevel == 3 }">
+					<a href="list?endStatus=0&confirmStatus=0" class="${confirmStatus == '0' ? 'selected' : ''}">승인 대기중</a>
+					<span>|</span>
+				</c:if>
+				<a href="list?endStatus=0" class="${endStatus == '0' ? 'selected' : ''}">대기중인 경매</a>
 				<span>|</span>
-				<a href="list?endStatus=1" class="${endStatus == '1' ? 'selected' : ''}">종료된 경매</a>
+				<a href="list?endStatus=1" class="${endStatus == '1' ? 'selected' : ''}">진행중인 경매</a>
+				<span>|</span>
+				<a href="list?endStatus=2" class="${endStatus == '2' ? 'selected' : ''}">종료된 경매</a>
 			</div>
 			<div class="mb-2 flex">
 				<div class="table-box-type-2">
@@ -30,72 +36,99 @@
 					</table>
 				</div>
 				<div class="flex">
-					<c:forEach var="auction" items="${auctionContents }">
-						<div class="contents-box">
-							<c:forEach var="file" items="${files }">
-								<c:if test="${cart.auctionId == file.auctionId }">
+					<c:choose>
+						<c:when test="${confirmStatus == '0' }">
+							<c:forEach var="realTime" items="${realTimeContents }">
+								<div class="contents-box">
+									<c:forEach var="file" items="${files }">
+										<c:if test="${cart.auctionId == file.auctionId }">
+											<a href="detail?id=${realTime.id }">
+												<img src="/usr/home/file/${file.id }">
+											</a>
+										</c:if>
+									</c:forEach>
 									<div>
-										<img src="/usr/home/file/${file.id }">
+										<span>${realTime.name }</span>
 									</div>
-								</c:if>
+									<div>
+										<span>신청인 : ${realTime.memberName }</span>
+									</div>
+								 </div>
 							</c:forEach>
-							<div>
-								<span>${auction.name }</span>
-							</div>
-							<div>
-								<span>현재가 : ${auction.nowBid }</span>
-							</div>
-							<c:if test="${auction.buyNow } != 0">
-								<div>
-									<span>즉시구매가 : ${auction.buyNow }</span>
-								</div>
-							</c:if>
-							<div>
-								<span id="auctionId" data-id="${auction.id}"></span>
-								<span id="remainTime-${auction.id }"></span>
-						    </div>
-						 </div>
-						
-						   <script>
-						   		const auctionId = document.getElementById('auctionId').getAttribute('data-id');
-
-						   		const socket = new WebSocket("ws://localhost:8081/auctionSocket?auctionId=" + auctionId);						   		
-							    
-						   		socket.onmessage = (event) => {
-							        const data = JSON.parse(event.data);
-							        const auctionId = data.auctionId;
-							        const remainingTime = data.remainingTime;
-	
-							        const timerSpan = document.getElementById(`remainTime-${auctionId}`);
-							        if (timerSpan) {
-							            updateCountdownTimer(timerSpan, remainingTime);
-							        }
-							    };
-							    
-							    function updateCountdownTimer(element, remainingTime) {
-							        const days = Math.floor(remainingTime / (60 * 60 * 24));
-							        const hours = Math.floor((remainingTime % (60 * 60 * 24)) / (60 * 60));
-							        const minutes = Math.floor((remainingTime % (60 * 60)) / 60);
-							        const seconds = remainingTime % 60;
-
-							        element.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-
-							        remainingTime--;
-							        
-							        if (remainingTime >= 0) {
-							            setTimeout(() => {
-							                updateCountdownTimer(element, remainingTime);
-							            }, 1000);
-							        }
-							    }
-							</script>
-					</c:forEach>
+						</c:when>
+						<c:when test="${endStatus == '0' }">
+							<c:forEach var="realTime" items="${realTimeContents }">
+								<div class="contents-box">
+									<c:forEach var="file" items="${files }">
+										<c:if test="${cart.auctionId == file.auctionId }">
+											<a href="detail?id=${realTime.id }">
+												<img src="/usr/home/file/${file.id }">
+											</a>
+										</c:if>
+									</c:forEach>
+									<div>
+										<span>${realTime.name }</span>
+									</div>
+									<div>
+										<span>시작가 : ${realTime.startBid }</span>
+									</div>
+									<div>
+										<span>경매 일시 : ${realTime.startDate }</span>
+								    </div>
+								 </div>
+							</c:forEach>
+						</c:when>
+						<c:when test="${endStatus == '1' }">
+							<c:forEach var="realTime" items="${realTimeContents }">
+								<div class="contents-box">
+									<c:forEach var="file" items="${files }">
+										<c:if test="${cart.auctionId == file.auctionId }">
+											<a href="detail?id=${realTime.id }">
+												<img src="/usr/home/file/${file.id }">
+											</a>
+										</c:if>
+									</c:forEach>
+									<div>
+										<span>${realTime.name }</span>
+									</div>
+									<div>
+										<span>현재가 : ${realTime.nowBid }</span>
+									</div>
+									<div>
+										<span>참가 인원수 : ${realTime.startDate }</span>
+								    </div>
+								 </div>
+							</c:forEach>
+						</c:when>
+						<c:when test="${endStatus == '2' }">
+							<c:forEach var="realTime" items="${realTimeContents }">
+								<div class="contents-box">
+									<c:forEach var="file" items="${files }">
+										<c:if test="${cart.auctionId == file.auctionId }">
+											<a href="detail?id=${realTime.id }">
+												<img src="/usr/home/file/${file.id }">
+											</a>
+										</c:if>
+									</c:forEach>
+									<div>
+										<span>${realTime.name }</span>
+									</div>
+									<div>
+										<span>낙찰가 : ${realTime.startBid }</span>
+									</div>
+									<div>
+										<span>최종 입찰건수 : ${realTime.bidCount }</span>
+								    </div>
+								 </div>
+							</c:forEach>
+						</c:when>
+					</c:choose>
 				</div>
 			</div>
 			
 			<c:if test="${rq.getLoginedMemberId() != 0 }">
 				<div class="mt-2 flex justify-end">
-					<a class="btn btn-accent btn-sm" href="regist">경매 등록</a>
+					<a class="btn btn-accent btn-sm" href="regist">경매 신청</a>
 				</div>
 			</c:if>
 			

@@ -30,33 +30,60 @@
 					</table>
 				</div>
 				<div class="flex">
-					<c:forEach var="auction" items="${auctionContents }">
-						<div class="contents-box">
-							<c:forEach var="file" items="${files }">
-								<c:if test="${cart.auctionId == file.auctionId }">
+					<c:if test="${endStatus == '0'}">
+						<c:forEach var="auction" items="${auctionContents }">
+							<div class="contents-box">
+								<c:forEach var="file" items="${files }">
+									<c:if test="${cart.auctionId == file.auctionId }">
+										<a href="detail?id=${realTime.id }">
+											<img src="/usr/home/file/${file.id }">
+										</a>
+									</c:if>
+								</c:forEach>
+								<div>
+									<span>${auction.name }</span>
+								</div>
+								<div>
+									<span>낙찰가 : ${auction.nowBid }원</span>
+								</div>
+								<c:if test="${auction.buyNow } != 0">
 									<div>
-										<img src="/usr/home/file/${file.id }">
+										<span>즉시구매가 : ${auction.buyNow }</span>
 									</div>
 								</c:if>
-							</c:forEach>
-							<div>
-								<span>${auction.name }</span>
-							</div>
-							<div>
-								<span>현재가 : ${auction.nowBid }</span>
-							</div>
-							<c:if test="${auction.buyNow } != 0">
 								<div>
-									<span>즉시구매가 : ${auction.buyNow }</span>
+									<span id="auctionId" data-id="${auction.id}"></span>
+									<span id="remainTime-${auction.id }"></span>
+							    </div>
+							 </div>
+						</c:forEach>
+					</c:if>
+					
+					<c:if test="${endStatus == '1'}">
+						<c:forEach var="auction" items="${auctionContents }">
+							<div class="contents-box">
+								<c:forEach var="file" items="${files }">
+									<c:if test="${cart.auctionId == file.auctionId }">
+										<a href="detail?id=${realTime.id }">
+											<img src="/usr/home/file/${file.id }">
+										</a>
+									</c:if>
+								</c:forEach>
+								<div>
+									<span>${auction.name }</span>
 								</div>
-							</c:if>
-							<div>
-								<span id="auctionId" data-id="${auction.id}"></span>
-								<span id="remainTime-${auction.id }"></span>
-						    </div>
-						 </div>
+								<div>
+									<span>낙찰가 : ${auction.endBid }원</span>
+								</div>
+								<div>
+									<span>최종입찰건수 : ${auction.bidCount }회</span>
+								</div>
+								<div>
+									<span>종료일시 : ${auction.endDate }</span>
+							    </div>
+							 </div>
 						
-						   <script>
+						   	<script>
 						   		const auctionId = document.getElementById('auctionId').getAttribute('data-id');
 
 						   		const socket = new WebSocket("ws://localhost:8081/auctionSocket?auctionId=" + auctionId);						   		
@@ -89,7 +116,8 @@
 							        }
 							    }
 							</script>
-					</c:forEach>
+						</c:forEach>
+					</c:if>
 				</div>
 			</div>
 			
