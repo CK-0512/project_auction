@@ -50,15 +50,8 @@ public class FileService {
 		file.transferTo(new File(savedPath));
 	}
 
-	public List<FileVO> getContentsFirstFile(int auctionType, List<Auction> auctionContents) {
-		
-		List<FileVO> files = new ArrayList<>();
-		
-		for (Auction auctionContent : auctionContents) {
-			files.add(fileDao.getContentsFirstFile(auctionType, auctionContent.getId()));
-		}
-		
-		return files;
+	public FileVO getContentsFirstFile(int auctionType, int id) {
+		return fileDao.getContentsFirstFile(auctionType, id);
 	}
 
 	public FileVO getFileById(int id) {

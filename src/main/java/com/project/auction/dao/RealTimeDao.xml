@@ -3,6 +3,39 @@
 
 <mapper namespace="com.project.auction.dao.RealTimeDao">
 
+	<select id="getRealTimeCnt" resultType="int">
+		SELECT COUNT(*)
+			FROM realTimeAuction
+			WHERE endStatus = #{endStatus}
+			AND confirmStatus = #{confirmStatus}
+			<if test="categoryId != 0">
+				AND categoryId = #{categoryId}
+			</if>
+			<if test="searchKeyword != ''">
+				AND (
+						`name` LIKE CONCAT('%', #{searchKeyword}, '%')
+						OR `description` LIKE CONCAT('%', #{searchKeyword}, '%')
+					)
+			</if>
+	</select>
+
+	<select id="getRealTimeContents" resultType="RealTime">
+		SELECT *
+			FROM realTimeAuction
+		    WHERE endStatus = #{endStatus}
+		    AND confirmStatus = #{confirmStatus}
+		    	<if test="searchKeyword != ''">
+					AND (
+						`name` LIKE CONCAT('%', #{searchKeyword}, '%')
+						OR `description` LIKE CONCAT('%', #{searchKeyword}, '%')
+						)
+				</if>
+				<if test="categoryId != 0">
+					AND categoryId = #{categoryId}
+				</if>
+			LIMIT #{limitStart}, #{itemsInAPage}
+	</select>
+
 	<select id="getLastDateByMemberId" resultType="int">
 		SELECT FLOOR(TIMESTAMPDIFF(DAY, regDate, NOW())) 
 			FROM realTimeAuction
@@ -41,6 +74,21 @@
 				, `description` = #{description}
 				, startBid = #{startBid}
 				, bidIncrease = #{startBid} * 0.05
+	</update>
+	
+	<update id="confirmRealTime">
+		UPDATE realTimeAuction
+			SET updateDate = NOW()
+				, startDate = #{startDate}
+				, confirmStatus = 1;
+			WHERE id = #{id}
+	</update>
+	
+	<update id="rejectRealTime">
+		UPDATE realTimeAuction
+			SET updateDate = NOW()
+				, confirmStatus = 2;
+			WHERE id = #{id}
 	</update>
 	
 </mapper>

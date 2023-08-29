@@ -4,7 +4,7 @@
 <mapper namespace="com.project.auction.dao.FileDao">
 
 	<insert id="insertFileInfo">
-		INSERT INTO auctionFile
+		INSERT INTO productFile
 			SET regDate = NOW()
 				, auctionType = #{auctionType}
 				, auctionId = #{auctionId}
@@ -15,13 +15,13 @@
 	
 	<select id="getFileById" resultType="FileVO">
 		SELECT *
-			FROM auctionFile
+			FROM productFile
 			WHERE id = #{fileId}
 	</select>
 	
 	<select id="getContentsFiles" resultType="FileVO">
 		SELECT *
-			FROM auctionFile
+			FROM productFile
 			WHERE auctionId = #{auctionId}
 			<if test="auctionType != 0">
 				AND auctionType = #[auctionType}
@@ -30,10 +30,10 @@
 	
 	<select id="getContentsFirstFile" resultType="FIleVO">
 		SELECT *
-			FROM auctionFile
+			FROM productFile
 			WHERE auctionId = #{auctionId}
 			<if test="auctionType != 0">
-				AND auctionType = #[auctionType}
+				AND auctionType = #{auctionType}
 			</if>
 			LIMIT 1
 	</select>

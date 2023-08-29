@@ -10,17 +10,25 @@
 		let dateTimeInput = new Date(confirmForm.startDate.value);
 		let currentDateTime = new Date();
 		let minimumValidDate = new Date(currentDateTime);
-		minimumValidDate.set(currentDateTime.getDate() + 7);
+		minimumValidDate.set(currentDateTime.getDate() + 3);
 		
 		if(dateTimeInput < minimumValidDate) {
-			alert("경매 일시는 최소 일주일 이후로 설정이 가능합니다.");
+			alert("경매 시작은 오늘로부터 최소 3일 이후로 가능합니다.");
 			return;
 		}
 		
-		let confirmed = confirm("경매 일시는 " + dateTimeInput + " 입니다. 이 경매를 승인하시겠습니까?");
+		let confirmed = confirm("경매 일시는 " + dateTimeInput + " 입니다. 이 신청을 승인하시겠습니까?");
 		if (confirmed) {
 			confirmForm.action = "usr/realTime/doConfirm"
-			confirmForm.sumbit();
+			confirmForm.submit();
+		}
+	}
+	
+	function reject() {
+		let confirmed = confirm("정말 이 신청을 반려하시겠습니까?");
+		if (confirmed) {
+			confirmForm.action = "usr/realTime/doReject"
+			confirmForm.submit();
 		}
 	}
 </script>
@@ -43,27 +51,27 @@
 						</tr>
 						<tr>
 							<th>상품사진</th>
-							<td class="flex" colspan="3"><c:forEach var="file"
-									items="${files }">
+							<td class="flex" colspan="3"><c:forEach var="file" items="${files }">
 									<div>
 										<img src="/usr/home/file/${file.id }">
 									</div>
-								</c:forEach></td>
+								</c:forEach>
+							</td>
 						</tr>
-						<c:if test="${realTime.endStatus == 0 }">
-							<c:if test="${realTime.confirmStatus == 0 }">
+						<c:if test="${realTime.endStatus == '0' }">
+							<c:if test="${realTime.confirmStatus == '0' }">
 								<tr>
 									<th>등록일</th>
 									<td colspan="3">${realTime.regDate }</td>
 								</tr>
-								<c:if test="${rq.loginedMember.authLevel == 3 }">
+								<c:if test="${rq.loginedMember.authLevel == '3' }">
 									<tr>
 										<th>경매 시작일시</th>
 										<td><input name="startDate" type="datetime" /></td>
 									</tr>
 								</c:if>
 							</c:if>
-							<c:if test="${realTime.confirmStatus == 2 }">
+							<c:if test="${realTime.confirmStatus == '1' }">
 								<tr>
 									<th>경매 시작일시</th>
 									<td colspan="3">${realTime.startDate }</td>
@@ -74,7 +82,7 @@
 							<th>경매 시작가</th>
 							<td colspan="3">${realTime.startBid }원</td>
 						</tr>
-						<c:if test="${realTime.endStatus == 1 }">
+						<c:if test="${realTime.endStatus == '1' }">
 							<tr>
 								<th>낙찰가</th>
 								<td>${realTime.endBid }원</td>
@@ -106,6 +114,8 @@
 			<c:if test="${rq.loginedMember.authLebel == 3 }">
 				<a class="btn btn-accent btn-sm ml-1"
 					href="javascript:confirmApproval()">승인</a>
+				<a class="btn btn-accent btn-sm ml-1"
+					href="javascript:reject()">반려</a>
 			</c:if>
 		</div>
 	</div>

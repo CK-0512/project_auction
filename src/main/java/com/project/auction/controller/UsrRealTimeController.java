@@ -1,12 +1,14 @@
 package com.project.auction.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,59 +39,52 @@ public class UsrRealTimeController {
 		this.auctionType = 2;
 	}
 	
-//	@RequestMapping("/usr/realTime/list")
-//	public String showList(Model model, 
-//			@RequestParam(defaultValue = "0") int categoryId,
-//			@RequestParam(defaultValue = "0") int endStatus,
-//			@RequestParam(defaultValue = "1") int page,
-//			@RequestParam(defaultValue = "") String searchKeyword) {
-//
-//		if (page <= 0) {
-//			return rq.jsReturnOnView("페이지번호가 올바르지 않습니다");
-//		}
-//		
-//		List<Category> selectedCategory = categoryService.getCategoryById(categoryId);
-//
-//		if (selectedCategory.isEmpty()) {
-//			return rq.jsReturnOnView("존재하지 않는 카테고리입니다");
-//		}
-//		
-//		List<Category> categories = categoryService.getCategories(); 
-//
-//		int auctionCnt = auctionService.getAuctionCnt(categoryId, searchKeyword, endStatus);
-//		
-//		int itemsInAPage = 16;
-//		
-//		int pagesCnt = (int) Math.ceil((double) auctionCnt / itemsInAPage);
-//
-//		List<Auction> auctionContents = auctionService.getAuctionContents(categoryId, searchKeyword, endStatus, itemsInAPage, page);
-//
-//		List<FileVO> files = fileService.getAuctionContentsFirstFiles(auctionContents);
-//		
-//		for (Auction auction : auctionContents) {
-//	        long currentTimeMillis = System.currentTimeMillis();
-//	        long endTimeMillis = auction.getEndDate().getTime();
-//	        long remainingTime = (endTimeMillis - currentTimeMillis) / 1000;
-//
-//	        try {
-//				webSocketHandler.broadcastRemainingTime(auction.getId(), remainingTime);
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//	    }
-//		
-//		model.addAttribute("files", files);
-//		model.addAttribute("auctionContents", auctionContents);
-//		model.addAttribute("pagesCnt", pagesCnt);
-//		model.addAttribute("auctionCnt", auctionCnt);
-//		model.addAttribute("categories", categories);
-//		model.addAttribute("selectedCategory", selectedCategory);
-//		model.addAttribute("page", page);
-//		model.addAttribute("searchKeyword", searchKeyword);
-//		model.addAttribute("endStatus", endStatus);
-//
-//		return "usr/auction/list";
-//	}
+	@RequestMapping("/usr/realTime/list")
+	public String showList(Model model, 
+			@RequestParam(defaultValue = "0") int categoryId,
+			@RequestParam(defaultValue = "0") int endStatus,
+			@RequestParam(defaultValue = "1") int confirmStatus,
+			@RequestParam(defaultValue = "1") int page,
+			@RequestParam(defaultValue = "") String searchKeyword) {
+
+		if (page <= 0) {
+			return rq.jsReturnOnView("페이지번호가 올바르지 않습니다");
+		}
+		
+		List<Category> selectedCategory = categoryService.getCategoryById(categoryId);
+
+		if (selectedCategory.isEmpty()) {
+			return rq.jsReturnOnView("존재하지 않는 카테고리입니다");
+		}
+		
+		List<Category> categories = categoryService.getCategories(); 
+
+		int realTimeCnt = realTimeService.getRealTimeCnt(categoryId, searchKeyword, endStatus, confirmStatus);
+		
+		int itemsInAPage = 16;
+		
+		int pagesCnt = (int) Math.ceil((double) realTimeCnt / itemsInAPage);
+
+		List<RealTime> realTimeContents = realTimeService.getRealTimeContents(categoryId, searchKeyword, endStatus, confirmStatus, itemsInAPage, page);
+
+		List<FileVO> files = new ArrayList<>();
+ 		for(RealTime rt : realTimeContents) {
+ 			FileVO file = fileService.getContentsFirstFile(auctionType, rt.getId());
+ 			files.add(file);
+ 		}
+		
+		model.addAttribute("files", files);
+		model.addAttribute("realTimeContents", realTimeContents);
+		model.addAttribute("pagesCnt", pagesCnt);
+		model.addAttribute("realTimeCnt", realTimeCnt);
+		model.addAttribute("categories", categories);
+		model.addAttribute("selectedCategory", selectedCategory);
+		model.addAttribute("page", page);
+		model.addAttribute("searchKeyword", searchKeyword);
+		model.addAttribute("endStatus", endStatus);
+
+		return "usr/realTime/list";
+	}
 	
 	@RequestMapping("/usr/realTime/regist")
 	public String regist(Model model) {
@@ -162,6 +157,10 @@ public class UsrRealTimeController {
 			return rq.jsReturnOnView(Util.f("%d번 상품은 존재하지 않습니다", id));
 		}
 		
+		if (realTime.getConfirmStatus() != 0) {
+			return rq.jsReturnOnView(Util.f("해당 상품은 더 이상 수정이 불가능합니다", id));
+		}
+		
 		if (rq.getLoginedMemberId() != realTime.getMemberId()) {
 			return rq.jsReturnOnView("해당 상품에 대한 권한이 없습니다");
 		}
@@ -183,6 +182,10 @@ public class UsrRealTimeController {
 		if (realTime == null) {
 			return Util.jsHistoryBack(Util.f("%d번 상품은 존재하지 않습니다", id));
 		}
+		
+		if (realTime.getConfirmStatus() != 0) {
+			return rq.jsReturnOnView(Util.f("해당 상품은 더 이상 수정이 불가능합니다", id));
+		}
 
 		if (rq.getLoginedMemberId() != realTime.getMemberId()) {
 			return Util.jsHistoryBack("해당 상품에 대한 권한이 없습니다");
@@ -191,5 +194,43 @@ public class UsrRealTimeController {
 		realTimeService.modifyRealTime(id, categoryId, startBid, name, body);
 
 		return Util.jsReplace(Util.f("%s 상품이 수정되었습니다", realTime.getName()), Util.f("detail?id=%d", id));
+	}
+	
+	@RequestMapping("/usr/realTime/doConfirm")
+	@ResponseBody
+	public String doConfirm(int id, String startDate) {
+
+		RealTime realTime = realTimeService.getRealTimeById(id);
+
+		if (realTime == null) {
+			return Util.jsHistoryBack(Util.f("%d번 상품은 존재하지 않습니다", id));
+		}
+
+		if (rq.getLoginedMember().getAuthLevel() != 3) {
+			return Util.jsHistoryBack("해당 기능의 권한이 없습니다");
+		}
+
+		realTimeService.confirmRealTime(id, startDate);
+
+		return Util.jsReplace(Util.f("%s 상품이 경매 대기열에 등록되었습니다", realTime.getName()), Util.f("detail?id=%d", id));
+	}
+	
+	@RequestMapping("/usr/realTime/doReject")
+	@ResponseBody
+	public String doReject(int id) {
+
+		RealTime realTime = realTimeService.getRealTimeById(id);
+
+		if (realTime == null) {
+			return Util.jsHistoryBack(Util.f("%d번 상품은 존재하지 않습니다", id));
+		}
+
+		if (rq.getLoginedMember().getAuthLevel() != 3) {
+			return Util.jsHistoryBack("해당 기능의 권한이 없습니다");
+		}
+
+		realTimeService.rejectRealTime(id);
+
+		return Util.jsReplace(Util.f("%s 상품이 반려되었습니다", realTime.getName()), Util.f("list?confirmStatus=0"));
 	}
 }

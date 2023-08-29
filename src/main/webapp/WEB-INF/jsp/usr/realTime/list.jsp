@@ -7,11 +7,12 @@
 
 	<section class="mt-8">
 		<div class="container mx-auto">
+			<c:if test="${rq.loginedMember.authLevel == '3' }">
+				<div>
+					<a href="list?confirmStatus=0" class="${confirmStatus == '0' ? 'selected' : ''}">승인 대기중</a>
+				</div>
+			</c:if>
 			<div>
-				<c:if test="${rq.loginedMember.authLevel == 3 }">
-					<a href="list?endStatus=0&confirmStatus=0" class="${confirmStatus == '0' ? 'selected' : ''}">승인 대기중</a>
-					<span>|</span>
-				</c:if>
 				<a href="list?endStatus=0" class="${endStatus == '0' ? 'selected' : ''}">대기중인 경매</a>
 				<span>|</span>
 				<a href="list?endStatus=1" class="${endStatus == '1' ? 'selected' : ''}">진행중인 경매</a>
@@ -51,7 +52,7 @@
 										<span>${realTime.name }</span>
 									</div>
 									<div>
-										<span>신청인 : ${realTime.memberName }</span>
+										<span>신청자 : ${realTime.memberName }</span>
 									</div>
 								 </div>
 							</c:forEach>

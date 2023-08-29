@@ -113,7 +113,7 @@ CREATE TABLE reactionPoint (
 );
 
 
-CREATE TABLE auctionFile (
+CREATE TABLE productFile (
     id INT AUTO_INCREMENT PRIMARY KEY,
     regDate DATETIME NOT NULL,
     auctionType TINYINT UNSIGNED NOT NULL COMMENT '경매 종류 (온라인 경매 = 1, 실시간 경매 = 2)',
@@ -175,7 +175,7 @@ CREATE TABLE realTime (
     bidIncrease INT UNSIGNED NOT NULL,
     endBid INT UNSIGNED NOT NULL,
     bidCount INT UNSIGNED NOT NULL DEFAULT 0,
-    confirmStatus TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '승인여부 (진행중 = 0, 거부됨 = 1, 승인됨 = 2)',
+    confirmStatus TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '승인여부 (진행중 = 0, 승인됨 = 1, 거부됨 = 2)',
     endStatus TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '종료여부 (진행중 = 0, 종료 = 1)',
     buyerId INT UNSIGNED NOT NULL DEFAULT 0
 );
