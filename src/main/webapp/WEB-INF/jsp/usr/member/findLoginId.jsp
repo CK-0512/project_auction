@@ -5,7 +5,7 @@
 <c:set var="pageTitle" value="Find LoginId" />
 <%@ include file="../common/commonHead.jsp" %>
 
-	<section class="mt-8">
+	<section>
 		<div class="container mx-auto">
 			<form action="doFindLoginId" method="POST">
 				<div class="table-box-type-1">

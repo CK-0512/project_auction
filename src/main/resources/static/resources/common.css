@@ -28,6 +28,10 @@ html[data-theme="dark"] .theme-toggle .fa-regular {
 	display: none;
 }
 
+section {
+	margin-top: 6rem;
+}
+
 .table-box-type-1 > table {
 	width: 100%;
 }

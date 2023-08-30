@@ -5,7 +5,7 @@
 <c:set var="pageTitle" value="온라인 경매" />
 <%@ include file="../common/commonHead.jsp" %>
 
-	<section class="mt-8">
+	<section>
 		<div class="container mx-auto">
 			<div>
 				<a href="list?endStatus=0" class="${endStatus == '0' ? 'selected' : ''}">진행중인 경매</a>

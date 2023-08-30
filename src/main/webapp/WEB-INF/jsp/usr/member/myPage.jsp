@@ -5,7 +5,7 @@
 <c:set var="pageTitle" value="myPage" />
 <%@ include file="../common/commonHead.jsp" %>
 
-	<section class="mt-8">
+	<section>
 		<div class="container mx-auto">
 			<div class="table-box-type-1">
 				<table class="table">

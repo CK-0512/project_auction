@@ -26,7 +26,7 @@
     });
 </script>
 
-<section class="mt-8">
+<section>
 	<div class="container mx-auto">
 		<form action="doCharge" method="POST" onSubmit="charge_submitForm(this); return false;">
 			<div class="table-box-type-1">

@@ -5,7 +5,7 @@
 <c:set var="pageTitle" value="온라인 경매" />
 <%@ include file="../common/commonHead.jsp" %>
 
-	<section class="mt-8">
+	<section>
 		<div class="container mx-auto">
 			<c:if test="${rq.loginedMember.authLevel == '3' }">
 				<div>

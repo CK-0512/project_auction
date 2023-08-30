@@ -52,7 +52,7 @@
 	}
 </script>
 
-	<section class="mt-8">
+	<section>
 		<div class="container mx-auto">
 			<form action="doRegist" method="POST" onsubmit="regist_submitForm(this); return false;" enctype="multipart/form-data">
 				<input type="hidden" name="body" />

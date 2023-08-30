@@ -136,7 +136,7 @@ public class UsrRealTimeController {
 		
 	}
 	
-	@RequestMapping("/usr/auction/detail")
+	@RequestMapping("/usr/realTime/detail")
 	public String showDetail(Model model, int id) {
 		RealTime realTime = realTimeService.getRealTimeById(id);
 		

@@ -5,7 +5,7 @@
 <c:set var="pageTitle" value="CK Auction" />
 <%@ include file="../common/commonHead.jsp" %>
 	
-	<section class="mt-8">
+	<section>
 		<div class="container mx-auto">
 			<div class="text-center font-extrabold text-5xl italic">C K A</div>
 			<div class="flex">

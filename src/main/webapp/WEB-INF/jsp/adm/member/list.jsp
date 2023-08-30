@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="pageTitle" value="Admin Page - MemberList" />
 <%@ include file="../../usr/common/commonHead.jsp" %>
-	<section class="mt-8 text-xl">
+	<section class="text-xl">
 		<div class="container mx-auto px-3">
 			<div class="mb-2 flex justify-between items-end">
 				<div><span>회원수 : ${membersCnt }명</span></div>

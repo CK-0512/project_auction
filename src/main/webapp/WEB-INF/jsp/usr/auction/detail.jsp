@@ -48,7 +48,7 @@
 	}
 </script>
 
-	<section class="mt-8">
+	<section>
 		<div class="container mx-auto pb-5 border-bottom-line">
 			<div class="table-box-type-1">
 				<form method="post" name="auctionForm">

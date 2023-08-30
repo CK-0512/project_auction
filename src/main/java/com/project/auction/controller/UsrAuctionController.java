@@ -1,6 +1,7 @@
 package com.project.auction.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +14,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.project.auction.handler.WebSocketHandler;
 import com.project.auction.service.AuctionService;
+import com.project.auction.service.CartService;
 import com.project.auction.service.CategoryService;
 import com.project.auction.service.FileService;
 import com.project.auction.service.MemberService;
-import com.project.auction.service.CartService;
 import com.project.auction.util.Util;
 import com.project.auction.vo.Auction;
 import com.project.auction.vo.Category;
@@ -74,8 +75,12 @@ public class UsrAuctionController {
 
 		List<Auction> auctionContents = auctionService.getAuctionContents(categoryId, searchKeyword, endStatus, itemsInAPage, page);
 		
-		List<FileVO> files = fileService.getContentsFirstFile(auctionType, auctionContents);
-		
+		List<FileVO> files = new ArrayList<>();
+ 		for(Auction auction : auctionContents) {
+ 			FileVO file = fileService.getContentsFirstFile(auctionType, auction.getId());
+ 			files.add(file);
+ 		}
+ 		
 		for (Auction auction : auctionContents) {
 	        long currentTimeMillis = System.currentTimeMillis();
 	        long endTimeMillis = auction.getEndDate().getTime();

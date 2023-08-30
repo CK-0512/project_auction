@@ -5,7 +5,7 @@
 
 <%@ include file="../common/commonHead.jsp" %>
 
-	<section class="mt-8">
+	<section>
 		<div class="container mx-auto">
 			<form action="doLogin" method="POST">
 				<div class="table-box-type-1">

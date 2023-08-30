@@ -26,7 +26,7 @@
 	}
 </script>
 
-	<section class="mt-8">
+	<section>
 		<div class="container mx-auto">
 			<form action="doModify" method="POST" onsubmit="modify_submitForm(this); return false;" enctype="multipart/form-data">
 				<input type="hidden" name="id" value="${auction.id }"/>

@@ -3,10 +3,12 @@ package com.project.auction.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.project.auction.dao.RealTimeDao;
 import com.project.auction.vo.RealTime;
 
+@Service
 public class RealTimeService {
 	
 	private RealTimeDao realTimeDao;

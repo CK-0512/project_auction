@@ -30,7 +30,7 @@
 </head>
 <body>
 
-	<div class="navbar bg-base-300 static rounded-3xl ">
+	<div class="navbar bg-base-300 fixed rounded-3xl top-0">
 		<div class="navbar-start">
 			<div class="dropdown">
 				<label tabindex="0" class="btn btn-ghost btn-circle"> <svg

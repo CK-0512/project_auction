@@ -5,7 +5,7 @@
 <c:set var="pageTitle" value="Password Check" />
 <%@ include file="../common/commonHead.jsp" %>
 
-	<section class="mt-8">
+	<section>
 		<div class="container mx-auto">
 			<form action="doPasswordChk" method="POST">
 				<div class="table-box-type-1">

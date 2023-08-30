@@ -5,7 +5,7 @@
 <c:set var="pageTitle" value="Find LoginPw" />
 <%@ include file="../common/commonHead.jsp" %>
 
-	<section class="mt-8">
+	<section>
 		<div class="container mx-auto">
 			<form action="doFindLoginPw" method="POST">
 				<div class="table-box-type-1">
