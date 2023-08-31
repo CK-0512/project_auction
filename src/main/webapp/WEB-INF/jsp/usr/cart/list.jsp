@@ -55,7 +55,7 @@
 
 							<script>
 								let remainingTime = calculateRemainingTime();
-								
+	
 								function calculateRemainingTime() {
 								    const currentTime = new Date();
 								    const endDateString = "${cart.endDate}";
@@ -70,22 +70,22 @@
 								    // Use setTimeout or setInterval to update it periodically
 								};
 								
-						   		const auctionId = document.getElementById('auctionId').getAttribute('data-id');
+						   		let auctionId = "${cart.auctionId}"
 
 						   		const auctionSocket = new WebSocket("ws://localhost:8081/webSocket/auction?auctionId=" + auctionId);						   		
 							    
 						   		auctionSocket.onopen = () => {
 						   		    console.log('Info : connection opened.');
-						   		 	const message = JSON.stringify({
+						   		 	/*const message = JSON.stringify({
 							            auctionId: auctionId,
 							            remainingTime: remainingTime
-							        });
-						   		 	const timerSpan = document.getElementById(`remainTime-${auctionId}`);
-							        if (timerSpan) {
+							        });*/
+							        const timerId = "remainTime-" + auctionId;
+						   		 	const timerSpan = document.getElementById(timerId);
+						   		 	if (timerSpan) {
 							            updateCountdownTimer(timerSpan, remainingTime);
 							        }
-							        updateCountdownTimer(timerSpan, remainingTime);
-						   		 	auctionSocket.send(message);
+						   		 	//auctionSocket.send(message);
 						   		};
 						   		
 						   		auctionSocket.onclose = function (event) {
@@ -114,8 +114,9 @@
 								        const minutes = Math.floor((remainingTime % (60 * 60)) / 60);
 								        const seconds = remainingTime % 60;
 	
-								        element.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-	
+
+								        element.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+								        
 								        remainingTime--;
 								        
 								        if (remainingTime >= 0) {
