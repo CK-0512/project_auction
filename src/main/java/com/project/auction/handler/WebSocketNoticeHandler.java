@@ -1,6 +1,5 @@
 package com.project.auction.handler;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,31 +14,14 @@ import org.springframework.web.socket.handler.AbstractWebSocketHandler;
 import com.project.auction.util.Util;
 
 @Component
-public class WebSocketHandler extends AbstractWebSocketHandler {
+public class WebSocketNoticeHandler extends AbstractWebSocketHandler {
 	
-	List<WebSocketSession> sessions = new ArrayList<>();
-	Map<String, WebSocketSession> userSessions = new HashMap<>();
-//    private Map<Integer, WebSocketSession> auctionSessions = new ConcurrentHashMap<>();
+	private List<WebSocketSession> sessions = new ArrayList<>();
+	private Map<String, WebSocketSession> userSessions = new HashMap<>();
 	
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-//    	URI uri = session.getUri();
-//        String query = uri.getQuery();
-//        int auctionId = 0;
-//
-//        if (query != null) {
-//            String[] queryParams = query.split("&");
-//            for (String param : queryParams) {
-//                String[] pair = param.split("=");
-//                if (pair.length == 2 && pair[0].equals("auctionId")) {
-//                    auctionId = Integer.parseInt(pair[1]);
-//                    break;
-//                }
-//            }
-//        }
-//
-//        session.getAttributes().put("auctionId", auctionId);
-    	
+
     	System.out.println("afterConnectionEstablished:" + session);
     	sessions.add(session);
         String senderId = sendPushUserId(session);
@@ -81,22 +63,9 @@ public class WebSocketHandler extends AbstractWebSocketHandler {
 		}
 		return loginUserId;
 	}
-
-    public void broadcastRemainingTime(int auctionId, long remainingTime) throws IOException {
-        TextMessage message = new TextMessage(
-                "{\"remainingTime\": " + remainingTime + "}"
-        );
-
-//        WebSocketSession session = auctionSession.get(auctionId);
-//        if (session != null && session.isOpen()) {
-//            session.sendMessage(message);
-//        }
-    }
     
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-//        String auctionId = (String) session.getAttributes().get("auctionId");
-//        auctionSessions.remove(auctionId);
         String senderId = sendPushUserId(session);
         sessions.remove(session);
         if (senderId != null) {

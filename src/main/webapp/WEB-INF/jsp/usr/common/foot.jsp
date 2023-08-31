@@ -10,7 +10,7 @@
 	
 	function connectWS () {
 		console.log("tttttttt");
-		var ws = new WebSocket("ws://localhost:8081/auctionSocket");
+		var ws = new WebSocket("ws://localhost:8081/webSocket/notice");
 		noticeSocket = ws;
 		
 		ws.onopen = function () {

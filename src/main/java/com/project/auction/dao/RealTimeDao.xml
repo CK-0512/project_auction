@@ -82,6 +82,7 @@
 				, `description` = #{description}
 				, startBid = #{startBid}
 				, bidIncrease = #{startBid} * 0.05
+			WHERE id = #{id}
 	</update>
 	
 	<delete id="deleteRealTime">
@@ -93,14 +94,14 @@
 		UPDATE realTimeAuction
 			SET updateDate = NOW()
 				, startDate = #{startDate}
-				, confirmStatus = 1;
+				, confirmStatus = 1
 			WHERE id = #{id}
 	</update>
 	
 	<update id="rejectRealTime">
 		UPDATE realTimeAuction
 			SET updateDate = NOW()
-				, confirmStatus = 2;
+				, confirmStatus = 2
 			WHERE id = #{id}
 	</update>
 	

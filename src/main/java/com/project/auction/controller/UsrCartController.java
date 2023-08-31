@@ -1,6 +1,5 @@
 package com.project.auction.controller;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.project.auction.handler.WebSocketHandler;
+import com.project.auction.handler.WebSocketAuctionHandler;
 import com.project.auction.service.CartService;
 import com.project.auction.service.FileService;
 import com.project.auction.vo.Cart;
@@ -22,16 +21,16 @@ public class UsrCartController {
 	private CartService cartService;
 	private FileService fileService;
 	private Rq rq;
-	private WebSocketHandler webSocketHandler;
+	private WebSocketAuctionHandler webSocketAuctionHandler;
 	private int auctionType;
 	
 	@Autowired
-	public UsrCartController(CartService cartService, FileService fileService, Rq rq, WebSocketHandler webSocketHandler) {
+	public UsrCartController(CartService cartService, FileService fileService, Rq rq, WebSocketAuctionHandler webSocketAuctionHandler) {
 		this.cartService = cartService;
 		this.fileService = fileService;
 		this.rq = rq;
-		this.webSocketHandler = webSocketHandler;
-		this.auctionType = 0;
+		this.webSocketAuctionHandler = webSocketAuctionHandler;
+		this.auctionType = 1;
 	}
 	
 	@RequestMapping("/usr/cart/list")
@@ -57,17 +56,17 @@ public class UsrCartController {
 
 		List<FileVO> files = fileService.getCartsFirstFile(auctionType, carts);
 		
-		for (Cart cart: carts) {
-	        long currentTimeMillis = System.currentTimeMillis();
-	        long endTimeMillis = cart.getEndDate().getTime();
-	        long remainingTime = (endTimeMillis - currentTimeMillis) / 1000;
-
-	        try {
-				webSocketHandler.broadcastRemainingTime(cart.getId(), remainingTime);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-	    }
+//		for (Cart cart: carts) {
+//	        long currentTimeMillis = System.currentTimeMillis();
+//	        long endTimeMillis = cart.getEndDate().getTime();
+//	        long remainingTime = (endTimeMillis - currentTimeMillis) / 1000;
+//
+//	        try {
+//	        	webSocketAuctionHandler.broadcastRemainingTime(cart.getAuctionId(), remainingTime);
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//	    }
 		
 		model.addAttribute("files", files);
 		model.addAttribute("carts", carts);

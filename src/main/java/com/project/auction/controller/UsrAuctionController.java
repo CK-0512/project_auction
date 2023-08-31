@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.project.auction.handler.WebSocketHandler;
+import com.project.auction.handler.WebSocketAuctionHandler;
 import com.project.auction.service.AuctionService;
 import com.project.auction.service.CartService;
 import com.project.auction.service.CategoryService;
@@ -33,18 +33,18 @@ public class UsrAuctionController {
 	private MemberService memberService;
 	private CartService cartService;
 	private Rq rq;
-    private WebSocketHandler webSocketHandler;
+    private WebSocketAuctionHandler webSocketAuctionHandler;
     private int auctionType;
 	
 	@Autowired
-	public UsrAuctionController(AuctionService auctionService, CategoryService categoryService, FileService fileService, MemberService memberService, CartService cartService, Rq rq, WebSocketHandler webSocketHandler) {
+	public UsrAuctionController(AuctionService auctionService, CategoryService categoryService, FileService fileService, MemberService memberService, CartService cartService, Rq rq, WebSocketAuctionHandler webSocketAuctionHandler) {
 		this.auctionService = auctionService;
 		this.categoryService = categoryService;
 		this.fileService = fileService;
 		this.memberService = memberService;
 		this.cartService = cartService;
 		this.rq = rq;
-        this.webSocketHandler = webSocketHandler;
+        this.webSocketAuctionHandler = webSocketAuctionHandler;
         this.auctionType = 1;
 	}
 	
@@ -87,7 +87,7 @@ public class UsrAuctionController {
 	        long remainingTime = (endTimeMillis - currentTimeMillis) / 1000;
 
 	        try {
-				webSocketHandler.broadcastRemainingTime(auction.getId(), remainingTime);
+				webSocketAuctionHandler.broadcastRemainingTime(auction.getId(), remainingTime);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

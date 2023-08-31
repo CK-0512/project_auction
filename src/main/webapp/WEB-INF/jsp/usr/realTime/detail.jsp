@@ -18,7 +18,7 @@
 		let dateTimeInput = new Date(confirmForm.startDate.value);
 		let currentDateTime = new Date();
 		let minimumValidDate = new Date(currentDateTime);
-		minimumValidDate.set(currentDateTime.getDate() + 3);
+		minimumValidDate.setDate(minimumValidDate.getDate() + 3);
 		
 		if(dateTimeInput < minimumValidDate) {
 			alert("경매 시작은 오늘로부터 최소 3일 이후로 가능합니다.");
@@ -85,7 +85,7 @@
 								<c:if test="${rq.loginedMember.authLevel == '3' }">
 									<tr>
 										<th>경매 시작일시</th>
-										<td><input name="startDate" type="datetime" /></td>
+										<td><input name="startDate" type="datetime-local" /></td>
 									</tr>
 								</c:if>
 							</c:if>

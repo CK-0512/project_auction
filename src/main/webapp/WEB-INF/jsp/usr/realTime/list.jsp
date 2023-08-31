@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<c:set var="pageTitle" value="온라인 경매" />
+<c:set var="pageTitle" value="실시간 경매" />
 <%@ include file="../common/commonHead.jsp" %>
 
 	<section>
@@ -42,7 +42,7 @@
 							<c:forEach var="realTime" items="${realTimeContents }">
 								<div class="contents-box">
 									<c:forEach var="file" items="${files }">
-										<c:if test="${cart.auctionId == file.auctionId }">
+										<c:if test="${realTime.id == file.auctionId }">
 											<a href="detail?id=${realTime.id }">
 												<img src="/usr/home/file/${file.id }">
 											</a>
@@ -61,7 +61,7 @@
 							<c:forEach var="realTime" items="${realTimeContents }">
 								<div class="contents-box">
 									<c:forEach var="file" items="${files }">
-										<c:if test="${cart.auctionId == file.auctionId }">
+										<c:if test="${realTime.id == file.auctionId }">
 											<a href="detail?id=${realTime.id }">
 												<img src="/usr/home/file/${file.id }">
 											</a>
@@ -83,7 +83,7 @@
 							<c:forEach var="realTime" items="${realTimeContents }">
 								<div class="contents-box">
 									<c:forEach var="file" items="${files }">
-										<c:if test="${cart.auctionId == file.auctionId }">
+										<c:if test="${realTime.id == file.auctionId }">
 											<a href="detail?id=${realTime.id }">
 												<img src="/usr/home/file/${file.id }">
 											</a>
@@ -105,7 +105,7 @@
 							<c:forEach var="realTime" items="${realTimeContents }">
 								<div class="contents-box">
 									<c:forEach var="file" items="${files }">
-										<c:if test="${cart.auctionId == file.auctionId }">
+										<c:if test="${realTime.id == file.auctionId }">
 											<a href="detail?id=${realTime.id }">
 												<img src="/usr/home/file/${file.id }">
 											</a>

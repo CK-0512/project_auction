@@ -68,7 +68,7 @@
 		    return;
 		}
 		
-		form.startBid.value = form.startBid.value.trim();
+		startBid = form.startBid.value = form.startBid.value.trim();
 		if (!form.startBid.value) {
 			alert('경매 시작가를 설정해주세요.');
 			form.startBid.focus();
@@ -91,10 +91,11 @@
   	  	}
   	  
   	  	form.body.value = markdown;
+  	  	
+  	  	buyNow = form.buyNow.value;
   	 	
-  	 	let confirmMessage = "상품의 경매 시작가는 " + form.startBid.value +
-        					"원, 경매 기간은 " + selectedDate.value + "일" + if(form.buyNow.value.trim()) {return ", 즉시 구매가는 " +
-            					form.buyNow.value + "원"} +"입니다. 이대로 등록하시겠습니까?";
+  	  	let confirmMessage = "상품의 경매 시작가는 " + startBid + "원, 경매 기간은 " + selectedDate.value + "일" + 
+  	  						(buyNow ? ", 즉시 구매가는 " + buyNow + "원" : "") + "입니다. 이대로 등록하시겠습니까?";
   	 	if (!confirm(confirmMessage)) {
   	 		return;
   	 	}
@@ -143,7 +144,7 @@
 								</td>
 								<th>즉시 구매가</th>
 								<td>
-									<input class="input input-bordered input-accent text-right" type="text" name="buyNow" onblur="setCharge();" placeholder="0"/> 원
+									<input class="input input-bordered input-accent text-right" type="text" name="buyNow" onblur="setCharge()" placeholder="0"/> 원
 								</td>
 							</tr>
 							<tr>

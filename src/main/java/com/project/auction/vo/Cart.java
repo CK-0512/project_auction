@@ -1,7 +1,5 @@
 package com.project.auction.vo;
 
-import java.sql.Date;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +11,7 @@ public class Cart {
 	private int id;
 	private String regDate;
 	private String updateDate;
-	private Date endDate;
+	private String endDate;
 	private int auctionId;
 	private int memberId;
 	private String name;

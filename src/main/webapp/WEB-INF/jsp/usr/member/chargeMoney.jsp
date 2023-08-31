@@ -11,11 +11,14 @@
 	function charge_submitForm(form) {
 		
 		form.money.value = form.money.value.trim();
-		if (!form.money.value.length) {
+		if (!form.money.value) {
 			alert('금액을 입력해주세요');
 			form.money.focus();
 			return;
 		}
+		
+		form.submit();
+		window.opener.location.reload();
 	}
 	
 	document.addEventListener('DOMContentLoaded', function () {

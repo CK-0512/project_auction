@@ -46,7 +46,7 @@
 			INNER JOIN auction AS A
 			ON C.auctionId = A.id
 			WHERE C.memberId = #{memberId}
-			AND endStatus = #{endStatus}
+			AND C.endStatus = #{endStatus}
 				<if test="searchKeyword != ''">
 					AND (
 						`name` LIKE CONCAT('%', #{searchKeyword}, '%')
