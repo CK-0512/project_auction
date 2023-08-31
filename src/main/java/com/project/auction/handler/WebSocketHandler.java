@@ -19,8 +19,6 @@ public class WebSocketHandler extends AbstractWebSocketHandler {
 	
 	List<WebSocketSession> sessions = new ArrayList<>();
 	Map<String, WebSocketSession> userSessions = new HashMap<>();
-	Map<String, List<WebSocketSession>> boardWriterSessions = new HashMap<>();
-
 //    private Map<Integer, WebSocketSession> auctionSessions = new ConcurrentHashMap<>();
 	
     @Override
@@ -43,18 +41,16 @@ public class WebSocketHandler extends AbstractWebSocketHandler {
 //        session.getAttributes().put("auctionId", auctionId);
     	
     	System.out.println("afterConnectionEstablished:" + session);
-		sessions.add(session);
-		String senderId = sendPushUsername(session);
-		userSessions.put(senderId, session);
+    	sessions.add(session);
+        String senderId = sendPushUserId(session);
+        if (senderId != null) {
+            userSessions.put(senderId, session);
+        }
     }
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		System.out.println("handleTextMessage:" + session + " : " + message);
-//		String senderId = getId(session);
-//		for (WebSocketSession sess: sessions) {
-//			sess.sendMessage(new TextMessage(senderId + ": " + message.getPayload()));
-//		}
 
 		//protocol: cmd,상품,관심유저,id  (ex: realTime,realTimeContent1,user1,234)
 		String msg = message.getPayload();
@@ -68,26 +64,22 @@ public class WebSocketHandler extends AbstractWebSocketHandler {
 
 				WebSocketSession userSession = userSessions.get(reciveUser);
 				if ("realTime".equals(cmd) && userSession != null) {
-					TextMessage tmpMsg = new TextMessage("<a href='/usr/auction/?id=" + id + "'>" + realTimeContent + "</a> 상품이 등록되었습니다.");
+					TextMessage tmpMsg = new TextMessage("<a href='usr/realTime/?id=" + id + "'>" + realTimeContent + "</a> 상품이 등록되었습니다.");
 					userSession.sendMessage(tmpMsg);
 				}
 			}
 		}
 	}
-    
-    public void addBoardWriterSession(String boardWriter, WebSocketSession session) {
-        boardWriterSessions.computeIfAbsent(boardWriter, key -> new ArrayList<>()).add(session);
-    }
-    
-    private String sendPushUsername(WebSocketSession session) {
-		String loginUsername;
+
+    private String sendPushUserId(WebSocketSession session) {
+		String loginUserId;
 		
 		if (session.getPrincipal() == null) {
-			loginUsername = null;
+			loginUserId = null;
 		} else {
-			loginUsername = session.getPrincipal().getName();
+			loginUserId = session.getPrincipal().getName();
 		}
-		return loginUsername;
+		return loginUserId;
 	}
 
     public void broadcastRemainingTime(int auctionId, long remainingTime) throws IOException {
@@ -105,11 +97,11 @@ public class WebSocketHandler extends AbstractWebSocketHandler {
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 //        String auctionId = (String) session.getAttributes().get("auctionId");
 //        auctionSessions.remove(auctionId);
-        String senderId = sendPushUsername(session);
+        String senderId = sendPushUserId(session);
         sessions.remove(session);
-        userSessions.remove(senderId);
-
-        boardWriterSessions.forEach((key, value) -> value.removeIf(s -> s.equals(session)));
+        if (senderId != null) {
+            userSessions.remove(senderId);
+        }
     }
 
 }

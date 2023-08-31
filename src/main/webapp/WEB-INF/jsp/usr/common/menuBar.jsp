@@ -30,7 +30,7 @@
 </head>
 <body>
 
-	<div class="navbar bg-base-300 fixed rounded-3xl top-0">
+	<div class="navbar bg-base-300 fixed rounded-3xl top-0 z-10">
 		<div class="navbar-start">
 			<div class="dropdown">
 				<label tabindex="0" class="btn btn-ghost btn-circle"> <svg
@@ -42,7 +42,7 @@
 				<ul tabindex="0"
 					class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-28">
 					<li><a href="/usr/auction/list">온라인 경매</a></li>
-					<li><a href="/usr/realtime/list">실시간 경매</a></li>
+					<li><a href="/usr/realTime/list">실시간 경매</a></li>
 					<li><a href="/usr/article/list">자유 게시판</a></li>
 				</ul>
 			</div>

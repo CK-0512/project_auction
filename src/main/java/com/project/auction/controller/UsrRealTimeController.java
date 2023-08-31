@@ -82,6 +82,7 @@ public class UsrRealTimeController {
 		model.addAttribute("page", page);
 		model.addAttribute("searchKeyword", searchKeyword);
 		model.addAttribute("endStatus", endStatus);
+		model.addAttribute("confirmStatus", confirmStatus);
 
 		return "usr/realTime/list";
 	}
@@ -115,10 +116,15 @@ public class UsrRealTimeController {
 			return Util.jsHistoryBack("경매 시작가를 입력해주세요");
 		}
 		
-		int isExist = realTimeService.getLastDateByMemberId(rq.getLoginedMemberId());
+		int isExist = realTimeService.isExist(rq.getLoginedMemberId());
+		int lastDate = 7;
 		
-		if (isExist < 7) {
-			return Util.jsHistoryBack("마지막 등록일로부터 일주일이 경과되지 않았습니다.");
+		if (isExist != 0) {
+			lastDate = realTimeService.getLastDateByMemberId(rq.getLoginedMemberId());
+		}
+		
+		if (lastDate < 7) {
+			return Util.jsReplace(Util.f("마지막 등록일로부터 일주일이 경과되지 않아 %d일 후에 등록이 가능합니다.", 7 - lastDate), "list");
 		}
 
 		
@@ -184,7 +190,7 @@ public class UsrRealTimeController {
 		}
 		
 		if (realTime.getConfirmStatus() != 0) {
-			return rq.jsReturnOnView(Util.f("해당 상품은 더 이상 수정이 불가능합니다", id));
+			return rq.jsReturnOnView("해당 상품은 더 이상 수정이 불가능합니다");
 		}
 
 		if (rq.getLoginedMemberId() != realTime.getMemberId()) {
@@ -194,6 +200,29 @@ public class UsrRealTimeController {
 		realTimeService.modifyRealTime(id, categoryId, startBid, name, body);
 
 		return Util.jsReplace(Util.f("%s 상품이 수정되었습니다", realTime.getName()), Util.f("detail?id=%d", id));
+	}
+	
+	@RequestMapping("/usr/realTime/doDelete")
+	@ResponseBody
+	public String doDelete(int id) {
+
+		RealTime realTime = realTimeService.getRealTimeById(id);
+
+		if (realTime == null) {
+			return Util.jsHistoryBack(Util.f("%d번 상품은 존재하지 않습니다", id));
+		}
+		
+		if (realTime.getConfirmStatus() != 0) {
+			return rq.jsReturnOnView("해당 상품은 더 이상 삭제가 불가능합니다");
+		}
+
+		if (rq.getLoginedMemberId() != realTime.getMemberId()) {
+			return Util.jsHistoryBack("해당 상품에 대한 권한이 없습니다");
+		}
+
+		realTimeService.deleteRealTime(id);
+
+		return Util.jsReplace(Util.f("%s 상품의 신청이 삭제되었습니다", realTime.getName()), "usr/realTime/list");
 	}
 	
 	@RequestMapping("/usr/realTime/doConfirm")

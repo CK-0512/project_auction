@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 
 <script>
-	var socket = null;
+	var noticeSocket = null;
 	
 	$(document).ready(function () {
 		connectWS();
@@ -10,8 +10,8 @@
 	
 	function connectWS () {
 		console.log("tttttttt");
-		var ws = new WebSocket("ws://localhost:8081/auctionSocket?");
-		socket = ws;
+		var ws = new WebSocket("ws://localhost:8081/auctionSocket");
+		noticeSocket = ws;
 		
 		ws.onopen = function () {
 			console.log('Info : connection opened.');
@@ -25,7 +25,7 @@
 			
 			setTimeout( function () {
 				$socketAlert.css('display', 'none');
-			}, 2000);
+			}, 3000);
 		};
 		
 		ws.onclose = function (event) {

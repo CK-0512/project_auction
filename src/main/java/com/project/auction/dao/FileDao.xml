@@ -24,7 +24,7 @@
 			FROM productFile
 			WHERE auctionId = #{auctionId}
 			<if test="auctionType != 0">
-				AND auctionType = #[auctionType}
+				AND auctionType = #{auctionType}
 			</if>
 	</select>
 	

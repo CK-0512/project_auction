@@ -6,6 +6,14 @@
 <%@ include file="../common/headWithToastUIEditorLib.jsp"%>
 
 <script type="text/javascript">
+	function deleteRealTime() {
+		let confirmed = confirm("해당 신청을 취소해도 유예기간은 사라지지 않습니다. 정말 진행하시겠습니까?");
+		if (confirmed) {
+			confirmForm.action = "doDelete"
+			confirmForm.submit();
+		}
+	}
+
 	function confirmApproval() {
 		let dateTimeInput = new Date(confirmForm.startDate.value);
 		let currentDateTime = new Date();
@@ -19,15 +27,25 @@
 		
 		let confirmed = confirm("경매 일시는 " + dateTimeInput + " 입니다. 이 신청을 승인하시겠습니까?");
 		if (confirmed) {
-			confirmForm.action = "usr/realTime/doConfirm"
+			confirmForm.action = "doConfirm"
 			confirmForm.submit();
+			
+			if (noticeSocket) {
+				let reciveUser = null;
+				if (${rq.interestCategories.contains(realTime.categoryId)}) {
+					reciveUser = ${rq.loginedMemberId}
+				}
+				let socketMsg = `realTime,${realTime.name},${reciveUser},${realTime.id}`;
+				console.debug("sssssssmsg>>", socketMsg);
+				noticeSocket.send(socketMsg);
+			}
 		}
 	}
 	
 	function reject() {
 		let confirmed = confirm("정말 이 신청을 반려하시겠습니까?");
 		if (confirmed) {
-			confirmForm.action = "usr/realTime/doReject"
+			confirmForm.action = "doReject"
 			confirmForm.submit();
 		}
 	}
@@ -111,7 +129,7 @@
 				<a class="btn btn-accent btn-sm ml-1"
 					href="javascript:deleteRealTime()">삭제</a>
 			</c:if>
-			<c:if test="${rq.loginedMember.authLebel == 3 }">
+			<c:if test="${rq.loginedMember.authLevel == '3' && realTime.confirmStatus == '0'}">
 				<a class="btn btn-accent btn-sm ml-1"
 					href="javascript:confirmApproval()">승인</a>
 				<a class="btn btn-accent btn-sm ml-1"

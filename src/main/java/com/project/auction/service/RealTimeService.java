@@ -50,6 +50,10 @@ public class RealTimeService {
 	public void modifyRealTime(int id, int categoryId, int startBid, String name, String body) {
 		realTimeDao.modifyRealTime(id, categoryId, startBid, name, body);
 	}
+	
+	public void deleteRealTime(int id) {
+		realTimeDao.deleteRealTime(id);
+	}
 
 	public void confirmRealTime(int id, String startDate) {
 		realTimeDao.confirmRealTime(id, startDate);
@@ -57,6 +61,10 @@ public class RealTimeService {
 
 	public void rejectRealTime(int id) {
 		realTimeDao.rejectRealTime(id);
+	}
+
+	public int isExist(int loginedMemberId) {
+		return realTimeDao.isExist(loginedMemberId);
 	}
 
 }

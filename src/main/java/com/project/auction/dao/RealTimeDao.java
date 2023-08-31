@@ -24,8 +24,12 @@ public interface RealTimeDao {
 
 	public void modifyRealTime(int id, int categoryId, int startBid, String name, String description);
 
+	public void deleteRealTime(int id);
+	
 	public void confirmRealTime(int id, String startDate);
 
 	public void rejectRealTime(int id);
+
+	public int isExist(int memberId);
 	
 }

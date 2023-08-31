@@ -112,6 +112,16 @@ CREATE TABLE reactionPoint (
     `point` INT NOT NULL DEFAULT 0
 );
 
+CREATE TABLE productFile (
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	regDate DATETIME NOT NULL,
+    originName VARCHAR(50) NOT NULL,
+    savedName VARCHAR(100) NOT NULL,
+    savedPath VARCHAR(100) NOT NULL,
+    auctionId INT UNSIGNED NOT NULL,
+    auctionType INT UNSIGNED NOT NULL COMMENT '옥션종류 (온라인 = 1, 실시간 = 2)'
+);
+
 CREATE TABLE auction (
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     regDate DATETIME NOT NULL,
@@ -161,14 +171,14 @@ CREATE TABLE realTimeAuction (
     `description` TEXT NOT NULL,
     startBid INT UNSIGNED NOT NULL,
     bidIncrease INT UNSIGNED NOT NULL,
-    endBid INT UNSIGNED NOT NULL,
+    endBid INT UNSIGNED NOT NULL DEFAULT 0,
     bidCount INT UNSIGNED NOT NULL DEFAULT 0,
     confirmStatus TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '승인여부 (진행중 = 0, 승인됨 = 1, 거부됨 = 2)',
-    endStatus TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '종료여부 (진행중 = 0, 종료 = 1)',
+    endStatus TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '종료여부 (대기중 = 0, 진행중 = 1, 종료 = 2)',
     buyerId INT UNSIGNED NOT NULL DEFAULT 0
 );
 
-DROP TABLE product;
+DROP TABLE realTimeAuction;
 
 SELECT * FROM category;
 

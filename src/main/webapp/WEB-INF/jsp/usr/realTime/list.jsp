@@ -13,11 +13,11 @@
 				</div>
 			</c:if>
 			<div>
-				<a href="list?endStatus=0" class="${endStatus == '0' ? 'selected' : ''}">대기중인 경매</a>
+				<a href="list?endStatus=0" class="${endStatus == '0' && confirmStatus != '0' ? 'selected' : ''}">대기중인 경매</a>
 				<span>|</span>
-				<a href="list?endStatus=1" class="${endStatus == '1' ? 'selected' : ''}">진행중인 경매</a>
+				<a href="list?endStatus=1" class="${endStatus == '1' && confirmStatus != '0' ? 'selected' : ''}">진행중인 경매</a>
 				<span>|</span>
-				<a href="list?endStatus=2" class="${endStatus == '2' ? 'selected' : ''}">종료된 경매</a>
+				<a href="list?endStatus=2" class="${endStatus == '2' && confirmStatus != '0' ? 'selected' : ''}">종료된 경매</a>
 			</div>
 			<div class="mb-2 flex">
 				<div class="table-box-type-2">

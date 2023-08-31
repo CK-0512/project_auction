@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class FileVO {
 	private int id;
-	private int productId;
-	private String orgNm;
-	private String savedNm;
+	private String originName;
+	private String savedName;
 	private String savedPath;
+	private int auctionId;
+	private int auctionType;
 }
