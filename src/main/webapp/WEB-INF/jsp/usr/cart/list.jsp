@@ -34,7 +34,9 @@
 								<td>${cart.auctionId }</td>
 								<td><c:forEach var="file" items="${files }">
 										<c:if test="${cart.auctionId == file.auctionId }">
-											<img src="/usr/home/file/${file.id }" class="h-24">
+											<a href="/usr/auction/detail?id=${cart.auctionId }">
+												<img src="/usr/home/file/${file.id }" class="h-24">
+											</a>
 										</c:if>
 									</c:forEach></td>
 								<td>${cart.name }</td>
@@ -46,86 +48,48 @@
 								<c:if test="${cart.buyNow != 0 }">
 									<td>${cart.buyNow }원</td>
 								</c:if>
-								<c:if test="${cart.buyNow == 0 }">
-									<td><span class="text-red-500">즉시구매가 불가능한 상품입니다.</span></td>
-								</c:if>
-								<td><span id="auctionId" data-id="${cart.auctionId }"></span>
-									<span id="remainTime-${cart.auctionId }"></span></td>
-							</tr>
-
-							<script>
-								let remainingTime = calculateRemainingTime();
-	
-								function calculateRemainingTime() {
-								    const currentTime = new Date();
-								    const endDateString = "${cart.endDate}";
-						        	const endTime = new Date(endDateString.replace(/-/g, '/'));
-								    const remainingTimeInSeconds = Math.max(0, Math.floor((endTime - currentTime) / 1000));
-								    return remainingTimeInSeconds;
-								};
-
-								function updateRemainingTimeInUI() {
-								    remainingTime = calculateRemainingTime();
-								    // Update the UI element for this cart with the remaining time
-								    // Use setTimeout or setInterval to update it periodically
-								};
-								
-						   		let auctionId = "${cart.auctionId}"
-
-						   		const auctionSocket = new WebSocket("ws://localhost:8081/webSocket/auction?auctionId=" + auctionId);						   		
-							    
-						   		auctionSocket.onopen = () => {
-						   		    console.log('Info : connection opened.');
-						   		 	/*const message = JSON.stringify({
-							            auctionId: auctionId,
-							            remainingTime: remainingTime
-							        });*/
-							        const timerId = "remainTime-" + auctionId;
-						   		 	const timerSpan = document.getElementById(timerId);
-						   		 	if (timerSpan) {
-							            updateCountdownTimer(timerSpan, remainingTime);
-							        }
-						   		 	//auctionSocket.send(message);
-						   		};
-						   		
-						   		auctionSocket.onclose = function (event) {
-									console.log('Info : connection closed.');
-								};
-								
-								auctionSocket.onerror = function (err) {
-									console.log('Error : ', err);
-								};
-						   		
-						   		auctionSocket.onmessage = function (event) {
-							        const data = JSON.parse(event.data);
-							        console.log("Received data from WebSocket:", data);
-							        const auctionId = data.auctionId;
-							        const remainingTime = data.remainingTime;
-	
-							        const timerSpan = document.getElementById(`remainTime-${auctionId}`);
-							        if (timerSpan) {
-							            updateCountdownTimer(timerSpan, remainingTime);
-							        }
-								};
-								    
-								    function updateCountdownTimer(element, remainingTime) {
-								        const days = Math.floor(remainingTime / (60 * 60 * 24));
-								        const hours = Math.floor((remainingTime % (60 * 60 * 24)) / (60 * 60));
-								        const minutes = Math.floor((remainingTime % (60 * 60)) / 60);
-								        const seconds = remainingTime % 60;
-	
-
-								        element.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-								        
-								        remainingTime--;
-								        
-								        if (remainingTime >= 0) {
-								            setTimeout(() => {
-								                updateCountdownTimer(element, remainingTime);
-								            }, 1000);
-								        }
-								    }
-								</script>
+								<c:if test="${cart.buyNow == 0}">
+						            <td><span class="text-red-500">즉시구매가 불가능한 상품입니다.</span></td>
+						        </c:if>
+						        <td><span data-endDate="${cart.endDate}" id="remainTime-${cart.auctionId}"></span></td>
+						    </tr>
+						    <script>
+						        (function () {
+						            const remainingTime = calculateRemainingTime("${cart.endDate}");
+						            const auctionId = "${cart.auctionId}";
+						            const timerId = "remainTime-" + auctionId;
+						            const timerSpan = document.getElementById(timerId);
+						
+						            if (timerSpan) {
+						                updateCountdownTimer(timerSpan, remainingTime);
+						            }
+						
+						            function calculateRemainingTime(endDateString) {
+						                const currentTime = new Date();
+						                const endTime = new Date(endDateString.replace(/-/g, '/'));
+						                const remainingTimeInSeconds = Math.max(0, Math.floor((endTime - currentTime) / 1000));
+						                return remainingTimeInSeconds;
+						            }
+						
+						            function updateCountdownTimer(element, remainingTime) {
+						                const days = Math.floor(remainingTime / (60 * 60 * 24));
+						                const hours = Math.floor((remainingTime % (60 * 60 * 24)) / (60 * 60));
+						                const minutes = Math.floor((remainingTime % (60 * 60)) / 60);
+						                const seconds = remainingTime % 60;
+						
+						                let timerContent = days + "d " + hours + "h " + minutes + "m " + seconds + "s";
+						                element.textContent = timerContent;
+						
+						                remainingTime--;
+						
+						                if (remainingTime >= 0) {
+						                    setTimeout(() => {
+						                        updateCountdownTimer(element, remainingTime);
+						                    }, 1000);
+						                }
+						            }
+						        })();
+						    </script>
 						</c:forEach>
 					</tbody>
 				</c:if>

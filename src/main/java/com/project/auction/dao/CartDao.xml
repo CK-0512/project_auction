@@ -12,6 +12,7 @@
 				, `name` = #{name}
 				, `description` = #{description}
 				, memberBid = #{nowBid}
+				, endStatus = #{endStatus}
 	</insert>
 	
 	<select id="getCartCntWithOutEither" resultType="int">

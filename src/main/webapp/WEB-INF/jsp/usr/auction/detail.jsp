@@ -83,12 +83,36 @@
 								<c:if test="${auction.endStatus == 0 }">
 									<th>종료까지</th>
 									<td>
-										<span id="auctionId" data-id="${auction.id}"></span>
-										<span id="remainTime-${auction.id }"></span>
+										<div class="grid grid-flow-col gap-5 text-center auto-cols-max">
+							                <div class="flex flex-col">
+							                    <span class="countdown font-mono text-5xl">
+							                        <span id="days" style="--value:0;"></span>
+							                    </span>
+							                    days
+							                </div>
+							                <div class="flex flex-col">
+							                    <span class="countdown font-mono text-5xl">
+							                        <span id="hours" style="--value:0;"></span>
+							                    </span>
+							                    hours
+							                </div>
+							                <div class="flex flex-col">
+							                    <span class="countdown font-mono text-5xl">
+							                        <span id="minutes" style="--value:0;"></span>
+							                    </span>
+							                    min
+							                </div>
+							                <div class="flex flex-col">
+							                    <span class="countdown font-mono text-5xl">
+							                        <span id="seconds" style="--value:0;"></span>
+							                    </span>
+							                    sec
+							                </div>
+							            </div>
 									</td>
 								</c:if>
 								<c:if test="${auction.endStatus == 1 }">
-									<th>종료일시</th>
+									<th>종료일자</th>
 									<td>${auction.endDate }</td>
 								</c:if>
 							</tr>
@@ -148,37 +172,47 @@
 	</section>
 	
 	<script>
-		const auctionId = document.getElementById('auctionId').getAttribute('data-id');
-
-		const socket = new WebSocket("ws://localhost:8081/auctionSocket?auctionId=" + auctionId);						   		
-    
-		socket.onmessage = (event) => {
-	        const data = JSON.parse(event.data);
-	        const auctionId = data.auctionId;
-	        const remainingTime = data.remainingTime;
+		let remainingTime = calculateRemainingTime("${auction.endDate}");
 	
-	        const timerSpan = document.getElementById(`remainTime-${auctionId}`);
-	        if (timerSpan) {
-	            updateCountdownTimer(timerSpan, remainingTime);
-	        }
-   	 	};
-    
-	    function updateCountdownTimer(element, remainingTime) {
+	    function calculateRemainingTime(endDateString) {
+	        const currentTime = new Date();
+	        const endTime = new Date(endDateString.replace(/-/g, '/'));
+	        const remainingTimeInSeconds = Math.max(0, Math.floor((endTime - currentTime) / 1000));
+	        return remainingTimeInSeconds;
+	    }
+	
+	    function updateCountdownTimer() {
+	        const daysElement = document.getElementById(`days`);
+	        const hoursElement = document.getElementById(`hours`);
+	        const minutesElement = document.getElementById(`minutes`);
+	        const secondsElement = document.getElementById(`seconds`);
+	
 	        const days = Math.floor(remainingTime / (60 * 60 * 24));
 	        const hours = Math.floor((remainingTime % (60 * 60 * 24)) / (60 * 60));
 	        const minutes = Math.floor((remainingTime % (60 * 60)) / 60);
 	        const seconds = remainingTime % 60;
 	
-	        element.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+	        if (daysElement) {
+	            daysElement.style.setProperty("--value", days);
+	        }
+	        if (hoursElement) {
+	            hoursElement.style.setProperty("--value", hours);
+	        }
+	        if (minutesElement) {
+	            minutesElement.style.setProperty("--value", minutes);
+	        }
+	        if (secondsElement) {
+	            secondsElement.style.setProperty("--value", seconds);
+	        }
 	
 	        remainingTime--;
-	        
+	
 	        if (remainingTime >= 0) {
-	            setTimeout(() => {
-	                updateCountdownTimer(element, remainingTime);
-	            }, 1000);
+	            setTimeout(updateCountdownTimer, 1000);
 	        }
 	    }
+	
+	    updateCountdownTimer();
 	</script>
 
 	

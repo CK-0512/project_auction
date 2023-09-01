@@ -9,7 +9,7 @@ import com.project.auction.vo.Cart;
 @Mapper
 public interface CartDao {
 	
-	public void addCart(int memberId, int auctionId, String name, String description, int nowBid);
+	public void addCart(int memberId, int auctionId, String name, String description, int nowBid, int endStatus);
 
 	public int getCartCnt(int memberId, String searchKeyword, int endStatus);
 

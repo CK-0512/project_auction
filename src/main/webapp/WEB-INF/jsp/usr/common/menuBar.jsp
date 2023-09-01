@@ -72,7 +72,7 @@
 					<div tabindex="0"
 						class="mt-3 z-[1] card card-compact dropdown-content w-52 bg-base-100 shadow">
 						<div class="card-body">
-							<span class="font-bold text-lg">${rq.cartSize }</span>
+							<span class="font-bold text-lg">${rq.cartSize } 개의 경매에 참가중</span>
 							<div class="card-actions">
 								<a href="/usr/cart/list">
 									<button class="btn btn-primary btn-block">View cart</button>

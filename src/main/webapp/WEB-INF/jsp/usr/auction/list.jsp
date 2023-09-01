@@ -17,13 +17,13 @@
 					<table class="table">
 						<tr>
 							<td>
-								<a href="list?endStatus=${endStatus }">모든품목</a>
+								<a href="list?endStatus=${endStatus }" class="${categoryId == 0 ? 'selected' : ''}">모든품목</a>
 							</td>
 						</tr>
 						<c:forEach var="category" items="${categories }">
 							<tr>
 								<td>
-									<a href="list?endStatus=${endStatus }&categoryId=${category.id }">${category.name }</a>
+									<a href="list?endStatus=${endStatus }&categoryId=${category.id }" class="${categoryId == category.id ? 'selected' : ''}">${category.name }</a>
 								</td>
 							</tr>
 						</c:forEach>
@@ -44,7 +44,7 @@
 									<span>${auction.name }</span>
 								</div>
 								<div>
-									<span>낙찰가 : ${auction.nowBid }원</span>
+									<span>현재가 : ${auction.nowBid }원</span>
 								</div>
 								<c:if test="${auction.buyNow } != 0">
 									<div>
@@ -82,40 +82,6 @@
 									<span>종료일시 : ${auction.endDate }</span>
 							    </div>
 							 </div>
-						
-						   	<script>
-						   		const auctionId = document.getElementById('auctionId').getAttribute('data-id');
-
-						   		const socket = new WebSocket("ws://localhost:8081/auctionSocket?auctionId=" + auctionId);						   		
-							    
-						   		socket.onmessage = (event) => {
-							        const data = JSON.parse(event.data);
-							        const auctionId = data.auctionId;
-							        const remainingTime = data.remainingTime;
-	
-							        const timerSpan = document.getElementById(`remainTime-${auctionId}`);
-							        if (timerSpan) {
-							            updateCountdownTimer(timerSpan, remainingTime);
-							        }
-							    };
-							    
-							    function updateCountdownTimer(element, remainingTime) {
-							        const days = Math.floor(remainingTime / (60 * 60 * 24));
-							        const hours = Math.floor((remainingTime % (60 * 60 * 24)) / (60 * 60));
-							        const minutes = Math.floor((remainingTime % (60 * 60)) / 60);
-							        const seconds = remainingTime % 60;
-
-							        element.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-
-							        remainingTime--;
-							        
-							        if (remainingTime >= 0) {
-							            setTimeout(() => {
-							                updateCountdownTimer(element, remainingTime);
-							            }, 1000);
-							        }
-							    }
-							</script>
 						</c:forEach>
 					</c:if>
 				</div>

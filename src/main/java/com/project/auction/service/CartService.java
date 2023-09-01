@@ -20,7 +20,7 @@ public class CartService {
 	}
 
 	public void addCart(int loginedMemberId, Auction auction) {
-		cartDao.addCart(loginedMemberId, auction.getId(), auction.getName(), auction.getDescription(), auction.getNowBid());
+		cartDao.addCart(loginedMemberId, auction.getId(), auction.getName(), auction.getDescription(), auction.getNowBid(), auction.getEndStatus());
 	}
 	
 	public int getCartCntWithOutEither(int loginedMemberId) {

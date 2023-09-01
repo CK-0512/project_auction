@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.project.auction.handler.WebSocketAuctionHandler;
 import com.project.auction.service.AuctionService;
 import com.project.auction.service.CartService;
 import com.project.auction.service.CategoryService;
@@ -33,18 +32,16 @@ public class UsrAuctionController {
 	private MemberService memberService;
 	private CartService cartService;
 	private Rq rq;
-    private WebSocketAuctionHandler webSocketAuctionHandler;
     private int auctionType;
 	
 	@Autowired
-	public UsrAuctionController(AuctionService auctionService, CategoryService categoryService, FileService fileService, MemberService memberService, CartService cartService, Rq rq, WebSocketAuctionHandler webSocketAuctionHandler) {
+	public UsrAuctionController(AuctionService auctionService, CategoryService categoryService, FileService fileService, MemberService memberService, CartService cartService, Rq rq) {
 		this.auctionService = auctionService;
 		this.categoryService = categoryService;
 		this.fileService = fileService;
 		this.memberService = memberService;
 		this.cartService = cartService;
 		this.rq = rq;
-        this.webSocketAuctionHandler = webSocketAuctionHandler;
         this.auctionType = 1;
 	}
 	
@@ -80,28 +77,16 @@ public class UsrAuctionController {
  			FileVO file = fileService.getContentsFirstFile(auctionType, auction.getId());
  			files.add(file);
  		}
- 		
-		for (Auction auction : auctionContents) {
-	        long currentTimeMillis = System.currentTimeMillis();
-	        long endTimeMillis = auction.getEndDate().getTime();
-	        long remainingTime = (endTimeMillis - currentTimeMillis) / 1000;
-
-	        try {
-				webSocketAuctionHandler.broadcastRemainingTime(auction.getId(), remainingTime);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-	    }
 		
 		model.addAttribute("files", files);
 		model.addAttribute("auctionContents", auctionContents);
 		model.addAttribute("pagesCnt", pagesCnt);
 		model.addAttribute("auctionCnt", auctionCnt);
 		model.addAttribute("categories", categories);
-		model.addAttribute("selectedCategory", selectedCategory);
 		model.addAttribute("page", page);
 		model.addAttribute("searchKeyword", searchKeyword);
 		model.addAttribute("endStatus", endStatus);
+		model.addAttribute("categoryId", categoryId);
 
 		return "usr/auction/list";
 	}
@@ -207,7 +192,7 @@ public class UsrAuctionController {
 		
 		cartService.addCart(rq.getLoginedMemberId(), auction);
 		
-		return Util.jsReplace("상품을 구매하였습니다.", "cart");
+		return Util.jsReplace("상품을 구매하였습니다.", "cart/list");
 	}
 	
 	@RequestMapping("/usr/auction/modify")
