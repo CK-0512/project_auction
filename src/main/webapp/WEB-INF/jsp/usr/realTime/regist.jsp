@@ -32,6 +32,16 @@
 			form.startBid.focus();
 			return;
 		}
+		
+		let dateTimeInput = new Date(confirmForm.startDate.value);
+		let currentDateTime = new Date();
+		let minimumValidDate = new Date(currentDateTime);
+		minimumValidDate.setDate(minimumValidDate.getDate() + 7);
+		
+		if(dateTimeInput < minimumValidDate) {
+			alert("경매 희망일은 오늘로부터 최소 7일 이후로 가능합니다.");
+			return;
+		}
   	  
   	  	const editor = $(form).find('.toast-ui-editor').data('data-toast-editor');
   	  	const markdown = editor.getMarkdown().trim();
@@ -44,7 +54,7 @@
   	  
   	  	form.body.value = markdown;
   	 	
-  	 	let confirmMessage = "상품의 경매 시작가는 " + form.startBid.value + "원이며, 상품 사진은 수정이 불가능합니다. 이대로 등록하시겠습니까?";
+  	 	let confirmMessage = "상품의 경매 시작가는 " + form.startBid.value + "원입니다. 또한, 경매일자는 여건에 따라 희망일과 달라질 수 있습니다. 이대로 등록하시겠습니까?";
   	 	if (!confirm(confirmMessage)) {
   	 		return;
   	 	}
@@ -67,11 +77,9 @@
 							<col width="200" />
 						</colgroup>
 						<tbody>
-							<tr >
-								<th>상 품 명</th>
-								<td colspan="3"><input class="input input-bordered input-accent w-full" type="text" name="name" placeholder="상품명을 입력해주세요" /></td>
-							</tr>
 							<tr>
+								<th>상 품 명</th>
+								<td><input class="input input-bordered input-accent w-full" type="text" name="name" placeholder="상품명을 입력해주세요" /></td>
 								<th>상품 카테고리</th>
 								<td>
 									<select name="categoryId" class="select select-accent select-bordered">
@@ -80,19 +88,20 @@
 										</c:forEach>
 									</select>
 								</td>
-								<th>상품 사진</th>
-								<td class="align-center">
-									<input type="file" name="file" multiple/>
-								</td>
 							</tr>
 							<tr>
 								<th>경매 시작가</th>
 								<td>
 									<input class="input input-bordered input-accent text-right" type="text" name="startBid" placeholder="0"/> 원
+									<div class="text-xs text-red-500">수수료는 낙찰가의 10%입니다.</div>
 								</td>
-								<th>수 수 료</th>
-								<td>
-									<div class="text-xs text-red-500">수수료는 경매 기간에 따라 변동됩니다.(1일 5%, 3일 7%, 7일 10%)</div>
+								<th>희망 경매일자</th>
+								<td><input name="hopeDate" type="datetime-local" /></td>
+							</tr>
+							<tr>
+								<th>상품 사진 등록</th>
+								<td colspan="3" class="align-center">
+									<input type="file" name="file" multiple/>
 								</td>
 							</tr>
 							<tr>

@@ -13,42 +13,6 @@
 			confirmForm.submit();
 		}
 	}
-
-	function confirmApproval() {
-		let dateTimeInput = new Date(confirmForm.startDate.value);
-		let currentDateTime = new Date();
-		let minimumValidDate = new Date(currentDateTime);
-		minimumValidDate.setDate(minimumValidDate.getDate() + 3);
-		
-		if(dateTimeInput < minimumValidDate) {
-			alert("경매 시작은 오늘로부터 최소 3일 이후로 가능합니다.");
-			return;
-		}
-		
-		let confirmed = confirm("경매 일시는 " + dateTimeInput + " 입니다. 이 신청을 승인하시겠습니까?");
-		if (confirmed) {
-			confirmForm.action = "doConfirm"
-			confirmForm.submit();
-			
-			if (noticeSocket) {
-				let reciveUser = null;
-				if (${rq.interestCategories.contains(realTime.categoryId)}) {
-					reciveUser = ${rq.loginedMemberId}
-				}
-				let socketMsg = `realTime,${realTime.name},${reciveUser},${realTime.id}`;
-				console.debug("sssssssmsg>>", socketMsg);
-				noticeSocket.send(socketMsg);
-			}
-		}
-	}
-	
-	function reject() {
-		let confirmed = confirm("정말 이 신청을 반려하시겠습니까?");
-		if (confirmed) {
-			confirmForm.action = "doReject"
-			confirmForm.submit();
-		}
-	}
 </script>
 
 <section>
@@ -82,12 +46,6 @@
 									<th>등록일</th>
 									<td colspan="3">${realTime.regDate }</td>
 								</tr>
-								<c:if test="${rq.loginedMember.authLevel == '3' }">
-									<tr>
-										<th>경매 시작일시</th>
-										<td><input name="startDate" type="datetime-local" /></td>
-									</tr>
-								</c:if>
 							</c:if>
 							<c:if test="${realTime.confirmStatus == '1' }">
 								<tr>
@@ -128,12 +86,6 @@
 					href="modify?id=${realTime.id}">수정</a>
 				<a class="btn btn-accent btn-sm ml-1"
 					href="javascript:deleteRealTime()">삭제</a>
-			</c:if>
-			<c:if test="${rq.loginedMember.authLevel == '3' && realTime.confirmStatus == '0'}">
-				<a class="btn btn-accent btn-sm ml-1"
-					href="javascript:confirmApproval()">승인</a>
-				<a class="btn btn-accent btn-sm ml-1"
-					href="javascript:reject()">반려</a>
 			</c:if>
 		</div>
 	</div>

@@ -43,7 +43,7 @@
 								<div class="contents-box">
 									<c:forEach var="file" items="${files }">
 										<c:if test="${realTime.id == file.auctionId }">
-											<a href="detail?id=${realTime.id }">
+											<a href="adm/realTime/detail?id=${realTime.id }">
 												<img src="/usr/home/file/${file.id }">
 											</a>
 										</c:if>

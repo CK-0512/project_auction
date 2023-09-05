@@ -98,7 +98,7 @@ public class UsrRealTimeController {
 	
 	@RequestMapping("/usr/realTime/doRegist")
 	@ResponseBody
-	public String doRegist(String name, int categoryId, MultipartFile file, int startBid, String body) {
+	public String doRegist(String name, int categoryId, MultipartFile file, String hopeDate, int startBid, String body) {
 		
 		if (Util.empty(name)) {
 			return Util.jsHistoryBack("상품명을 입력해주세요");
@@ -110,6 +110,10 @@ public class UsrRealTimeController {
 	
 		if (Util.empty(file)) {
 			return Util.jsHistoryBack("상품사진을 등록해주세요");
+		}
+		
+		if (Util.empty(hopeDate)) {
+			return Util.jsHistoryBack("경매 희망일을 선택해주세요");
 		}
 		
 		if (Util.empty(startBid)) {
@@ -129,7 +133,7 @@ public class UsrRealTimeController {
 
 		
 		try {
-			realTimeService.registRealTime(rq.getLoginedMemberId(), name, categoryId, startBid, body);
+			realTimeService.registRealTime(rq.getLoginedMemberId(), name, categoryId, hopeDate, startBid, body);
 			int realTimeId = realTimeService.getLastInsertId();
 			fileService.saveFile(auctionType, file, realTimeId);
 			
@@ -223,43 +227,5 @@ public class UsrRealTimeController {
 		realTimeService.deleteRealTime(id);
 
 		return Util.jsReplace(Util.f("%s 상품의 신청이 삭제되었습니다", realTime.getName()), "usr/realTime/list");
-	}
-	
-	@RequestMapping("/usr/realTime/doConfirm")
-	@ResponseBody
-	public String doConfirm(int id, String startDate) {
-
-		RealTime realTime = realTimeService.getRealTimeById(id);
-
-		if (realTime == null) {
-			return Util.jsHistoryBack(Util.f("%d번 상품은 존재하지 않습니다", id));
-		}
-
-		if (rq.getLoginedMember().getAuthLevel() != 3) {
-			return Util.jsHistoryBack("해당 기능의 권한이 없습니다");
-		}
-
-		realTimeService.confirmRealTime(id, startDate);
-
-		return Util.jsReplace(Util.f("%s 상품이 경매 대기열에 등록되었습니다", realTime.getName()), Util.f("detail?id=%d", id));
-	}
-	
-	@RequestMapping("/usr/realTime/doReject")
-	@ResponseBody
-	public String doReject(int id) {
-
-		RealTime realTime = realTimeService.getRealTimeById(id);
-
-		if (realTime == null) {
-			return Util.jsHistoryBack(Util.f("%d번 상품은 존재하지 않습니다", id));
-		}
-
-		if (rq.getLoginedMember().getAuthLevel() != 3) {
-			return Util.jsHistoryBack("해당 기능의 권한이 없습니다");
-		}
-
-		realTimeService.rejectRealTime(id);
-
-		return Util.jsReplace(Util.f("%s 상품이 반려되었습니다", realTime.getName()), Util.f("list?confirmStatus=0"));
 	}
 }

@@ -35,8 +35,8 @@ public class RealTimeService {
 		return realTimeDao.getLastDateByMemberId(loginedMemberId);
 	}
 
-	public void registRealTime(int loginedMemberId, String name, int categoryId, int startBid, String body) {
-		realTimeDao.registRealTime(loginedMemberId, name, categoryId, startBid, body);
+	public void registRealTime(int loginedMemberId, String name, int categoryId, String hopeDate, int startBid, String body) {
+		realTimeDao.registRealTime(loginedMemberId, name, categoryId, hopeDate, startBid, body);
 	}
 
 	public int getLastInsertId() {

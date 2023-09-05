@@ -16,7 +16,7 @@ public interface RealTimeDao {
 
 	public int getLastDateByMemberId(int memberId);
 
-	public void registRealTime(int memberId, String name, int categoryId, int startBid, String description);
+	public void registRealTime(int memberId, String name, int categoryId, String hopeDate, int startBid, String description);
 
 	public int getLastInsertId();
 
