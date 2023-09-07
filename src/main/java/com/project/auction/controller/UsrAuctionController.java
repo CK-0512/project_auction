@@ -71,7 +71,7 @@ public class UsrAuctionController {
 		int pagesCnt = (int) Math.ceil((double) auctionCnt / itemsInAPage);
 
 		List<Auction> auctionContents = auctionService.getAuctionContents(categoryId, searchKeyword, endStatus, itemsInAPage, page);
-		
+
 		List<FileVO> files = new ArrayList<>();
  		for(Auction auction : auctionContents) {
  			FileVO file = fileService.getContentsFirstFile(auctionType, auction.getId());
@@ -210,7 +210,10 @@ public class UsrAuctionController {
 		
 		String categoryName = categoryService.getCategoryNameById(auction.getCategoryId());
 
+		List<FileVO> files = fileService.getContentsFiles(auctionType, id);
+		
 		model.addAttribute("auction", auction);
+		model.addAttribute("files", files);
 		model.addAttribute("categoryName", categoryName);
 		
 		return "usr/auction/modify";
@@ -231,6 +234,7 @@ public class UsrAuctionController {
 		}
 
 		auctionService.modifyAuction(id, body);
+		cartService.modifyCart(id, body);
 
 		return Util.jsReplace(Util.f("%s 상품이 수정되었습니다", auction.getName()), Util.f("detail?id=%d", id));
 	}

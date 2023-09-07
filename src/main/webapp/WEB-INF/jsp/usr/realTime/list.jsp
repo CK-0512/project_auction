@@ -43,7 +43,7 @@
 								<div class="contents-box">
 									<c:forEach var="file" items="${files }">
 										<c:if test="${realTime.id == file.auctionId }">
-											<a href="adm/realTime/detail?id=${realTime.id }">
+											<a href="../../adm/realTime/detail?id=${realTime.id }">
 												<img src="/usr/home/file/${file.id }">
 											</a>
 										</c:if>
@@ -74,7 +74,7 @@
 										<span>시작가 : ${realTime.startBid }</span>
 									</div>
 									<div>
-										<span>경매 일시 : ${realTime.startDate }</span>
+										<span>경매 일자 : ${realTime.startDate }</span>
 								    </div>
 								 </div>
 							</c:forEach>

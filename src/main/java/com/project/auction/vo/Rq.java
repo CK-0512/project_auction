@@ -60,8 +60,7 @@ public class Rq {
 		this.cartSize = cartSize;
 		
 		this.req.setAttribute("rq", this);
-		this.session.setAttribute("rq", this);
-		
+		this.session.setAttribute("memberInterestCategories", interestCategories);
 	}
 
 	public void jsPrintHistoryBack(String msg) {

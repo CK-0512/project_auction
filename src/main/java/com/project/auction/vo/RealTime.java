@@ -11,6 +11,7 @@ public class RealTime {
 	private int id;
 	private String regDate;
 	private String updateDate;
+	private String hopeDate;
 	private String startDate;
 	private String endDate;
 	private int memberId;

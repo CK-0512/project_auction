@@ -117,7 +117,7 @@
 							</c:when>
 							<c:otherwise>
 								<li><a class="items-center" href="/adm/member/list">회원관리</a></li>
-								<li><a class="items-center" href="/usr/realTime/list?confimrStatus=0">회원관리</a></li>
+								<li><a class="items-center" href="/usr/realTime/list?confirmStatus=0">경매관리</a></li>
 							</c:otherwise>
 						</c:choose>
 						<li><a href="/usr/member/doLogout">로그아웃</a></li>

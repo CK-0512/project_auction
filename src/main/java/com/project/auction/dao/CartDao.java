@@ -16,5 +16,7 @@ public interface CartDao {
 	public List<Cart> getCarts(int memberId, String searchKeyword, int endStatus, int limitStart, int itemsInAPage);
 
 	public int getCartCntWithOutEither(int memberId);
+
+	public void modifyCart(int auctionId, String description);
 	
 }

@@ -34,14 +34,14 @@
 						<c:forEach var="auction" items="${auctionContents }">
 							<div class="contents-box">
 								<c:forEach var="file" items="${files }">
-									<c:if test="${cart.auctionId == file.auctionId }">
-										<a href="detail?id=${realTime.id }">
+									<c:if test="${auction.id == file.auctionId }">
+										<a href="detail?id=${auction.id }">
 											<img src="/usr/home/file/${file.id }">
 										</a>
 									</c:if>
 								</c:forEach>
 								<div>
-									<span>${auction.name }</span>
+									<span>상품명 : ${auction.name }</span>
 								</div>
 								<div>
 									<span>현재가 : ${auction.nowBid }원</span>
@@ -63,14 +63,14 @@
 						<c:forEach var="auction" items="${auctionContents }">
 							<div class="contents-box">
 								<c:forEach var="file" items="${files }">
-									<c:if test="${cart.auctionId == file.auctionId }">
-										<a href="detail?id=${realTime.id }">
+									<c:if test="${auction.id == file.auctionId }">
+										<a href="detail?id=${auction.id }">
 											<img src="/usr/home/file/${file.id }">
 										</a>
 									</c:if>
 								</c:forEach>
 								<div>
-									<span>${auction.name }</span>
+									<span>상품명 : ${auction.name }</span>
 								</div>
 								<div>
 									<span>낙찰가 : ${auction.endBid }원</span>

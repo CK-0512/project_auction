@@ -24,7 +24,7 @@ public class AuctionService {
 		return auctionDao.getAuctionCnt(categoryId, searchKeyword, endStatus);
 	}
 
-	public List<Auction> getAuctionContents(int categoryId, String searchKeyword, int itemsInAPage, int page, int endStatus) {
+	public List<Auction> getAuctionContents(int categoryId, String searchKeyword, int endStatus, int itemsInAPage, int page) {
 		
 		int limitStart = (page - 1) * itemsInAPage;
 		

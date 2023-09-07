@@ -57,4 +57,11 @@
 			LIMIT #{limitStart}, #{itemsInAPage}
 	</select>
 	
+	<update id="modifyCart">
+		UPDATE cart
+			SET updateDate = NOW()
+				, description = #{description}
+			WHERE auctionId = #{auctionId}
+	</update>
+	
 </mapper>

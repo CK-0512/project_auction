@@ -14,4 +14,5 @@ public class Category {
 	private String name;
 	private int delStatus;
 	private String delDate;
+	private int categoryId;
 }

@@ -40,4 +40,8 @@ public class CartService {
 		return list;
 	}
 
+	public void modifyCart(int id, String body) {
+		cartDao.modifyCart(id, body);
+	}
+
 }

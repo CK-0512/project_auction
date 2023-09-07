@@ -69,7 +69,7 @@
 							</tr>
 							<tr>
 								<th>상품사진</th>
-								<td class="flex" colspan="3">
+								<td colspan="3">
 									<c:forEach var="file" items="${files }">
 										<div>
 											<img src="/usr/home/file/${file.id }">
@@ -132,7 +132,7 @@
 							</tr>
 							<c:if test="${auction.endStatus == 0 }">
 								<tr>
-									<th>입찰</th>
+									<th>입찰하기</th>
 									<td>
 										<input class="ml-2 input input-bordered input-accent input-sm w-56 text-right" name="bid" type="text" placeholder="${auction.nowBid + auction.minimumBid}원 이상부터 입찰가능"/>
 										<input type="button" class="ml-2 btn btn-active btn-accent btn-sm" onClick="doBid(${rq.loginedMember.money })" value="입찰하기"/>
@@ -150,7 +150,7 @@
 								</tr>
 							</c:if>
 							<tr>
-								<th>설명</th>
+								<th>제품설명</th>
 								<td colspan="3">
 									<div class="toast-ui-viewer">
 	  									<script type="text/x-template">${auction.description }</script>

@@ -5,7 +5,7 @@
 <c:set var="pageTitle" value="자유 게시판" />
 <%@ include file="../common/commonHead.jsp" %>
 
-	<section class="mt-8">
+	<section class="mt-24">
 		<div class="container mx-auto">
 			<div class="mb-2 flex justify-between">
 				<div>

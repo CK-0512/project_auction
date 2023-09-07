@@ -60,7 +60,7 @@ public class AdmRealTimeController {
 
 		realTimeService.confirmRealTime(id, startDate);
 
-		return Util.jsReplace(Util.f("%s 상품이 경매 대기열에 등록되었습니다", realTime.getName()), Util.f("usr/realTime/detail?id=%d", id));
+		return Util.jsReplace(Util.f("%s 상품이 경매 대기열에 등록되었습니다", realTime.getName()), Util.f("../../usr/realTime/detail?id=%d", id));
 	}
 	
 	@RequestMapping("/adm/realTime/doReject")

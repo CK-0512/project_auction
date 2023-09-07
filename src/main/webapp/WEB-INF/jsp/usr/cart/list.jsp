@@ -21,8 +21,7 @@
 							<th>상품번호</th>
 							<th>상품사진</th>
 							<th>상품명</th>
-							<th>내용</th>
-							<th>입찰가</th>
+							<th>본인 입찰가</th>
 							<th>현재가</th>
 							<th>즉시구매가</th>
 							<th>종료까지</th>
@@ -34,35 +33,50 @@
 								<td>${cart.auctionId }</td>
 								<td><c:forEach var="file" items="${files }">
 										<c:if test="${cart.auctionId == file.auctionId }">
-											<a href="/usr/auction/detail?id=${cart.auctionId }">
-												<img src="/usr/home/file/${file.id }" class="h-24">
+											<a href="/usr/auction/detail?id=${cart.auctionId }"> <img
+												src="/usr/home/file/${file.id }" class="h-24">
 											</a>
 										</c:if>
 									</c:forEach></td>
 								<td>${cart.name }</td>
-								<td><span
-									class="whitespace-nowrap overflow-hidden overflow-ellipsis">${cart.description }</span>
-								</td>
 								<td>${cart.memberBid }원</td>
 								<td>${cart.nowBid }원</td>
 								<c:if test="${cart.buyNow != 0 }">
 									<td>${cart.buyNow }원</td>
 								</c:if>
 								<c:if test="${cart.buyNow == 0}">
-						            <td><span class="text-red-500">즉시구매가 불가능한 상품입니다.</span></td>
-						        </c:if>
-						        <td><span data-endDate="${cart.endDate}" id="remainTime-${cart.auctionId}"></span></td>
-						    </tr>
-						    <script>
-						        (function () {
-						            const remainingTime = calculateRemainingTime("${cart.endDate}");
+									<td><span class="text-red-500">즉시구매가 불가능한 상품입니다.</span></td>
+								</c:if>
+								<td>
+									<div class="grid grid-flow-col gap-5 text-center auto-cols-max">
+										<div class="flex flex-col">
+											<span class="countdown font-mono text-5xl"> <span
+												id="days-${cart.auctionId }" style="--value: 0;"></span>
+											</span> days
+										</div>
+										<div class="flex flex-col">
+											<span class="countdown font-mono text-5xl"> <span
+												id="hours-${cart.auctionId }" style="--value: 0;"></span>
+											</span> hours
+										</div>
+										<div class="flex flex-col">
+											<span class="countdown font-mono text-5xl"> <span
+												id="minutes-${cart.auctionId }" style="--value: 0;"></span>
+											</span> min
+										</div>
+										<div class="flex flex-col">
+											<span class="countdown font-mono text-5xl"> <span
+												id="seconds-${cart.auctionId }" style="--value: 0;"></span>
+											</span> sec
+										</div>
+									</div>
+								</td>
+							</tr>
+							<script>
+						    	function timerWork_${cart.auctionId}() {
+						            let remainingTime = calculateRemainingTime("${cart.endDate}");
 						            const auctionId = "${cart.auctionId}";
-						            const timerId = "remainTime-" + auctionId;
-						            const timerSpan = document.getElementById(timerId);
-						
-						            if (timerSpan) {
-						                updateCountdownTimer(timerSpan, remainingTime);
-						            }
+						            
 						
 						            function calculateRemainingTime(endDateString) {
 						                const currentTime = new Date();
@@ -71,24 +85,45 @@
 						                return remainingTimeInSeconds;
 						            }
 						
-						            function updateCountdownTimer(element, remainingTime) {
+						            function updateCountdownTimer() {
+						            	const daysName = "days-" + auctionId;
+						            	const hoursName = "hours-" + auctionId;
+						            	const minutesName = "minutes-" + auctionId;
+						            	const secondsName = "seconds-" + auctionId;
+						            	
+						            	const daysElement = document.getElementById(daysName);
+						    	        const hoursElement = document.getElementById(hoursName);
+						    	        const minutesElement = document.getElementById(minutesName);
+						    	        const secondsElement = document.getElementById(secondsName);
+						            	
 						                const days = Math.floor(remainingTime / (60 * 60 * 24));
 						                const hours = Math.floor((remainingTime % (60 * 60 * 24)) / (60 * 60));
 						                const minutes = Math.floor((remainingTime % (60 * 60)) / 60);
 						                const seconds = remainingTime % 60;
 						
-						                let timerContent = days + "d " + hours + "h " + minutes + "m " + seconds + "s";
-						                element.textContent = timerContent;
-						
-						                remainingTime--;
-						
-						                if (remainingTime >= 0) {
-						                    setTimeout(() => {
-						                        updateCountdownTimer(element, remainingTime);
-						                    }, 1000);
-						                }
-						            }
-						        })();
+						                if (daysElement) {
+						    	            daysElement.style.setProperty("--value", days);
+						    	        }
+						    	        if (hoursElement) {
+						    	            hoursElement.style.setProperty("--value", hours);
+						    	        }
+						    	        if (minutesElement) {
+						    	            minutesElement.style.setProperty("--value", minutes);
+						    	        }
+						    	        if (secondsElement) {
+						    	            secondsElement.style.setProperty("--value", seconds);
+						    	        }
+						    	
+						    	        remainingTime--;
+						    	
+						    	        if (remainingTime >= 0) {
+						    	            setTimeout(updateCountdownTimer, 1000);
+						    	        }
+						    	    }
+						    	
+						    	    updateCountdownTimer();
+						    	}
+						    	timerWork_${cart.auctionId}();
 						    </script>
 						</c:forEach>
 					</tbody>

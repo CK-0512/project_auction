@@ -163,6 +163,7 @@ CREATE TABLE realTimeAuction (
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     regDate DATETIME NOT NULL,
     updateDate DATETIME NOT NULL,
+    hopeDate DATETIME NOT NULL,
     startDate DATETIME,
     endDate DATETIME,
     memberId INT UNSIGNED NOT NULL,

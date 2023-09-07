@@ -13,7 +13,7 @@
 		minimumValidDate.setDate(minimumValidDate.getDate() + 3);
 		
 		if(dateTimeInput < minimumValidDate) {
-			alert("경매 시작은 오늘로부터 최소 3일 이후로 가능합니다.");
+			alert("경매 일자는 오늘로부터 최소 3일 이후로 가능합니다.");
 			return;
 		}
 		
@@ -23,12 +23,8 @@
 			confirmForm.submit();
 			
 			if (noticeSocket) {
-				let reciveUser = null;
-				if (${rq.interestCategories.contains(realTime.categoryId)}) {
-					reciveUser = ${rq.loginedMemberId}
-				}
-				let socketMsg = `realTime,${realTime.name},${reciveUser},${realTime.id}`;
-				console.debug("sssssssmsg>>", socketMsg);
+				let socketMsg = `realTime,${realTime.name},${realTime.categoryId},${realTime.id}`;
+				
 				noticeSocket.send(socketMsg);
 			}
 		}

@@ -194,7 +194,7 @@ public class UsrRealTimeController {
 		}
 		
 		if (realTime.getConfirmStatus() != 0) {
-			return rq.jsReturnOnView("해당 상품은 더 이상 수정이 불가능합니다");
+			return rq.jsReturnOnView(Util.f("해당 상품은 더 이상 수정이 불가능합니다", id));
 		}
 
 		if (rq.getLoginedMemberId() != realTime.getMemberId()) {
@@ -217,7 +217,7 @@ public class UsrRealTimeController {
 		}
 		
 		if (realTime.getConfirmStatus() != 0) {
-			return rq.jsReturnOnView("해당 상품은 더 이상 삭제가 불가능합니다");
+			return rq.jsReturnOnView(Util.f("해당 상품은 더 이상 삭제가 불가능합니다", id));
 		}
 
 		if (rq.getLoginedMemberId() != realTime.getMemberId()) {

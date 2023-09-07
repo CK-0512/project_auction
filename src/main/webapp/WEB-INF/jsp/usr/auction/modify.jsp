@@ -40,12 +40,18 @@
 							<tr>
 								<th>제 품 명</th>
 								<td>${auction.name }</td>
-								<th>제품 카테고리</th>
+								<th>상품 카테고리</th>
 								<td>${categoryName }</td>
 							</tr>
 							<tr>
-								<th>제품 사진</th>
-								<td colspan="3"></td>
+								<th>상품 사진</th>
+								<td colspan="3">
+									<c:forEach var="file" items="${files }">
+										<div>
+											<img src="/usr/home/file/${file.id }">
+										</div>
+									</c:forEach>
+								</td>
 							</tr>
 							<tr>
 								<th>경매 시작가</th>
@@ -74,7 +80,7 @@
 								</td>
 							</tr>
 							<tr>
-								<th>제품 설명</th>
+								<th>상품 설명</th>
 								<td colspan="3">
 									<div class="toast-ui-editor">
 								    	<script type="text/x-template">${auction.description }</script>
