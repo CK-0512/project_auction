@@ -18,15 +18,26 @@
 		};
 		
 		ws.onmessage = function (event) {
-	        console.log("ReceiveMessage:", event.data+'\n');
-			let $socketAlert = $('div#socketAlert');
-			$socketAlert.html(event.data);
-			$socketAlert.css('display', 'block');
-			
-			setTimeout( function () {
-				$socketAlert.css('display', 'none');
-			}, 3000);
+		    var data = event.data;
+		    // toast
+		    let toastId = "toast-" + Date.now(); // Generate a unique ID
+		    let toast = "<div id='" + toastId + "' class='toast z-10' role='alert' aria-live='assertive' aria-atomic='true'>";
+		    toast += "<div class='toast-header'><i class='fas fa-bell mr-2'></i><strong class='mr-auto'>알림</strong>";
+		    toast += "<small class='text-muted'>just now</small><button type='button' class='ml-2 mb-1 close' data-dismiss='toast' aria-label='Close'>";
+		    toast += "<span aria-hidden='true'>&times;</span></button>";
+		    toast += "</div> <div class='toast-body'>" + data + "</div></div>";
+		    $("#msgStack").append(toast);
+		    
+		    // Initialize and show the specific toast
+		    $("#" + toastId).toast({"animation": true, "autohide": false});
+		    $("#" + toastId).toast('show');
+		    
+		    // Set a timeout to hide the toast after 3 seconds
+		    setTimeout(() => {
+		        $("#" + toastId).toast('hide');
+		    }, 3000);
 		};
+
 		
 		ws.onclose = function (event) {
 			console.log('Info : connection closed.');
@@ -37,5 +48,6 @@
 		};
 	}
 </script>
+	<div id="msgStack"></div>
 </body>
 </html>

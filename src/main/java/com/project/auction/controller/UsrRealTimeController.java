@@ -184,7 +184,6 @@ public class UsrRealTimeController {
 	}
 	
 	@RequestMapping("/usr/realTime/doModify")
-	@ResponseBody
 	public String doModify(int id, int categoryId, MultipartFile file, int startBid, String name, String body) {
 
 		RealTime realTime = realTimeService.getRealTimeById(id);
@@ -194,7 +193,7 @@ public class UsrRealTimeController {
 		}
 		
 		if (realTime.getConfirmStatus() != 0) {
-			return rq.jsReturnOnView(Util.f("해당 상품은 더 이상 수정이 불가능합니다", id));
+			return rq.jsReturnOnView("해당 상품은 더 이상 수정이 불가능합니다");
 		}
 
 		if (rq.getLoginedMemberId() != realTime.getMemberId()) {
@@ -207,7 +206,6 @@ public class UsrRealTimeController {
 	}
 	
 	@RequestMapping("/usr/realTime/doDelete")
-	@ResponseBody
 	public String doDelete(int id) {
 
 		RealTime realTime = realTimeService.getRealTimeById(id);
@@ -217,7 +215,7 @@ public class UsrRealTimeController {
 		}
 		
 		if (realTime.getConfirmStatus() != 0) {
-			return rq.jsReturnOnView(Util.f("해당 상품은 더 이상 삭제가 불가능합니다", id));
+			return rq.jsReturnOnView("해당 상품은 더 이상 삭제가 불가능합니다");
 		}
 
 		if (rq.getLoginedMemberId() != realTime.getMemberId()) {

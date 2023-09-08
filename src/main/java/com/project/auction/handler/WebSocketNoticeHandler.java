@@ -50,8 +50,8 @@ public class WebSocketNoticeHandler extends AbstractWebSocketHandler {
         for (WebSocketSession userSession : userSessions) {
             List<Category> interestCategories = (List<Category>) userSession.getAttributes().get("memberInterestCategories");
             for (Category category : interestCategories) {
-                if (String.valueOf(category.getId()).equals(categoryId)) {
-                    String messageText = Util.f("<a href='usr/realTime/?id=%s'>%s 카테고리의 %s 상품이 대기열에 등록되었습니다.</a>",
+                if (String.valueOf(category.getCategoryId()).equals(categoryId)) {
+                    String messageText = Util.f("<a href='../../usr/realTime/detail?id=%s'>%s 카테고리의 %s 상품이 대기열에 등록되었습니다.</a>",
                             realTimeId, category.getName(), realTimeContent);
                     TextMessage message = new TextMessage(messageText);
                     userSession.sendMessage(message);
