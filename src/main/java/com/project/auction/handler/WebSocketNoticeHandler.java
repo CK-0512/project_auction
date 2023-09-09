@@ -29,7 +29,6 @@ public class WebSocketNoticeHandler extends AbstractWebSocketHandler {
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		System.out.println("handleTextMessage:" + session + " : " + message);
 
-		//protocol: cmd,상품,관심유저,id  (ex: realTime,realTimeContent1,user1,234)
 		String msg = message.getPayload();
 		if (!Util.empty(msg)) {
 			String[] strs = msg.split(",");
@@ -59,17 +58,6 @@ public class WebSocketNoticeHandler extends AbstractWebSocketHandler {
             }
         }
     }
-
-//    private int sendPushUserId(WebSocketSession session) {
-//		int senderId;
-//		
-//		if (session.getAttributes().get("loginedMemberId") == null) {
-//			senderId = 0;
-//		} else {
-//			senderId = (int) session.getAttributes().get("loginedMemberId");
-//		}
-//		return senderId;
-//	}
     
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {

@@ -49,8 +49,6 @@ CREATE TABLE category(
 
 SELECT * FROM category;
 
-ALTER TABLE category CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
 CREATE TABLE interestCategory(
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     regDate DATETIME NOT NULL,
@@ -112,6 +110,18 @@ CREATE TABLE reactionPoint (
     `point` INT NOT NULL DEFAULT 0
 );
 
+CREATE TABLE alarm (
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    updateDate DATETIME NOT NULL,
+    memberId INT UNSIGNED NOT NULL,
+    categoryId INT UNSIGNED NOT NULL,
+    message VARCHAR(100) NOT NULL,
+    alarmUrl VARCHAR(100) NOT NULL,
+    alarmStatus TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '알림종류 (댓글 알림 = 0, 실시간 경매 알림 = 1, 참가 경매 종료 알림 = 2)',
+    endStatus TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '확인여부 (확인 전 = 0, 확인 후 = 1)'
+);
+
 CREATE TABLE productFile (
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	regDate DATETIME NOT NULL,
@@ -119,7 +129,7 @@ CREATE TABLE productFile (
     savedName VARCHAR(100) NOT NULL,
     savedPath VARCHAR(100) NOT NULL,
     auctionId INT UNSIGNED NOT NULL,
-    auctionType INT UNSIGNED NOT NULL COMMENT '옥션종류 (온라인 = 1, 실시간 = 2)'
+    auctionType TINYINT UNSIGNED NOT NULL COMMENT '옥션종류 (온라인 = 1, 실시간 = 2)'
 );
 
 CREATE TABLE auction (
@@ -180,6 +190,16 @@ CREATE TABLE realTimeAuction (
 );
 
 DROP TABLE realTimeAuction;
+
+CREATE TABLE bidHistory (
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    auctionId INT UNSIGNED NOT NULL,
+    memberId INT UNSIGNED NOT NULL,
+    bidMoney INT UNSIGNED NOT NULL,
+    bidSucceessful TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '낙찰가 여부 (단순 입찰가 = 0, 낙찰가 = 1)',
+    auctionType TINYINT UNSIGNED NOT NULL COMMENT '옥션종류 (온라인 = 1, 실시간 = 2)'
+);
 
 SELECT * FROM category;
 
