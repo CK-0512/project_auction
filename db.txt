@@ -197,7 +197,7 @@ CREATE TABLE bidHistory (
     auctionId INT UNSIGNED NOT NULL,
     memberId INT UNSIGNED NOT NULL,
     bidMoney INT UNSIGNED NOT NULL,
-    bidSucceessful TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '낙찰가 여부 (단순 입찰가 = 0, 낙찰가 = 1)',
+    bidSuccessful TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '낙찰가 여부 (단순 입찰가 = 0, 낙찰가 = 1)',
     auctionType TINYINT UNSIGNED NOT NULL COMMENT '옥션종류 (온라인 = 1, 실시간 = 2)'
 );
 
