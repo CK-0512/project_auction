@@ -7,14 +7,14 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Alarm {
+public class Notice {
 	private int id;
 	private String regDate;
 	private String updateDate;
 	private int memberId;
 	private String message;
-	private String alarmUrl;
-	private int alarmStatus;
+	private String noticeUrl;
+	private int noticeType;
 	private int endStatus;
 
 }

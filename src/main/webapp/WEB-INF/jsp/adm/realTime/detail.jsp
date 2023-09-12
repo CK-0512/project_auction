@@ -22,11 +22,29 @@
 			confirmForm.action = "doConfirm"
 			confirmForm.submit();
 			
-			if (noticeSocket) {
-				let socketMsg = `realTime,${realTime.name},${realTime.categoryId},${realTime.id}`;
-				
-				noticeSocket.send(socketMsg);
-			}
+			let memberId = `${realTime.memberId}`;
+		    let noticeUrl = `../../usr/realTime/detail?id=${realTime.id}`;
+		    let socketMsg = `realTimeConfirm,${realTime.categoryId},${realTime.memberId},${realTime.name},${realTime.id}`;
+			
+		    $.ajax({
+		        url: '../../usr/notice/registNotice',
+		        method: 'POST',
+		        data: {
+		            memberId: memberId,
+		            noticeUrl: noticeUrl,
+		            message: socketMsg,
+		            noticeType: '1'
+		        },
+		        dataType: 'json',
+		        success: function (data) {
+		            if (noticeSocket) {
+		    			noticeSocket.send(socketMsg);
+		    		}
+		        },
+		        error: function (err) {
+		           		console.log(err);
+		        }
+		    });
 		}
 	}
 	
@@ -35,6 +53,11 @@
 		if (confirmed) {
 			confirmForm.action = "doReject"
 			confirmForm.submit();
+			
+			 if (noticeSocket) {
+				let socketMsg = `realTimeReject,${realTime.memberId},${realTime.name},${realTime.id}`;
+	    		noticeSocket.send(socketMsg);
+	    	}
 		}
 	}
 </script>

@@ -110,15 +110,14 @@ CREATE TABLE reactionPoint (
     `point` INT NOT NULL DEFAULT 0
 );
 
-CREATE TABLE alarm (
+CREATE TABLE notice (
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     regDate DATETIME NOT NULL,
     updateDate DATETIME NOT NULL,
     memberId INT UNSIGNED NOT NULL,
-    categoryId INT UNSIGNED NOT NULL,
     message VARCHAR(100) NOT NULL,
-    alarmUrl VARCHAR(100) NOT NULL,
-    alarmStatus TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '알림종류 (댓글 알림 = 0, 실시간 경매 알림 = 1, 참가 경매 종료 알림 = 2)',
+    noticeUrl VARCHAR(100) NOT NULL,
+    noticeType TINYINT UNSIGNED NOT NULL COMMENT '알림종류 (댓글 알림 = 0, 실시간 경매 알림 = 1, 참가 경매 종료 알림 = 2)',
     endStatus TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '확인여부 (확인 전 = 0, 확인 후 = 1)'
 );
 

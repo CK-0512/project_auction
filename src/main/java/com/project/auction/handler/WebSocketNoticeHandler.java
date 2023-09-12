@@ -32,32 +32,59 @@ public class WebSocketNoticeHandler extends AbstractWebSocketHandler {
 		String msg = message.getPayload();
 		if (!Util.empty(msg)) {
 			String[] strs = msg.split(",");
-			if (strs != null && strs.length == 4) {
+			if (strs != null) {
 				String cmd = strs[0];
-				String realTimeContent = strs[1];
-				String categoryId = strs[2];
-				String realTimeId = strs[3];
 
-				if ("realTime".equals(cmd)) {
-					sendMessageToInterestedUsers(categoryId, realTimeId, realTimeContent);
+				if ("realTimeConfirm".equals(cmd)) {
+					String categoryId = strs[1];
+					String registUserId = strs[2];
+					String realTimeContent = strs[3];
+					String realTimeId = strs[4];
+					sendMessageToRegisterByConfirm(registUserId, realTimeContent, realTimeId);
+					sendMessageToInterestedUsers(categoryId, registUserId, realTimeContent, realTimeId);
+				} else if ("realTimeReject".equals(cmd)) {
+					String registUserId = strs[1];
+					String realTimeContent = strs[2];
+					String realTimeId = strs[3];
+					sendMessageToRegisterByReject(registUserId, realTimeContent, realTimeId);
 				}
 			}
 		}
 	}
     
-    private void sendMessageToInterestedUsers(String categoryId, String realTimeId, String realTimeContent) throws IOException {
+    private void sendMessageToRegisterByConfirm(String registUserId, String realTimeContent, String realTimeId) throws IOException {
+    	WebSocketSession userSession = userSessions.get((Integer.valueOf(registUserId)));
+		
+		String messageText = Util.f("<a href='../../usr/realTime/detail?id=%s'>신청하신 %s 상품의 경매신청이 승인되어, 대기열에 등록되었습니다.</a>",
+                realTimeId, realTimeContent);
+		TextMessage confirmMessage = new TextMessage(messageText);
+		userSession.sendMessage(confirmMessage);	
+	}
+
+	private void sendMessageToInterestedUsers(String categoryId, String registUserId, String realTimeContent, String realTimeId) throws IOException {
         for (WebSocketSession userSession : userSessions) {
-            List<Category> interestCategories = (List<Category>) userSession.getAttributes().get("memberInterestCategories");
-            for (Category category : interestCategories) {
-                if (String.valueOf(category.getCategoryId()).equals(categoryId)) {
-                    String messageText = Util.f("<a href='../../usr/realTime/detail?id=%s'>%s 카테고리의 %s 상품이 대기열에 등록되었습니다.</a>",
-                            realTimeId, category.getName(), realTimeContent);
-                    TextMessage message = new TextMessage(messageText);
-                    userSession.sendMessage(message);
+        	if (userSession.getAttributes().get("loginedMemberId") != registUserId) {
+        		List<Category> interestCategories = (List<Category>) userSession.getAttributes().get("memberInterestCategories");
+                for (Category category : interestCategories) {
+                    if (String.valueOf(category.getCategoryId()).equals(categoryId)) {
+                        String messageText = Util.f("<a href='../../usr/realTime/detail?id=%s'>%s 카테고리의 %s 상품이 대기열에 등록되었습니다.</a>",
+                                realTimeId, category.getName(), realTimeContent);
+                        TextMessage message = new TextMessage(messageText);
+                        userSession.sendMessage(message);
+                    }
                 }
-            }
+        	}
         }
     }
+	
+	private void sendMessageToRegisterByReject(String registUserId, String realTimeContent, String realTimeId) throws IOException {
+    	WebSocketSession userSession = userSessions.get((Integer.valueOf(registUserId)));
+		
+		String messageText = Util.f("<a href='../../usr/realTime/detail?id=%s'>신청하신 %s 상품의 경매신청이 반려되었습니다. 다음 기회를 기대해주세요!</a>",
+                realTimeId, realTimeContent);
+		TextMessage rejectMessage = new TextMessage(messageText);
+		userSession.sendMessage(rejectMessage);	
+	}
     
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
