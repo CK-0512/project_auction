@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.project.auction.service.AuctionService;
+import com.project.auction.service.BidHistoryService;
 import com.project.auction.service.CartService;
 import com.project.auction.service.CategoryService;
 import com.project.auction.service.FileService;
@@ -31,16 +32,18 @@ public class UsrAuctionController {
 	private FileService fileService;
 	private MemberService memberService;
 	private CartService cartService;
+	private BidHistoryService bidHistoryService;
 	private Rq rq;
     private int auctionType;
 	
 	@Autowired
-	public UsrAuctionController(AuctionService auctionService, CategoryService categoryService, FileService fileService, MemberService memberService, CartService cartService, Rq rq) {
+	public UsrAuctionController(AuctionService auctionService, CategoryService categoryService, FileService fileService, MemberService memberService, CartService cartService, BidHistoryService bidHistoryService, Rq rq) {
 		this.auctionService = auctionService;
 		this.categoryService = categoryService;
 		this.fileService = fileService;
 		this.memberService = memberService;
 		this.cartService = cartService;
+		this.bidHistoryService = bidHistoryService;
 		this.rq = rq;
         this.auctionType = 1;
 	}
@@ -171,6 +174,10 @@ public class UsrAuctionController {
 		
 		Auction auction = auctionService.getAuctionById(auctionId);
 		
+		int bidSuccessful = 0;
+		
+		bidHistoryService.addAuctionHistory(rq.getLoginedMemberId(), auction, bidSuccessful, auctionType);
+		
 		cartService.addCart(rq.getLoginedMemberId(), auction);
 		
 		return Util.jsReplace("상품을 입찰하였습니다.", Util.f("detail?id=%d", auctionId));
@@ -189,6 +196,10 @@ public class UsrAuctionController {
 		memberService.spendMoney(rq.getLoginedMemberId(), buyNow);
 		
 		Auction auction = auctionService.getAuctionById(auctionId);
+		
+		int bidSuccessful = 1;
+		
+		bidHistoryService.addAuctionHistory(rq.getLoginedMemberId(), auction, bidSuccessful, auctionType);
 		
 		cartService.addCart(rq.getLoginedMemberId(), auction);
 		

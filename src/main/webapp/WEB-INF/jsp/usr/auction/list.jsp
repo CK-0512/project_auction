@@ -14,25 +14,25 @@
 			</div>
 			<div class="mb-2 flex">
 				<div class="table-box-type-2">
-					<table class="table">
+					<table class="table w-28 h-full">
 						<tr>
-							<td>
+							<td class="text-center">
 								<a href="list?endStatus=${endStatus }" class="${categoryId == 0 ? 'selected' : ''}">모든품목</a>
 							</td>
 						</tr>
 						<c:forEach var="category" items="${categories }">
 							<tr>
-								<td>
+								<td class="text-center">
 									<a href="list?endStatus=${endStatus }&categoryId=${category.id }" class="${categoryId == category.id ? 'selected' : ''}">${category.name }</a>
 								</td>
 							</tr>
 						</c:forEach>
 					</table>
 				</div>
-				<div class="flex">
+				<div class="flex flex-wrap">
 					<c:if test="${endStatus == '0'}">
 						<c:forEach var="auction" items="${auctionContents }">
-							<div class="contents-box">
+							<div class="contents-box w-1/5 h-1/2 p-2 mb-2 mx-6 border-4">
 								<c:forEach var="file" items="${files }">
 									<c:if test="${auction.id == file.auctionId }">
 										<a href="detail?id=${auction.id }">
@@ -46,15 +46,76 @@
 								<div>
 									<span>현재가 : ${auction.nowBid }원</span>
 								</div>
-								<c:if test="${auction.buyNow } != 0">
+								<c:if test="${auction.buyNow != 0 } ">
 									<div>
 										<span>즉시구매가 : ${auction.buyNow }</span>
 									</div>
 								</c:if>
-								<div>
-									<span id="auctionId" data-id="${auction.id}"></span>
-									<span id="remainTime-${auction.id }"></span>
-							    </div>
+									<div class="grid grid-flow-col gap-4 text-center auto-cols-max">
+										<span class="text-md mt-2 -mr-1">종료까지 : </span>
+										<div class="flex flex-col">
+											<span class="countdown font-mono text-2xl"> <span
+												id="days-${auction.id }" style="--value: 0;"></span>
+											</span> days
+										</div>
+										<div class="flex flex-col">
+											<span class="countdown font-mono text-2xl"> <span
+												id="hours-${auction.id }" style="--value: 0;"></span>
+											</span> hours
+										</div>
+										<div class="flex flex-col">
+											<span class="countdown font-mono text-2xl"> <span
+												id="minutes-${auction.id }" style="--value: 0;"></span>
+											</span> min
+										</div>
+									</div>
+									<script>
+							    		function timerWork_${auction.id}() {
+								            let remainingTime = calculateRemainingTime("${auction.endDate}");
+								            const auctionId = "${auction.id}";
+								            
+								
+								            function calculateRemainingTime(endDateString) {
+								                const currentTime = new Date();
+								                const endTime = new Date(endDateString.replace(/-/g, '/'));
+								                const remainingTimeInSeconds = Math.max(0, Math.floor((endTime - currentTime) / 1000));
+								                return remainingTimeInSeconds;
+								            }
+								
+								            function updateCountdownTimer() {
+								            	const daysName = "days-" + auctionId;
+								            	const hoursName = "hours-" + auctionId;
+								            	const minutesName = "minutes-" + auctionId;
+								            	
+								            	const daysElement = document.getElementById(daysName);
+								    	        const hoursElement = document.getElementById(hoursName);
+								    	        const minutesElement = document.getElementById(minutesName);
+								            	
+								                const days = Math.floor(remainingTime / (60 * 60 * 24));
+								                const hours = Math.floor((remainingTime % (60 * 60 * 24)) / (60 * 60));
+								                const minutes = Math.floor((remainingTime % (60 * 60)) / 60);
+								
+								                if (daysElement) {
+								    	            daysElement.style.setProperty("--value", days);
+								    	        }
+								    	        if (hoursElement) {
+								    	            hoursElement.style.setProperty("--value", hours);
+								    	        }
+								    	        if (minutesElement) {
+								    	            minutesElement.style.setProperty("--value", minutes);
+								    	        }
+								    	
+								    	        remainingTime--;
+								    	
+								    	        if (remainingTime >= 0) {
+								    	            setTimeout(updateCountdownTimer, 1000);
+								    	        }
+								    	    }
+								    	
+								    	    updateCountdownTimer();
+								    	}
+								    	timerWork_${auction.id}();
+							    	</script>
 							 </div>
 						</c:forEach>
 					</c:if>

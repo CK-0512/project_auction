@@ -1,7 +1,5 @@
 package com.project.auction.vo;
 
-import java.sql.Date;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +12,7 @@ public class Auction {
 	private String regDate;
 	private String updateDate;
 	private int bidDate;
-	private Date endDate;
+	private String endDate;
 	private int memberId;
 	private String memberName;
 	private int categoryId;

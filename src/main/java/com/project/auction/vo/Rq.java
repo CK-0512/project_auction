@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import com.project.auction.service.CartService;
 import com.project.auction.service.CategoryService;
 import com.project.auction.service.MemberService;
+import com.project.auction.service.NoticeService;
 import com.project.auction.util.Util;
 
 import lombok.Getter;
@@ -30,12 +31,14 @@ public class Rq {
 	private List<Category> interestCategories;
 	@Getter
 	private int cartSize;
+	@Getter
+	private List<Notice> memberNotices;
 	
 	private HttpServletRequest req;
 	private HttpServletResponse resp;
 	private HttpSession session;
 	
-	public Rq(HttpServletRequest req, HttpServletResponse resp, MemberService memberService, CategoryService categoryService, CartService cartService) {
+	public Rq(HttpServletRequest req, HttpServletResponse resp, MemberService memberService, CategoryService categoryService, CartService cartService, NoticeService noticeService) {
 		
 		this.req = req;
 		this.resp = resp;
@@ -46,18 +49,21 @@ public class Rq {
 		Member loginedMember = null;
 		List<Category> interestCategories = null;
 		int cartSize = 0;
+		List<Notice> memberNotices = null;
 		
 		if(session.getAttribute("loginedMemberId") != null) {
 			loginedMemberId = (int) session.getAttribute("loginedMemberId");
 			loginedMember = memberService.getMemberById(loginedMemberId);
 			interestCategories = categoryService.getInterestCategories(loginedMemberId);
 			cartSize = cartService.getCartCntWithOutEither(loginedMemberId);
+			memberNotices = noticeService.getMemberNoticesInMenuBar(loginedMemberId);
 		}
 		
 		this.loginedMemberId = loginedMemberId;
 		this.loginedMember = loginedMember;
 		this.interestCategories = interestCategories;
 		this.cartSize = cartSize;
+		this.memberNotices = memberNotices;
 		
 		this.req.setAttribute("rq", this);
 		this.session.setAttribute("memberInterestCategories", interestCategories);

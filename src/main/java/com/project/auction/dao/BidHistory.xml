@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.auction.dao.BidHistoryDao">
+	
+	<insert id="addAuctionHistory">
+		INSERT INTO bidHistory
+			SET regDate = NOW()
+				, auctionId = #{auctionId}
+				, memberId = #{memberId}
+				, bidMoney = #{nowBid}
+				, bidSuccessful = #{bidSuccessful}
+				, auctionType = #{auctionType}
+	</insert>
+	
+</mapper>

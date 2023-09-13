@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.project.auction.dao.ArticleDao">
+<mapper namespace="com.project.auction.dao.NoticeDao">
 	
 	<insert id="registNotice">
 		INSERT INTO notice
@@ -12,5 +12,13 @@
 				, message = #{message}
 				, noticeType = #{noticeType}
 	</insert>
+	
+	<select id="getMemberNoticesInMenuBar">
+		SELECT * 
+			FROM notice
+			WHERE memberId = #{memberId}
+			AND endStatus = 0
+			ORDER BY regDate DESC;
+	</select>
 	
 </mapper>

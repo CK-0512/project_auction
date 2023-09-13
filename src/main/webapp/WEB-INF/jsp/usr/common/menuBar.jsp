@@ -72,7 +72,7 @@
 					<div tabindex="0"
 						class="mt-3 z-[1] card card-compact dropdown-content w-52 bg-base-100 shadow">
 						<div class="card-body">
-							<span class="font-bold text-lg">${rq.cartSize } 개의 경매에 참가중</span>
+							<span class="font-bold text-lg">${rq.cartSize }개의 경매에 참가중</span>
 							<div class="card-actions">
 								<a href="/usr/cart/list">
 									<button class="btn btn-primary btn-block">View cart</button>
@@ -81,16 +81,34 @@
 						</div>
 					</div>
 				</div>
-				<button class="btn btn-ghost btn-circle mr-1">
-					<div class="indicator">
-						<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-							viewBox="0 0 24 24" stroke="currentColor">
-							<path stroke-linecap="round" stroke-linejoin="round"
-								stroke-width="2"
-								d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
-						<span class="badge badge-xs badge-primary indicator-item"></span>
+				<div class="dropdown dropdown-end">
+					<label tabindex="0" class="btn btn-ghost btn-circle mr-1">
+						<div class="indicator">
+							<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+								viewBox="0 0 24 24" stroke="currentColor">
+								<path stroke-linecap="round" stroke-linejoin="round"
+									stroke-width="2"
+									d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
+							<span class="badge badge-xs badge-primary indicator-item">${rq.memberNotices.size() }</span>
+						</div>
+					</label>
+					<div tabindex="0"
+						class="mt-3 z-[1] card card-compact dropdown-content w-96 bg-base-100 shadow text-center">
+						<div class="card-body">
+							<c:if test="${rq.memberNotices.size() == 0 }">
+								<span class="font-semibold text-base">신규 알림이 없습니다.</span>
+							</c:if>
+							<c:if test="${rq.memberNotices.size() != 0 }">
+								<span class="font-semibold text-base">신규 알림이 ${rq.memberNotices.size() }개 있습니다.</span>
+								<c:forEach var="memberNotice" items="${rq.memberNotices }">
+									<div class="card-actions border-2">
+										<a href="${rq.memberNotices.noticeUrl }">${rq.memberNotices.message }</a>
+									</div>
+								</c:forEach>
+							</c:if>
+						</div>
 					</div>
-				</button>
+				</div>
 			</c:if>
 			<div class="dropdown dropdown-end">
 				<label tabindex="0" class="btn btn-ghost btn-circle avatar">
