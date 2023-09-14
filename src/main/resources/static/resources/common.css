@@ -119,3 +119,15 @@ input[type="file"] {
 	width : 190px;
 }
 
+#auctionContent:hover {
+	border-color: #eee9;
+    box-shadow: 0 2px 10px 0 rgba(0,0,0,0.2);
+}
+
+#auctionContent {
+	transition: box-shadow .2s ease;
+}
+
+.toastui-editor-contents p {
+	text-align: left;
+}

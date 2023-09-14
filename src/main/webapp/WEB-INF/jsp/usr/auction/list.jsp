@@ -32,7 +32,7 @@
 				<div class="flex flex-wrap">
 					<c:if test="${endStatus == '0'}">
 						<c:forEach var="auction" items="${auctionContents }">
-							<div class="contents-box w-1/5 h-1/2 p-2 mb-2 mx-6 border-4">
+							<div id="auctionContent" class="contents-box w-1/5 h-1/2 p-2 mb-2 mx-6">
 								<c:forEach var="file" items="${files }">
 									<c:if test="${auction.id == file.auctionId }">
 										<a href="detail?id=${auction.id }">
@@ -40,32 +40,34 @@
 										</a>
 									</c:if>
 								</c:forEach>
-								<div>
-									<span>상품명 : ${auction.name }</span>
+								<div class="text-center font-thin">
+									<span>${auction.name }</span>
 								</div>
-								<div>
-									<span>현재가 : ${auction.nowBid }원</span>
+								<div class="text-center text-red-500 font-medium">
+									<span>현재가 ${auction.nowBid }원</span>
 								</div>
 								<c:if test="${auction.buyNow != 0 } ">
 									<div>
 										<span>즉시구매가 : ${auction.buyNow }</span>
 									</div>
 								</c:if>
-									<div class="grid grid-flow-col gap-4 text-center auto-cols-max">
-										<span class="text-md mt-2 -mr-1">종료까지 : </span>
-										<div class="flex flex-col">
-											<span class="countdown font-mono text-2xl"> <span
-												id="days-${auction.id }" style="--value: 0;"></span>
+									<div class="text-center font-bold">
+										<span>경매 진행중</span>
+									</div>
+									<div class="grid grid-flow-col gap-2 auto-cols-max justify-center">
+										<div class="flex flex-col text-md">
+											<span class="countdown font-mono text-xl flex justify-center"> <span
+												id="days-${auction.id }" style="--value:0;"></span>
 											</span> days
 										</div>
-										<div class="flex flex-col">
-											<span class="countdown font-mono text-2xl"> <span
-												id="hours-${auction.id }" style="--value: 0;"></span>
+										<div class="flex flex-col text-md">
+											<span class="countdown font-mono text-xl flex justify-center"> <span
+												id="hours-${auction.id }" style="--value:0;"></span>
 											</span> hours
 										</div>
-										<div class="flex flex-col">
-											<span class="countdown font-mono text-2xl"> <span
-												id="minutes-${auction.id }" style="--value: 0;"></span>
+										<div class="flex flex-col text-md">
+											<span class="countdown font-mono text-xl flex justify-center"> <span
+												id="minutes-${auction.id }" style="--value:0;"></span>
 											</span> min
 										</div>
 									</div>

@@ -71,7 +71,7 @@
 								<th>상품사진</th>
 								<td colspan="3">
 									<c:forEach var="file" items="${files }">
-										<div>
+										<div class="w-96">
 											<img src="/usr/home/file/${file.id }">
 										</div>
 									</c:forEach>
@@ -84,25 +84,25 @@
 									<th>종료까지</th>
 									<td>
 										<div class="grid grid-flow-col gap-5 text-center auto-cols-max">
-							                <div class="flex flex-col">
+							                <div class="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
 							                    <span class="countdown font-mono text-5xl">
 							                        <span id="days" style="--value:0;"></span>
 							                    </span>
 							                    days
 							                </div>
-							                <div class="flex flex-col">
+							                <div class="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
 							                    <span class="countdown font-mono text-5xl">
 							                        <span id="hours" style="--value:0;"></span>
 							                    </span>
 							                    hours
 							                </div>
-							                <div class="flex flex-col">
+							                <div class="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
 							                    <span class="countdown font-mono text-5xl">
 							                        <span id="minutes" style="--value:0;"></span>
 							                    </span>
 							                    min
 							                </div>
-							                <div class="flex flex-col">
+							                <div class="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
 							                    <span class="countdown font-mono text-5xl">
 							                        <span id="seconds" style="--value:0;"></span>
 							                    </span>
@@ -150,7 +150,7 @@
 								</tr>
 							</c:if>
 							<tr>
-								<th>제품설명</th>
+								<th>상품설명</th>
 								<td colspan="3">
 									<div class="toast-ui-viewer">
 	  									<script type="text/x-template">${auction.description }</script>

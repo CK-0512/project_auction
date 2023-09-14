@@ -49,22 +49,22 @@
 								</c:if>
 								<td>
 									<div class="grid grid-flow-col gap-5 text-center auto-cols-max">
-										<div class="flex flex-col">
+										<div class="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
 											<span class="countdown font-mono text-5xl"> <span
 												id="days-${cart.auctionId }" style="--value: 0;"></span>
 											</span> days
 										</div>
-										<div class="flex flex-col">
+										<div class="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
 											<span class="countdown font-mono text-5xl"> <span
 												id="hours-${cart.auctionId }" style="--value: 0;"></span>
 											</span> hours
 										</div>
-										<div class="flex flex-col">
+										<div class="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
 											<span class="countdown font-mono text-5xl"> <span
 												id="minutes-${cart.auctionId }" style="--value: 0;"></span>
 											</span> min
 										</div>
-										<div class="flex flex-col">
+										<div class="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
 											<span class="countdown font-mono text-5xl"> <span
 												id="seconds-${cart.auctionId }" style="--value: 0;"></span>
 											</span> sec
