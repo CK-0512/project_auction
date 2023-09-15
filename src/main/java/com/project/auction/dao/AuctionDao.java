@@ -22,7 +22,7 @@ public interface AuctionDao {
 
 	public void modifyAuction(int id, String description);
 
-	public int getAuctionByName(String name);
+	public int searchExistAuction(String name, String description);
 
 	public void bidAuction(int id, int bid, int buyNow);
 

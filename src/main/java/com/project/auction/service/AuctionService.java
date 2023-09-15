@@ -56,8 +56,8 @@ public class AuctionService {
 	}
 
 
-	public int getAuctionByName(String name) {
-		return auctionDao.getAuctionByName(name);
+	public int searchExistAuction(String name, String description) {
+		return auctionDao.searchExistAuction(name, description);
 	}
 
 	public void bidAuction(int auctionId, int bid, int buyNow) {

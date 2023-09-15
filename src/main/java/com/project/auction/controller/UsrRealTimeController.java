@@ -120,6 +120,12 @@ public class UsrRealTimeController {
 			return Util.jsHistoryBack("경매 시작가를 입력해주세요");
 		}
 		
+		if (Util.empty(body)) {
+			return Util.jsHistoryBack("상품설명을 입력해주세요");
+		}
+		
+		System.out.println(body);
+		
 		int isExist = realTimeService.isExist(rq.getLoginedMemberId());
 		int lastDate = 7;
 		
@@ -175,16 +181,19 @@ public class UsrRealTimeController {
 			return rq.jsReturnOnView("해당 상품에 대한 권한이 없습니다");
 		}
 		
+		List<FileVO> oldFiles = fileService.getContentsFiles(auctionType, id);
+		
 		List<Category> categories = categoryService.getCategories(); 
 		
 		model.addAttribute("realTime", realTime);
+		model.addAttribute("oldFiles", oldFiles);
 		model.addAttribute("categories", categories);
 		
 		return "usr/realTime/modify";
 	}
 	
 	@RequestMapping("/usr/realTime/doModify")
-	public String doModify(int id, int categoryId, MultipartFile file, int startBid, String name, String body) {
+	public String doModify(int id, int categoryId, @RequestParam MultipartFile newFile, int startBid, String name, String body) {
 
 		RealTime realTime = realTimeService.getRealTimeById(id);
 
@@ -199,10 +208,20 @@ public class UsrRealTimeController {
 		if (rq.getLoginedMemberId() != realTime.getMemberId()) {
 			return Util.jsHistoryBack("해당 상품에 대한 권한이 없습니다");
 		}
-
-		realTimeService.modifyRealTime(id, categoryId, startBid, name, body);
-
-		return Util.jsReplace(Util.f("%s 상품이 수정되었습니다", realTime.getName()), Util.f("detail?id=%d", id));
+		
+		try {
+			realTimeService.modifyRealTime(id, categoryId, startBid, name, body);
+			if (!Util.empty(newFile)) {
+				fileService.deleteFile(auctionType, id);
+				fileService.saveFile(auctionType, newFile, id);
+			}
+			
+			return Util.jsReplace(Util.f("%s 상품이 수정되었습니다", realTime.getName()), Util.f("detail?id=%d", id));
+		} catch (IOException e) {
+			e.printStackTrace();
+			
+			return "오류 발생";
+		}
 	}
 	
 	@RequestMapping("/usr/realTime/doDelete")
@@ -224,6 +243,6 @@ public class UsrRealTimeController {
 
 		realTimeService.deleteRealTime(id);
 
-		return Util.jsReplace(Util.f("%s 상품의 신청이 삭제되었습니다", realTime.getName()), "usr/realTime/list");
+		return Util.jsReplace(Util.f("%s 상품의 신청이 삭제되었습니다", realTime.getName()), "list");
 	}
 }

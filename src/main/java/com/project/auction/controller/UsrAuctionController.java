@@ -105,7 +105,7 @@ public class UsrAuctionController {
 	
 	@RequestMapping("/usr/auction/doRegist")
 	@ResponseBody
-	public String doRegist(String name, int categoryId, @RequestParam(defaultValue = "1")int auctionType, MultipartFile file, int startBid, @RequestParam(defaultValue="0")int buyNow, int bidDate, @RequestParam(defaultValue="0")int charge, String body) {
+	public String doRegist(String name, int categoryId, MultipartFile file, int startBid, @RequestParam(defaultValue="0")int buyNow, int bidDate, @RequestParam(defaultValue="0")int charge, String body) {
 		
 		if (Util.empty(name)) {
 			return Util.jsHistoryBack("상품명을 입력해주세요");
@@ -127,7 +127,11 @@ public class UsrAuctionController {
 			return Util.jsHistoryBack("경매 기간을 선택해주세요");
 		}
 		
-		int isExist = auctionService.getAuctionByName(name);
+		if (Util.empty(body)) {
+			return Util.jsHistoryBack("상품설명을 입력해주세요");
+		}
+		
+		int isExist = auctionService.searchExistAuction(name, body);
 		
 		if (isExist != 0) {
 			return Util.jsHistoryBack("동일 상품을 등록할 수 없습니다.");

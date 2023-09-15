@@ -13,6 +13,11 @@
 				, savedPath = #{savedPath}
 	</insert>
 	
+	<delete id="deleteFileInfo">
+		DELETE FROM productFile
+			WHERE savedPath = #{savedPath}
+	</delete>
+	
 	<select id="getFileById" resultType="FileVO">
 		SELECT *
 			FROM productFile

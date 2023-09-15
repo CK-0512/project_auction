@@ -33,7 +33,7 @@
 			return;
 		}
 		
-		let dateTimeInput = new Date(confirmForm.startDate.value);
+		let dateTimeInput = new Date(form.hopeDate.value);
 		let currentDateTime = new Date();
 		let minimumValidDate = new Date(currentDateTime);
 		minimumValidDate.setDate(minimumValidDate.getDate() + 7);
@@ -53,8 +53,8 @@
   	  	}
   	  
   	  	form.body.value = markdown;
-  	 	
-  	 	let confirmMessage = "상품의 경매 시작가는 " + form.startBid.value + "원입니다. 또한, 경매일자는 여건에 따라 희망일과 달라질 수 있습니다. 이대로 등록하시겠습니까?";
+  	  	
+  	 	let confirmMessage = "상품의 경매 시작가는 " + form.startBid.value + "원입니다. 또한, 경매일자는 상황에 따라 희망일과는 달라질 수 있습니다. 이대로 등록하시겠습니까?";
   	 	if (!confirm(confirmMessage)) {
   	 		return;
   	 	}
@@ -95,7 +95,7 @@
 									<input class="input input-bordered input-accent text-right" type="text" name="startBid" placeholder="0"/> 원
 									<div class="text-xs text-red-500">수수료는 낙찰가의 10%입니다.</div>
 								</td>
-								<th>희망 경매일자</th>
+								<th>경매 희망일자</th>
 								<td><input name="hopeDate" type="datetime-local" /></td>
 							</tr>
 							<tr>

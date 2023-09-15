@@ -29,13 +29,13 @@
 						</c:forEach>
 					</table>
 				</div>
-				<div class="flex flex-wrap">
+				<div class="flex flex-wrap flex-grow">
 					<c:if test="${endStatus == '0'}">
 						<c:forEach var="auction" items="${auctionContents }">
 							<div id="auctionContent" class="contents-box w-1/5 h-1/2 p-2 mb-2 mx-6">
 								<c:forEach var="file" items="${files }">
 									<c:if test="${auction.id == file.auctionId }">
-										<a href="detail?id=${auction.id }">
+										<a href="detail?id=${auction.id }" class="flex h-3/5 justify-center">
 											<img src="/usr/home/file/${file.id }">
 										</a>
 									</c:if>

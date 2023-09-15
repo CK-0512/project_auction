@@ -49,6 +49,28 @@ public class FileService {
 
 		file.transferTo(new File(savedPath));
 	}
+	
+	public void deleteFile(int auctionType, int auctionId) {
+		List<FileVO> oldFiles = fileDao.getContentsFiles(auctionType, auctionId);
+		
+		for (FileVO oldFile : oldFiles) {
+			String savedPath = oldFile.getSavedPath();
+			
+			File file = new File(savedPath);
+		    
+		    fileDao.deleteFileInfo(savedPath);
+
+		    if (file.exists()) {
+		        if (file.delete()) {
+		            System.out.println("파일 삭제 성공: " + savedPath);
+		        } else {
+		            System.out.println("파일 삭제 실패: " + savedPath);
+		        }
+		    } else {
+		        System.out.println("파일이 존재하지 않습니다: " + savedPath);
+		    }
+		}
+	}
 
 	public FileVO getContentsFirstFile(int auctionType, int id) {
 		return fileDao.getContentsFirstFile(auctionType, id);

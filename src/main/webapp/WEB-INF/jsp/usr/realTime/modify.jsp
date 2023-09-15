@@ -6,7 +6,7 @@
 <%@ include file="../common/headWithToastUIEditorLib.jsp" %>
 
 <script>
-	function regist_submitForm(form) {
+	function modify_submitForm(form) {
 		
 		form.name.value = form.name.value.trim();
 		if (!form.name.value) {
@@ -28,7 +28,7 @@
 			return;
 		}
   	  
-  	  	const editor = $(form).find('.toast-ui-editor').data('data-toast-editor');
+		const editor = $(form).find('.toast-ui-editor').data('data-toast-editor');
   	  	const markdown = editor.getMarkdown().trim();
   	  
   	  	if (markdown.length == 0){
@@ -38,11 +38,13 @@
   	  	}
   	  
   	  	form.body.value = markdown;
-  	 	
-  	 	let confirmMessage = "상품의 경매 시작가는 " + form.startBid.value + "원입니다. 이대로 수정하시겠습니까?";
-  	 	if (!confirm(confirmMessage)) {
-  	 		return;
-  	 	}
+  	  	
+  	  	if (form.file.files.length) {
+	  	  	let confirmMessage = "기존 상품사진을 새 사진으로 대체합니다. 이대로 진행하시겠습니까?";
+	  	 	if (!confirm(confirmMessage)) {
+	  	 		return;
+  	 		}
+		}
   	 	
   	 	if (!confirm("추첨된 후에는 더 이상 수정과 취소가 불가능합니다. 정말 수정하시겠습니까?")){
   	 		return;	
@@ -54,7 +56,8 @@
 
 	<section>
 		<div class="container mx-auto">
-			<form action="doRegist" method="POST" onsubmit="regist_submitForm(this); return false;" enctype="multipart/form-data">
+			<form action="doModify" method="POST" onsubmit="modify_submitForm(this); return false;" enctype="multipart/form-data">
+				<input type="hidden" name="id" value="${realTime.id }" />
 				<input type="hidden" name="body" />
 				<div class="table-box-type-1">
 					<table class="table">
@@ -73,6 +76,18 @@
 										</c:forEach>
 									</select>
 								</td>
+							</tr>
+							<tr>
+								<th>기존 상품사진</th>
+								<td>
+									<c:forEach var="oldFile" items="${oldFiles }">
+										<div class="inline">
+											<img src="/usr/home/file/${oldFile.id }">
+										</div>
+									</c:forEach>
+								</td>
+								<th>수정할 사진 등록</th>
+								<td class="align-center"><input type="file" name="newFile" multiple/></td>
 							</tr>
 							<tr>
 								<th>경매 시작가</th>

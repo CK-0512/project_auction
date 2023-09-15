@@ -6,16 +6,17 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.project.auction.vo.FileVO;
 
-
 @Mapper
 public interface FileDao {
 
-	void insertFileInfo(int auctionType, int auctionId, String orgName, String savedName, String savedPath);
+	public void insertFileInfo(int auctionType, int auctionId, String orgName, String savedName, String savedPath);
+	
+	public void deleteFileInfo(String savedPath);
 
-	FileVO getFileById(int fileId);
+	public FileVO getFileById(int fileId);
 
-	List<FileVO> getContentsFiles(int auctionType, int auctionId);
+	public List<FileVO> getContentsFiles(int auctionType, int auctionId);
 
-	FileVO getContentsFirstFile(int auctionType, int auctionId);
+	public FileVO getContentsFirstFile(int auctionType, int auctionId);
 
 }

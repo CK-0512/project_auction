@@ -70,11 +70,12 @@
 			WHERE id = #{id}
 	</update>
 	
-	<select id="getAuctionByName" resultType="int">
+	<select id="searchExistAuction" resultType="int">
 		SELECT COUNT(*)
 			FROM auction
 			WHERE endStatus = 0
 			AND `name` = #{name}
+			AND description = #{description}
 	</select>
 	
 	<update id="bidAuction">
