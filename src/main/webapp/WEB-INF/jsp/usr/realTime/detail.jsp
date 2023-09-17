@@ -33,8 +33,9 @@
 						</tr>
 						<tr>
 							<th>상품사진</th>
-							<td class="flex" colspan="3"><c:forEach var="file" items="${files }">
-									<div>
+							<td class="flex" colspan="3">
+								<c:forEach var="file" items="${files }">
+									<div class="w-96">
 										<img src="/usr/home/file/${file.id }">
 									</div>
 								</c:forEach>

@@ -40,7 +40,7 @@
   	  	form.body.value = markdown;
   	  	
   	  	if (form.file.files.length) {
-	  	  	let confirmMessage = "기존 상품사진을 새 사진으로 대체합니다. 이대로 진행하시겠습니까?";
+	  	  	let confirmMessage = "기존 상품사진을 새 사진으로 변경합니다. 이대로 진행하시겠습니까?";
 	  	 	if (!confirm(confirmMessage)) {
 	  	 		return;
   	 		}

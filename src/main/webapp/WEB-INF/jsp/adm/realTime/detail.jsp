@@ -80,19 +80,20 @@
 						</tr>
 						<tr>
 							<th>상품사진</th>
-							<td class="flex" colspan="3"><c:forEach var="file"
-									items="${files }">
-									<div>
+							<td class="flex" colspan="3">
+								<c:forEach var="file" items="${files }">
+									<div class="w-96">
 										<img src="/usr/home/file/${file.id }">
 									</div>
-								</c:forEach></td>
+								</c:forEach>
+							</td>
 						</tr>
 						<tr>
 							<th>등록일</th>
 							<td colspan="3">${realTime.regDate }</td>
 						</tr>
 						<tr>
-							<th>본인 희망 경매일자</th>
+							<th>희망 경매일자</th>
 							<td>${realTime.hopeDate }</td>
 							<th>경매 시작일자 설정</th>
 							<td><input name="startDate" type="datetime-local" /></td>

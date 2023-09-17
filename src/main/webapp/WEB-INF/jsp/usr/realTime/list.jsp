@@ -40,86 +40,86 @@
 					<c:choose>
 						<c:when test="${confirmStatus == '0' }">
 							<c:forEach var="realTime" items="${realTimeContents }">
-								<div class="contents-box">
+								<div class="contents-box" class="contents-box w-1/5 h-1/2 p-2 mb-2 mx-6">
 									<c:forEach var="file" items="${files }">
 										<c:if test="${realTime.id == file.auctionId }">
-											<a href="../../adm/realTime/detail?id=${realTime.id }">
+											<a href="../../adm/realTime/detail?id=${realTime.id }" class="flex h-3/5 justify-center">
 												<img src="/usr/home/file/${file.id }">
 											</a>
 										</c:if>
 									</c:forEach>
-									<div>
+									<div class="text-center font-thin">
 										<span>${realTime.name }</span>
 									</div>
-									<div>
-										<span>신청자 : ${realTime.memberName }</span>
+									<div class="text-center text-red-500 font-medium">
+										<span>신청인 : ${realTime.memberName }</span>
 									</div>
 								 </div>
 							</c:forEach>
 						</c:when>
 						<c:when test="${endStatus == '0' }">
 							<c:forEach var="realTime" items="${realTimeContents }">
-								<div class="contents-box">
+								<div class="contents-box" class="contents-box w-1/5 h-1/2 p-2 mb-2 mx-6">
 									<c:forEach var="file" items="${files }">
 										<c:if test="${realTime.id == file.auctionId }">
-											<a href="detail?id=${realTime.id }">
+											<a href="detail?id=${realTime.id }" class="flex h-3/5 justify-center">
 												<img src="/usr/home/file/${file.id }">
 											</a>
 										</c:if>
 									</c:forEach>
-									<div>
+									<div class="text-center font-thin">
 										<span>${realTime.name }</span>
 									</div>
-									<div>
-										<span>시작가 : ${realTime.startBid }</span>
-									</div>
-									<div>
+									<div class="text-center font-medium">
 										<span>경매 일자 : ${realTime.startDate }</span>
 								    </div>
+									<div class="text-center text-green-500 font-bold">
+										<span>시작가 : ${realTime.startBid }</span>
+									</div>
 								 </div>
 							</c:forEach>
 						</c:when>
 						<c:when test="${endStatus == '1' }">
 							<c:forEach var="realTime" items="${realTimeContents }">
-								<div class="contents-box">
+								<div class="contents-box" class="contents-box w-1/5 h-1/2 p-2 mb-2 mx-6">
 									<c:forEach var="file" items="${files }">
 										<c:if test="${realTime.id == file.auctionId }">
-											<a href="detail?id=${realTime.id }">
+											<a href="detail?id=${realTime.id }" class="flex h-3/5 justify-center">
 												<img src="/usr/home/file/${file.id }">
 											</a>
 										</c:if>
 									</c:forEach>
-									<div>
+									<div class="text-center font-thin">
 										<span>${realTime.name }</span>
 									</div>
-									<div>
+									<div class="text-center font-medium">
+										<span>현재 ${realTime.startDate }명 참가중</span>
+								    </div>
+									<div class="text-center text-red-500 font-bold">
 										<span>현재가 : ${realTime.nowBid }</span>
 									</div>
-									<div>
-										<span>참가 인원수 : ${realTime.startDate }</span>
-								    </div>
 								 </div>
 							</c:forEach>
 						</c:when>
 						<c:when test="${endStatus == '2' }">
 							<c:forEach var="realTime" items="${realTimeContents }">
-								<div class="contents-box">
+								<div class="contents-box" class="contents-box w-1/5 h-1/2 p-2 mb-2 mx-6">
 									<c:forEach var="file" items="${files }">
 										<c:if test="${realTime.id == file.auctionId }">
-											<a href="detail?id=${realTime.id }">
+											<a href="detail?id=${realTime.id }" class="flex h-3/5 justify-center">
 												<img src="/usr/home/file/${file.id }">
 											</a>
 										</c:if>
 									</c:forEach>
-									<div>
+									<div class="text-center font-thin">
 										<span>${realTime.name }</span>
 									</div>
-									<div>
+									<div class="text-center font-medium">
+										<span>입찰건수 : ${realTime.bidCount }</span>
+								    </div>
+									<div class="text-center text-blue-500 font-bold">
 										<span>낙찰가 : ${realTime.startBid }</span>
 									</div>
-									<div>
-										<span>최종 입찰건수 : ${realTime.bidCount }</span>
-								    </div>
 								 </div>
 							</c:forEach>
 						</c:when>
