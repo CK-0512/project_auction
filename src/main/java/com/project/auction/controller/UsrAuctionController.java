@@ -172,7 +172,7 @@ public class UsrAuctionController {
 			return Util.jsHistoryBack("입찰금액을 입력해주세요");
 		}
 		
-		auctionService.bidAuction(auctionId, bid, buyNow);
+		auctionService.bidAuction(auctionId, bid, buyNow, rq.getLoginedMemberId());
 		
 		memberService.spendMoney(rq.getLoginedMemberId(), bid);
 		

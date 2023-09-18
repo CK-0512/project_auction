@@ -1,5 +1,6 @@
 package com.project.auction.dao;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -24,8 +25,12 @@ public interface AuctionDao {
 
 	public int searchExistAuction(String name, String description);
 
-	public void bidAuction(int id, int bid, int buyNow);
+	public void bidAuction(int id, int bid, int buyNow, int memberId);
 
 	public void buyAuction(int buyerId, int id, int buyNow);
+
+	public List<Auction> findExpiredAuctions(LocalDateTime nowTime);
+
+	public void expireAuction(int id, int charge);
 	
 }

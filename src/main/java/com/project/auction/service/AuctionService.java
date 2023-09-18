@@ -1,5 +1,6 @@
 package com.project.auction.service;
 
+import java.sql.Date;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -60,11 +61,32 @@ public class AuctionService {
 		return auctionDao.searchExistAuction(name, description);
 	}
 
-	public void bidAuction(int auctionId, int bid, int buyNow) {
-		auctionDao.bidAuction(auctionId, bid, buyNow);
+	public void bidAuction(int auctionId, int bid, int buyNow, int memberId) {
+		auctionDao.bidAuction(auctionId, bid, buyNow, memberId);
 	}
 
 	public void buyAuction(int loginedMemberId, int auctionId, int buyNow) {
 		auctionDao.buyAuction(loginedMemberId, auctionId, buyNow);
 	}
+
+	public void endExpiredAuctions() {
+        List<Auction> expiredAuctions = auctionDao.findExpiredAuctions(LocalDateTime.now());
+
+        for (Auction auction : expiredAuctions) {
+        	int charge = 0;
+        	switch (auction.getBidDate()) {
+        		case 3 :
+        			charge = (int) (auction.getNowBid() * 0.05);
+        			break;
+        		case 5 :
+        			charge = (int) (auction.getNowBid() * 0.07);
+        			break;
+        		case 7 :
+        			charge = (int) (auction.getNowBid() * 0.1);
+        			break;
+        	}
+        	
+            auctionDao.expireAuction(auction.getId(), charge);
+        }
+    }
 }

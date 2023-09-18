@@ -84,6 +84,7 @@
 				, minimumBid = #{bid} * 0.05
 				, nowBid = #{bid}
 				, bidCount = bidCount + 1
+				, buyerId = #{buyerId}
 				<if test="bid >= buyNow">
 					, buyNow = 0
 				</if>
@@ -97,6 +98,22 @@
 				, endBid = #{buyNow}
 				, endStatus = 1
 				, buyerId = #{buyerId}
+			WHERE id = #{id}
+	</update>
+	
+	<select id="findExpiredAuctions" resultType="Auction">
+		SELECT *
+			FROM auction
+			WHERE endStatus = 0
+			AND endDate = #{nowTime}
+	</select>
+	
+	<update id="expireAuction">
+		UPDATE auction
+			SET updateDate = NOW()
+				, endBid = nowBid
+				, charge = #{charge}
+				, endStatus = 1
 			WHERE id = #{id}
 	</update>
 	

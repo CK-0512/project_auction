@@ -9,17 +9,19 @@ CREATE TABLE article(
     memberId INT UNSIGNED NOT NULL,
     boardId INT UNSIGNED NOT NULL,
     title VARCHAR(100) NOT NULL,
-    `body` TEXT NOT NULL,
+    `body` LONGTEXT NOT NULL,
     hitCnt INT UNSIGNED NOT NULL DEFAULT 0
 );
 
+ALTER TABLE auction MODIFY COLUMN `description` LONGTEXT NOT NULL;
+
 DROP TABLE article;
 
-SELECT * FROM article WHERE boardId = 1;
+SELECT * FROM article;
 
 CREATE TABLE `member`(
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    regDate DATETIME NOT NULL,
+    regDate DATETIME NOT NULL,  
     updateDate DATETIME NOT NULL,
     loginId VARCHAR(20) NOT NULL UNIQUE,
     loginPw VARCHAR(100) NOT NULL,
@@ -89,6 +91,16 @@ updateDate = NOW(),
 `code` = 'transaction',
 `name` = '거래';
 
+CREATE TABLE notice (
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    updateDate DATETIME NOT NULL,
+    memberId INT UNSIGNED NOT NULL,
+    message VARCHAR(100) NOT NULL,
+    noticeUrl VARCHAR(100) NOT NULL,
+    noticeType TINYINT UNSIGNED NOT NULL COMMENT '알림종류 (댓글 알림 = 0, 실시간 경매 알림 = 1, 참가 경매 종료 알림 = 2)',
+    endStatus TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '확인여부 (확인 전 = 0, 확인 후 = 1)'
+);
 
 CREATE TABLE reply (
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -110,26 +122,20 @@ CREATE TABLE reactionPoint (
     `point` INT NOT NULL DEFAULT 0
 );
 
-CREATE TABLE notice (
-    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    regDate DATETIME NOT NULL,
-    updateDate DATETIME NOT NULL,
-    memberId INT UNSIGNED NOT NULL,
-    message VARCHAR(100) NOT NULL,
-    noticeUrl VARCHAR(100) NOT NULL,
-    noticeType TINYINT UNSIGNED NOT NULL COMMENT '알림종류 (댓글 알림 = 0, 실시간 경매 알림 = 1, 참가 경매 종료 알림 = 2)',
-    endStatus TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '확인여부 (확인 전 = 0, 확인 후 = 1)'
-);
-
-CREATE TABLE productFile (
+create table productFile (
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	regDate DATETIME NOT NULL,
     originName VARCHAR(50) NOT NULL,
     savedName VARCHAR(100) NOT NULL,
     savedPath VARCHAR(100) NOT NULL,
-    auctionId INT UNSIGNED NOT NULL,
-    auctionType TINYINT UNSIGNED NOT NULL COMMENT '옥션종류 (온라인 = 1, 실시간 = 2)'
+    auctionId int unsigned not null,
+    auctionType int unsigned not null comment '옥션종류 (온라인 = 1, 실시간 = 2)'
 );
+
+truncate productFIle;
+truncate realTimeAuction;
+
+select * from productFile;
 
 CREATE TABLE auction (
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -140,7 +146,7 @@ CREATE TABLE auction (
     memberId INT UNSIGNED NOT NULL,
     categoryId INT UNSIGNED NOT NULL,
     `name` VARCHAR(100) NOT NULL,
-    `description` TEXT NOT NULL,
+    `description` LONGTEXT NOT NULL,
     startBid INT UNSIGNED NOT NULL,
     minimumBid INT UNSIGNED NOT NULL,
     nowBid INT UNSIGNED NOT NULL,
@@ -152,9 +158,9 @@ CREATE TABLE auction (
     buyerId INT UNSIGNED NOT NULL DEFAULT 0
 );
 
-DROP TABLE auction;
+truncate auction;
 
-SELECT * FROM auction;
+select * from auction;
 
 CREATE TABLE cart (
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -163,10 +169,14 @@ CREATE TABLE cart (
     auctionId INT UNSIGNED NOT NULL,
     memberId INT UNSIGNED NOT NULL,
     `name` VARCHAR(100) NOT NULL,
-    `description` TEXT NOT NULL,
+    `description` longTEXT NOT NULL,
     memberBid INT UNSIGNED NOT NULL,
     endStatus TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '종료여부 (진행중 = 0, 종료 = 1)'
 );
+
+truncate cart;
+
+select * from cart;
 
 CREATE TABLE realTimeAuction (
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -178,17 +188,17 @@ CREATE TABLE realTimeAuction (
     memberId INT UNSIGNED NOT NULL,
     categoryId INT UNSIGNED NOT NULL,
     `name` VARCHAR(100) NOT NULL,
-    `description` TEXT NOT NULL,
+    `description` longTEXT NOT NULL,
     startBid INT UNSIGNED NOT NULL,
     bidIncrease INT UNSIGNED NOT NULL,
-    endBid INT UNSIGNED NOT NULL DEFAULT 0,
+    endBid INT UNSIGNED NOT NULL default 0,
     bidCount INT UNSIGNED NOT NULL DEFAULT 0,
     confirmStatus TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '승인여부 (진행중 = 0, 승인됨 = 1, 거부됨 = 2)',
     endStatus TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '종료여부 (대기중 = 0, 진행중 = 1, 종료 = 2)',
     buyerId INT UNSIGNED NOT NULL DEFAULT 0
 );
 
-DROP TABLE realTimeAuction;
+select * from realTimeAuction;
 
 CREATE TABLE bidHistory (
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -199,6 +209,10 @@ CREATE TABLE bidHistory (
     bidSuccessful TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '낙찰가 여부 (단순 입찰가 = 0, 낙찰가 = 1)',
     auctionType TINYINT UNSIGNED NOT NULL COMMENT '옥션종류 (온라인 = 1, 실시간 = 2)'
 );
+
+TRUNCATE realTimeAuction;
+
+drop table realTimeAuction;
 
 SELECT * FROM category;
 
