@@ -31,5 +31,7 @@ public interface RealTimeDao {
 	public void rejectRealTime(int id);
 
 	public int isExist(int memberId);
+
+	public List<RealTime> getRealTimeContentsForHome(int endStatus);
 	
 }

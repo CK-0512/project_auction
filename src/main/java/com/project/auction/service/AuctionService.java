@@ -1,6 +1,5 @@
 package com.project.auction.service;
 
-import java.sql.Date;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -89,4 +88,8 @@ public class AuctionService {
             auctionDao.expireAuction(auction.getId(), charge);
         }
     }
+
+	public List<Auction> getAuctionContentsForHome(int endStatus) {
+		return auctionDao.getAuctionContentsForHome(endStatus);
+	}
 }

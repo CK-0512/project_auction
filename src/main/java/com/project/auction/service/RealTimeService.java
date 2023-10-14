@@ -67,4 +67,8 @@ public class RealTimeService {
 		return realTimeDao.isExist(loginedMemberId);
 	}
 
+	public List<RealTime> getRealTimeContentsForHome(int endStatus) {
+		return realTimeDao.getRealTimeContentsForHome(endStatus);
+	}
+
 }

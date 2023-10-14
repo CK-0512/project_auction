@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -17,6 +19,12 @@ import com.project.auction.vo.Category;
 public class WebSocketNoticeHandler extends AbstractWebSocketHandler {
 	
 	private List<WebSocketSession> userSessions = new ArrayList<>();
+	private ApplicationContext applicationContext;
+
+    @Autowired
+    public WebSocketNoticeHandler(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
 	
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -80,7 +88,7 @@ public class WebSocketNoticeHandler extends AbstractWebSocketHandler {
 	private void sendMessageToRegisterByReject(String registUserId, String realTimeContent, String realTimeId) throws IOException {
     	WebSocketSession userSession = userSessions.get((Integer.valueOf(registUserId)));
 		
-		String messageText = Util.f("<a href='../../usr/realTime/detail?id=%s'>신청하신 %s 상품의 경매신청이 반려되었습니다. 다음 기회를 기대해주세요!</a>",
+		String messageText = Util.f("<a href='../../usr/realTime/detail?id=%s'>신청하신 %s 상품의 경매신청이 반려되었습니다. 다음 기회를 기대해주세요.</a>",
                 realTimeId, realTimeContent);
 		TextMessage rejectMessage = new TextMessage(messageText);
 		userSession.sendMessage(rejectMessage);	

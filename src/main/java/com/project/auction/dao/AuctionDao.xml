@@ -34,6 +34,14 @@
 			LIMIT #{limitStart}, #{itemsInAPage}
 	</select>
 	
+	<select id="getAuctionContentsForHome" resultType="Auction">
+		SELECT *
+			FROM auction
+		    WHERE endStatus = #{endStatus}
+		    ORDER BY bidCount DESC
+			LIMIT 5
+	</select>
+	
 	<insert id="registAuction">
 		INSERT INTO auction
 			SET regDate = NOW()

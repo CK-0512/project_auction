@@ -32,5 +32,7 @@ public interface AuctionDao {
 	public List<Auction> findExpiredAuctions(LocalDateTime nowTime);
 
 	public void expireAuction(int id, int charge);
+
+	public List<Auction> getAuctionContentsForHome(int endStatus);
 	
 }

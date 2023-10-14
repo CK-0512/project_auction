@@ -80,6 +80,20 @@
 			LIMIT #{limitStart}, #{itemsInAPage}
 	</select>
 	
+	<select id="getArticlesForHome" resultType="Article">
+			SELECT A.*
+			        , IFNULL(SUM(RP.point), 0) AS sumReactionPoint
+			        , SUM(IF(RP.point &gt; 0, RP.point, 0)) AS goodReactionPoint
+			        , SUM(IF(RP.point &lt; 0, RP.point, 0)) AS badReactionPoint
+				FROM article AS A
+				LEFT JOIN reactionPoint AS RP
+			    ON RP.relTypeCode = 'article'
+			    AND A.id = RP.relId
+				GROUP BY A.id
+				ORDER BY sumReactionPoint DESC
+				LIMIT 5
+	</select>
+	
 	<select id="getArticlesCnt" resultType="int">
 		SELECT COUNT(*)
 			FROM article

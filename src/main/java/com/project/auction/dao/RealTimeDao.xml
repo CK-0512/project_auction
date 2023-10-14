@@ -38,6 +38,15 @@
 			LIMIT #{limitStart}, #{itemsInAPage}
 	</select>
 	
+	<select id="getRealTimeContentsForHome" resultType="RealTime">
+		SELECT *
+			FROM realTimeAuction
+		    WHERE endStatus = #{endStatus}
+		    AND confirmStatus = 1
+		    ORDER BY regDate DESC
+			LIMIT 5
+	</select>
+	
 	<select id="isExist" resultType="int">
 		SELECT COUNT(*)
 			FROM realTimeAuction
