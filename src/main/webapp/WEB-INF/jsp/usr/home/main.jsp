@@ -7,7 +7,7 @@
 
 <section class="flex">
 	<div class="container mx-auto">
-		<div class="text-center font-extrabold text-5xl italic ml-72 pl-24">C K A</div>
+		<div class="text-center font-extrabold text-6xl italic ml-72 pl-24">CK Auction</div>
 		<div class="flex flex-grow flex-col justify-between ml-6">
 			<div class="mt-6">
 				<div class="text-center text-xl">진행중인 경매</div>
@@ -72,7 +72,7 @@
 						</c:forEach>
 					</c:if>
 					<c:if test="${realTimeContents.size() == 0 }">
-						<div class="flex justify-center items-center w-full">
+						<div class="flex justify-center items-center w-full h-16">
 							<span class="text-red-500 font-bold text-2xl">예정된 경매가
 								없습니다.</span>
 						</div>
@@ -107,8 +107,8 @@
 						</c:forEach>
 					</c:if>
 					<c:if test="${auctionContents.size() == 0 }">
-						<div class="flex justify-center items-center w-full">
-							<span class="text-red-500 font-bold font-2xl">등록된 상품이
+						<div class="flex justify-center items-center w-full h-16">
+							<span class="text-red-500 font-bold text-2xl">등록된 상품이
 								없습니다.</span>
 						</div>
 					</c:if>
@@ -120,9 +120,9 @@
 		<ul class="border-b-2 pt-4 pb-2 border-green-200 text-center">
 			<c:if test="${rq.getLoginedMemberId() == 0}">
 				<li class="hover:underline"><a class="h-full align-center"
-					href="/usr/member/join">회원가입</a></li>
-				<li class="hover:underline"><a class="h-full align-center"
 					href="/usr/member/login">로그인</a></li>
+				<li class="hover:underline"><a class="h-full align-center"
+					href="/usr/member/join">회원가입</a></li>
 			</c:if>
 			<c:if test="${rq.getLoginedMemberId() != 0}">
 				<c:choose>

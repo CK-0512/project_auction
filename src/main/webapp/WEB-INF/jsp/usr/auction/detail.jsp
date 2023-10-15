@@ -119,7 +119,7 @@
 							<tr>
 								<c:if test="${auction.endStatus == 0 }">
 									<th>현재가</th>
-									<td>${auction.nowBid }원</td>
+									<td>${auction.nowBid }</td>
 									<th>입찰건수</th>
 									<td><span id="articleDetail_increaseHitCnt">${auction.bidCount }</span></td>
 								</c:if>
@@ -134,13 +134,13 @@
 								<tr>
 									<th>입찰하기</th>
 									<td>
-										<input class="ml-2 input input-bordered input-accent input-sm w-56 text-right" name="bid" type="text" placeholder="${auction.nowBid + auction.minimumBid}원 이상부터 입찰가능"/>
+										<input class="ml-2 input input-bordered input-accent input-sm w-56 text-right" name="bid" type="text" placeholder="${auction.nowBid + auction.minimumBid} 이상부터 입찰가능"/>
 										<input type="button" class="ml-2 btn btn-active btn-accent btn-sm" onClick="doBid(${rq.loginedMember.money })" value="입찰하기"/>
 									</td>
 									<th>즉시구매가</th>
 									<td>
 										<c:if test="${auction.buyNow != 0 }">
-											<span>${auction.buyNow }원</span>
+											<span>${auction.buyNow }</span>
 											<input type="button" class="ml-2 btn btn-active btn-accent btn-sm" onClick="doBuy(${rq.loginedMember.money }, ${auction.buyNow })" value="구매하기"/>
 										</c:if>
 										<c:if test="${auction.buyNow == 0 }">

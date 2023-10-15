@@ -92,7 +92,7 @@
 				, minimumBid = #{bid} * 0.05
 				, nowBid = #{bid}
 				, bidCount = bidCount + 1
-				, buyerId = #{buyerId}
+				, buyerId = #{memberId}
 				<if test="bid >= buyNow">
 					, buyNow = 0
 				</if>
@@ -105,7 +105,7 @@
 				, endDate = NOW()
 				, endBid = #{buyNow}
 				, endStatus = 1
-				, buyerId = #{buyerId}
+				, buyerId = #{memberId}
 			WHERE id = #{id}
 	</update>
 	

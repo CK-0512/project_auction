@@ -8,23 +8,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.project.auction.service.NoticeService;
 import com.project.auction.util.Util;
 import com.project.auction.vo.ResultData;
-import com.project.auction.vo.Rq;
 
 @Controller
 public class UsrNoticeController {
 
 	private NoticeService noticeService;
-	private Rq rq;
 
 	@Autowired
-	public UsrNoticeController(NoticeService noticeService, Rq rq) {
+	public UsrNoticeController(NoticeService noticeService) {
 		this.noticeService = noticeService;
-		this.rq = rq;
 	}
 	
-	@RequestMapping("/usr/notice/doRegist")
+	@RequestMapping("/usr/notice/registNotice")
 	@ResponseBody
-	public ResultData<String> doRegist(int memberId, String noticeUrl, String message, int noticeType) {
+	public ResultData<String> registNotice(int memberId, String noticeUrl, String message, int noticeType) {
 		
 		noticeService.registNotice(memberId, noticeUrl, message, noticeType);
 		

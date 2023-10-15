@@ -14,33 +14,33 @@
 			</c:if>
 			<div>
 				<a href="list?endStatus=0" class="${endStatus == '0' && confirmStatus != '0' ? 'selected' : ''}">대기중인 경매</a>
-				<span>|</span>
+				<span> ||| </span>
 				<a href="list?endStatus=1" class="${endStatus == '1' && confirmStatus != '0' ? 'selected' : ''}">진행중인 경매</a>
-				<span>|</span>
+				<span> ||| </span>
 				<a href="list?endStatus=2" class="${endStatus == '2' && confirmStatus != '0' ? 'selected' : ''}">종료된 경매</a>
 			</div>
 			<div class="mb-2 flex">
 				<div class="table-box-type-2">
-					<table class="table">
+					<table class="table w-28 h-full">
 						<tr>
-							<td>
+							<td class="text-center">
 								<a href="list?endStatus=${endStatus }">모든품목</a>
 							</td>
 						</tr>
 						<c:forEach var="category" items="${categories }">
 							<tr>
-								<td>
+								<td class="text-center">
 									<a href="list?endStatus=${endStatus }&categoryId=${category.id }">${category.name }</a>
 								</td>
 							</tr>
 						</c:forEach>
 					</table>
 				</div>
-				<div class="flex">
+				<div class="flex flex-wrap flex-grow">
 					<c:choose>
 						<c:when test="${confirmStatus == '0' }">
 							<c:forEach var="realTime" items="${realTimeContents }">
-								<div class="contents-box" class="contents-box w-1/5 h-1/2 p-2 mb-2 mx-6">
+								<div id="auctionContent" class="contents-box w-1/5 h-1/2 p-2 mb-2 mx-6">
 									<c:forEach var="file" items="${files }">
 										<c:if test="${realTime.id == file.auctionId }">
 											<a href="../../adm/realTime/detail?id=${realTime.id }" class="flex h-3/5 justify-center">
@@ -59,7 +59,7 @@
 						</c:when>
 						<c:when test="${endStatus == '0' }">
 							<c:forEach var="realTime" items="${realTimeContents }">
-								<div class="contents-box" class="contents-box w-1/5 h-1/2 p-2 mb-2 mx-6">
+								<div id="auctionContent" class="contents-box w-1/5 h-1/2 p-2 mb-2 mx-6">
 									<c:forEach var="file" items="${files }">
 										<c:if test="${realTime.id == file.auctionId }">
 											<a href="detail?id=${realTime.id }" class="flex h-3/5 justify-center">
@@ -81,7 +81,7 @@
 						</c:when>
 						<c:when test="${endStatus == '1' }">
 							<c:forEach var="realTime" items="${realTimeContents }">
-								<div class="contents-box" class="contents-box w-1/5 h-1/2 p-2 mb-2 mx-6">
+								<div id="auctionContent" class="contents-box w-1/5 h-1/2 p-2 mb-2 mx-6">
 									<c:forEach var="file" items="${files }">
 										<c:if test="${realTime.id == file.auctionId }">
 											<a href="detail?id=${realTime.id }" class="flex h-3/5 justify-center">
@@ -103,7 +103,7 @@
 						</c:when>
 						<c:when test="${endStatus == '2' }">
 							<c:forEach var="realTime" items="${realTimeContents }">
-								<div class="contents-box" class="contents-box w-1/5 h-1/2 p-2 mb-2 mx-6">
+								<div id="auctionContent" class="contents-box w-1/5 h-1/2 p-2 mb-2 mx-6">
 									<c:forEach var="file" items="${files }">
 										<c:if test="${realTime.id == file.auctionId }">
 											<a href="detail?id=${realTime.id }" class="flex h-3/5 justify-center">

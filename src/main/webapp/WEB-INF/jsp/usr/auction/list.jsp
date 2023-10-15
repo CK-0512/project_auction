@@ -9,7 +9,7 @@
 		<div class="container mx-auto">
 			<div>
 				<a href="list?endStatus=0" class="${endStatus == '0' ? 'selected' : ''}">진행중인 경매</a>
-				<span>|</span>
+				<span> ||| </span>
 				<a href="list?endStatus=1" class="${endStatus == '1' ? 'selected' : ''}">종료된 경매</a>
 			</div>
 			<div class="mb-2 flex">

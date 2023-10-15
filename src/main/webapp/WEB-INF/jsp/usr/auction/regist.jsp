@@ -43,7 +43,7 @@
         	message.style.color = "red";
         } else {
         	charge.value = (buyNowVal * chargeRate).toFixed(0);
-        	message.textContent = charge.value + " 원";
+        	message.textContent = charge.value;
         	message.style.color = "green";
         }
 	}

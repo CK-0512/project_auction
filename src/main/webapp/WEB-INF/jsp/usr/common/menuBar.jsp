@@ -40,7 +40,7 @@
 							stroke-width="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
 				</label>
 				<ul tabindex="0"
-					class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-28">
+					class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-48">
 					<li><a href="/usr/auction/list">온라인 경매</a></li>
 					<li><a href="/usr/realTime/list">실시간 경매</a></li>
 					<li><a href="/usr/article/list">자유 게시판</a></li>
