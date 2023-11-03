@@ -5,7 +5,7 @@
 <c:set var="pageTitle" value="글작성" />
 <%@ include file="../common/headWithToastUIEditorLib.jsp" %>
 
-	<section class="mt-8">
+	<section class="mt-24">
 		<div class="container mx-auto">
 			<form action="doWrite" method="POST" onsubmit="submitForm(this); return false;">
 				<input type="hidden" name="body" />

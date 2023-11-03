@@ -29,7 +29,7 @@
 	getReactionPoint();
 </script>
 
-	<section class="mt-8">
+	<section class="mt-24">
 		<div class="container mx-auto pb-5 border-bottom-line">
 			<div class="table-box-type-1">
 				<table class="table">

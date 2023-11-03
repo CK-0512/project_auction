@@ -71,7 +71,7 @@
 										<span>${realTime.name }</span>
 									</div>
 									<div class="text-center font-medium">
-										<span>경매 일자 : ${realTime.startDate }</span>
+										<span>경매 일자 : ${realTime.startDate.substring(2,16) }</span>
 								    </div>
 									<div class="text-center text-green-500 font-bold">
 										<span>시작가 : ${realTime.startBid }</span>

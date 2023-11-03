@@ -40,7 +40,7 @@ public class WebSocketNoticeHandler extends AbstractWebSocketHandler {
 					String registUserId = strs[2];
 					String realTimeContent = strs[3];
 					String realTimeId = strs[4];
-					sendMessageToRegisterByConfirm(registUserId, realTimeContent, realTimeId);
+//					sendMessageToRegisterByConfirm(registUserId, realTimeContent, realTimeId);
 					sendMessageToInterestedUsers(categoryId, registUserId, realTimeContent, realTimeId);
 				} else if ("realTimeReject".equals(cmd)) {
 					String registUserId = strs[1];
@@ -52,14 +52,14 @@ public class WebSocketNoticeHandler extends AbstractWebSocketHandler {
 		}
 	}
     
-    private void sendMessageToRegisterByConfirm(String registUserId, String realTimeContent, String realTimeId) throws IOException {
-    	WebSocketSession userSession = userSessions.get((Integer.valueOf(registUserId)));
-		
-		String messageText = Util.f("<a href='../../usr/realTime/detail?id=%s'>신청하신 %s 상품의 경매신청이 승인되어, 대기열에 등록되었습니다.</a>",
-                realTimeId, realTimeContent);
-		TextMessage confirmMessage = new TextMessage(messageText);
-		userSession.sendMessage(confirmMessage);	
-	}
+//    private void sendMessageToRegisterByConfirm(String registUserId, String realTimeContent, String realTimeId) throws IOException {
+//    	WebSocketSession userSession = userSessions.get((Integer.valueOf(registUserId)));
+//		
+//		String messageText = Util.f("<a href='../../usr/realTime/detail?id=%s'>신청하신 %s 상품의 경매신청이 승인되어, 대기열에 등록되었습니다.</a>",
+//                realTimeId, realTimeContent);
+//		TextMessage confirmMessage = new TextMessage(messageText);
+//		userSession.sendMessage(confirmMessage);	
+//	}
 
 	private void sendMessageToInterestedUsers(String categoryId, String registUserId, String realTimeContent, String realTimeId) throws IOException {
         for (WebSocketSession userSession : userSessions) {
@@ -67,8 +67,8 @@ public class WebSocketNoticeHandler extends AbstractWebSocketHandler {
         		List<Category> interestCategories = (List<Category>) userSession.getAttributes().get("memberInterestCategories");
                 for (Category category : interestCategories) {
                     if (String.valueOf(category.getCategoryId()).equals(categoryId)) {
-                        String messageText = Util.f("<a href='../../usr/realTime/detail?id=%s'>%s 카테고리의 %s 상품이 대기열에 등록되었습니다.</a>",
-                                realTimeId, category.getName(), realTimeContent);
+                        String messageText = Util.f("<a href='../../usr/realTime/detail?id=%s'>%s 상품이 대기열에 등록되었습니다.</a>",
+                                realTimeId, realTimeContent);
                         TextMessage message = new TextMessage(messageText);
                         userSession.sendMessage(message);
                     }

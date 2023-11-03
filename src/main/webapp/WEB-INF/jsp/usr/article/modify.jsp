@@ -5,7 +5,7 @@
 <c:set var="pageTitle" value="Modify" />
 <%@ include file="../common/headWithToastUIEditorLib.jsp" %>
 
-	<section class="mt-8">
+	<section class="mt-24">
 		<div class="container mx-auto">
 			<form action="doModify" method="POST" onsubmit="submitForm(this); return false;">
 				<input type="hidden" name="id" value="${article.id }" />
